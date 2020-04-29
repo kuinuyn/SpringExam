@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.complaint.complaintMapper">
+	
+	<select id="getComplaintCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM GY_LIGHT_REPAIR A
+			WHERE
+				TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+		]]>
+			<if test="repair_cd != null and repair_cd != '' ">
+				AND A.REPAIR_CD = #{repair_cd}	
+			</if>
+	</select>
+	
+	<select id="getComplaintList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT T1.*
+			FROM (
+				SELECT REPAIR_NO
+							   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
+							   , LIGHT_NO
+							   , NOTICE_NAME
+							   , CASE WHEN inform_method = '01'
+							   				THEN PHONE
+							   				WHEN inform_method = '02'
+							   				THEN MOBILE
+							   				WHEN inform_method = '04'
+							   				THEN ''
+							   	END AS CONTACT
+							   , EMAIL
+							   , TO_CHAR(NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+							   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
+							   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
+							   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+							   , PROGRESS_STATUS
+							   , LOCATION
+					FROM GY_LIGHT_REPAIR A
+				WHERE
+					TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+			]]>
+					<if test="repair_cd != null and repair_cd != '' ">
+						AND A.REPAIR_CD = #{repair_cd}	
+					</if>
+			<![CDATA[
+				ORDER BY A.LIGHT_NO
+			) T1
+			LIMIT #{limit} OFFSET #{offset}
+		]]>
+	</select>
+	
+	<select id="getComplaintDetail" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT REPAIR_NO
+						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
+						   , LIGHT_NO
+						   , NOTICE_NAME
+						   , CASE WHEN inform_method = '01'
+						   				THEN PHONE
+						   				WHEN inform_method = '02'
+						   				THEN MOBILE
+						   				WHEN inform_method = '04'
+						   				THEN ''
+						   	END AS CONTACT
+						   , TO_CHAR(NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+						   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
+						   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
+						   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+						   , EMAIL
+						   , TROUBLE_DETAIL
+						   , PROGRESS_STATUS
+						   , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS PROGRESS_NAME
+						   , LOCATION
+						   , F_GY_DATA_CODE_NM('02', inform_method) AS INFORM_METHOD
+				FROM GY_LIGHT_REPAIR A
+				WHERE
+					A.REPAIR_NO = #{repairNo}	
+				ORDER BY A.LIGHT_NO
+			]]>
+	</select>
+	
+	<insert id="insertComplaint" parameterType="hashMap">
+		INSERT INTO GY_LIGHT_REPAIR(
+			REPAIR_NO, REPAIR_CD, PASSWORD, LIGHT_NO, NOTICE_DATE,
+			NOTICE_NAME, LOCATION, NEW_ADDRESS, TROUBLE_CD, TROUBLE_DETAIL, 
+			PHONE, MOBILE, EMAIL, INFORM_METHOD, PROGRESS_STATUS, SATI_RATING,
+			MODIFY_DATE, REMARK, DONG, LIGHT_GUBUN, REPAIR_PHOTO, REPAIR_DATE
+		) VALUES(
+			#{repair_no}||nextval('public.gy_light_repair_seq_no'::regclass), #{repair_cd}, #{password}, #{light_no}, #{notice_date},
+			#{notice_name}, #{location}, #{new_address}, #{trouble_cd}, #{trouble_detail},
+			#{phone}, #{mobile}, #{email}, #{inform_method}, #{progress_status}, #{sati_rating},
+			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}, #{repair_date}
+		)
+	</insert>
+</mapper>

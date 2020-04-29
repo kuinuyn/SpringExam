@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.repair.repairMapper">
+	
+	<select id="getSystemRepairCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM GY_LIGHT_REPAIR A
+			WHERE
+				TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+		]]>
+			<if test="repair_cd != null and repair_cd != '' ">
+				AND A.REPAIR_CD = #{repair_cd}	
+			</if>
+	</select>
+	
+	<select id="getSystemRepairList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT T1.*
+			FROM (
+				SELECT REPAIR_NO
+							   , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS LIGHT_GUBUN
+							   , LIGHT_NO
+							   , NOTICE_NAME
+							   , CASE WHEN inform_method = '01'
+							   				THEN PHONE
+							   				WHEN inform_method = '02'
+							   				THEN MOBILE
+							   				WHEN inform_method = '03'
+							   				THEN EMAIL
+							   				WHEN inform_method = '04'
+							   				THEN ''
+							   	END AS CONTACT
+							   , TO_CHAR(NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+							   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
+							   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
+							   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+							   , PROGRESS_STATUS
+					FROM GY_LIGHT_REPAIR A
+				WHERE
+					TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+			]]>
+					<if test="repair_cd != null and repair_cd != '' ">
+						AND A.REPAIR_CD = #{repair_cd}	
+					</if>
+			<![CDATA[
+				ORDER BY A.LIGHT_NO
+			) T1
+			LIMIT #{limit} OFFSET #{offset}
+		]]>
+	</select>
+	
+	<select id="getSystemRepairDetail" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT REPAIR_NO
+						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
+						   , LIGHT_NO
+						   , NOTICE_NAME
+						   , CASE WHEN inform_method = '01'
+						   				THEN PHONE
+						   				WHEN inform_method = '02'
+						   				THEN MOBILE
+						   				WHEN inform_method = '03'
+						   				THEN EMAIL
+						   				WHEN inform_method = '04'
+						   				THEN ''
+						   	END AS CONTACT
+						   , TO_CHAR(NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+						   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
+						   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
+						   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+						   , PROGRESS_STATUS
+				FROM GY_LIGHT_REPAIR A
+				WHERE
+					A.REPAIR_NO = #{repairNo}	
+				ORDER BY A.LIGHT_NO
+			]]>
+	</select>
+	
+	<select id="getSystemRepairExcelList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+				SELECT REPAIR_NO AS "접수번호"
+							   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS "민원종류"
+							   , LIGHT_NO AS "관리번호"
+							   , NOTICE_NAME AS "신고인"
+							   , CASE WHEN inform_method = '01'
+							   				THEN PHONE
+							   				WHEN inform_method = '02'
+							   				THEN MOBILE
+							   				WHEN inform_method = '03'
+							   				THEN EMAIL
+							   				WHEN inform_method = '04'
+							   				THEN ''
+							   	END AS "전화번호"
+							   , TO_CHAR(NOTICE_DATE, 'YYYY.MM.DD') AS "접수일"
+							   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS "지시일"
+							   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS "보수일"
+							   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+							   , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS "처리상황"
+					FROM GY_LIGHT_REPAIR A
+				WHERE
+					TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+			]]>
+					<if test="repair_cd != null and repair_cd != '' ">
+						AND A.REPAIR_CD = #{repair_cd}	
+					</if>
+			<![CDATA[
+				ORDER BY A.LIGHT_NO
+		]]>
+	</select>
+	
+	<insert id="insertTrobleReport" parameterType="hashMap">
+		INSERT INTO GY_LIGHT_REPAIR(
+			REPAIR_NO, REPAIR_CD, PASSWORD, LIGHT_NO, NOTICE_DATE,
+			NOTICE_NAME, LOCATION, NEW_ADDRESS, TROUBLE_CD, TROUBLE_DETAIL, 
+			PHONE, MOBILE, EMAIL, INFORM_METHOD, PROGRESS_STATUS, SATI_RATING,
+			MODIFY_DATE, REMARK, DONG, LIGHT_GUBUN, REPAIR_PHOTO, REPAIR_DATE
+		) VALUES(
+			#{repair_no}||nextval('public.gy_light_repair_seq_no'::regclass), #{repair_cd}, #{password}, #{light_no}, #{notice_date},
+			#{notice_name}, #{location}, #{new_address}, #{trouble_cd}, #{trouble_detail},
+			#{phone}, #{mobile}, #{email}, #{inform_method}, #{progress_status}, #{sati_rating},
+			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}, #{repair_date}
+		)
+	</insert>
+</mapper>

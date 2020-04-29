@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.equipmentMapper">
+	
+	<select id="getEquipmentCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM GY_LIGHT A
+			WHERE
+				1=1
+				AND A.LIGHT_GUBUN <> '9'
+		]]>
+			<if test="lightType != null and lightType != '' ">
+				AND A.LIGHT_TYPE = #{lightType}	
+			</if>
+			<if test="searchArea != null and searchArea != '' ">
+				AND HJ_DONG_CD = #{searchArea}
+			</if>
+			<if test="searchLampGubun != null and searchLampGubun != '' ">
+				AND LIGHT_GUBUN = #{searchLampGubun}
+			</if>
+			<if test="searchType != null and searchType != '' ">
+				<choose>
+					<when test="searchType == 1">
+						AND LIGHT_NO LIKE '%'||#{keyword}||'%'
+					</when>
+					<when test="searchType == 2">
+						AND ADDRESS LIKE '%'||#{keyword}||'%'
+					</when>
+					<when test="searchType == 3">
+						AND NEW_ADDRESS LIKE '%'||#{keyword}||'%'
+					</when>
+					<when test="searchType == 4">
+						AND STAND_CD = #{stand_cd}
+					</when>
+					<when test="searchType == 5">
+						AND LAMP2_CD = #{lamp2_cd}
+					</when>
+					<when test="searchType == 6">
+						AND LAMP3_CD = #{lamp3_cd}
+					</when>
+					<when test="searchType == 7">
+						AND KEPCO_CUST_NO LIKE '%'||#{keyword}||'%'
+					</when>
+				</choose>
+			</if>
+	</select>
+	
+	<select id="getEquipmentList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT T1.*
+			FROM (
+				SELECT A.*,
+					F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM,
+					F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM,
+					F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM,
+					F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM,
+					F_GY_DATA_CODE_NM('09', LAMP1_CD) AS LAMP1_NM,
+					F_GY_DATA_CODE_NM('10', LAMP2_CD) AS LAMP2_NM,
+					F_GY_DATA_CODE_NM('11', LAMP3_CD) AS LAMP3_NM,
+					F_GY_DATA_CODE_NM('12', KEPCO_CD) AS KEPCO_NM,
+					F_GY_DATA_CODE_NM('15', ONOFF_CD) AS ONOFF_NM,
+					F_GY_DATA_CODE_NM('16', WORK_CD) AS WORK_NM,
+					F_GY_DATA_CODE_NM('14', REPAIR_CD) AS REPAIR_NM,
+					F_GY_DATA_CODE_NM('29', AUTO_JUM_TYPE1_CD) AS AUTO_JUM_TYPE1_NM
+				FROM GY_LIGHT A
+				WHERE
+					1=1
+					AND A.LIGHT_GUBUN <> '9'
+			]]>
+					<if test="lightType != null and lightType != '' ">
+						AND A.LIGHT_TYPE = #{lightType}	
+					</if>
+					<if test="searchArea != null and searchArea != '' ">
+						AND HJ_DONG_CD = #{searchArea}
+					</if>
+					<if test="searchLampGubun != null and searchLampGubun != '' ">
+						AND LIGHT_GUBUN = #{searchLampGubun}
+					</if>
+					<if test="searchType != null and searchType != '' ">
+						<choose>
+							<when test="searchType == 1">
+								AND LIGHT_NO LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 2">
+								AND ADDRESS LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 3">
+								AND NEW_ADDRESS LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 4">
+								AND STAND_CD = #{stand_cd}
+							</when>
+							<when test="searchType == 5">
+								AND LAMP2_CD = #{lamp2_cd}
+							</when>
+							<when test="searchType == 6">
+								AND LAMP3_CD = #{lamp3_cd}
+							</when>
+							<when test="searchType == 7">
+								AND KEPCO_CUST_NO LIKE '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</if>
+			<![CDATA[
+				ORDER BY LIGHT_NO
+			) T1
+			LIMIT #{limit} OFFSET #{offset}
+		]]>
+	</select>
+	
+	<select id="getEquipmentDet" parameterType="hashMap" resultType="hashMap">
+		SELECT A.*
+					   , CASE WHEN twin_light = 'Y' THEN '예' ELSE '아니오' END AS twin_light_nm
+					   , F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM
+					   , F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
+					   , F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM
+					   , F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM
+					   , F_GY_DATA_CODE_NM('09', LAMP1_CD) AS LAMP1_NM
+					   , F_GY_DATA_CODE_NM('10', LAMP2_CD) AS LAMP2_NM
+					   , F_GY_DATA_CODE_NM('11', LAMP3_CD) AS LAMP3_NM
+					   , F_GY_DATA_CODE_NM('12', KEPCO_CD) AS KEPCO_NM
+					   , F_GY_DATA_CODE_NM('15', ONOFF_CD) AS ONOFF_NM
+					   , F_GY_DATA_CODE_NM('16', WORK_CD) AS WORK_NM
+					   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS REPAIR_NM
+					   , F_GY_DATA_CODE_NM('29', AUTO_JUM_TYPE1_CD) AS AUTO_JUM_TYPE1_NM
+					   , F_GY_DATA_CODE_NM('30', LAMP1_GUBUN) AS LAMP1_GUBUN_NM
+		FROM GY_LIGHT A
+		WHERE
+			LIGHT_NO = #{light_no}
+			<if test="par_hj_dong != null and par_hj_dong != '' ">
+				AND HJ_DONG_CD = #{par_hj_dong}
+			</if>
+	</select>
+	
+	<select id="getDetRepirList" parameterType="hashMap" resultType="hashMap">
+		SELECT A.REPAIR_NO
+			, TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
+			, B.REPAIR_DESC
+			, F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS PROGRESS_NAME
+			, F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NAME
+			, F_GY_DATA_CODE_NM('12', A.DONG) AS DONG_NM
+			, F_GY_DATA_CODE_NM('03', A.TROUBLE_TYPE) AS TROUBLE_TYPE_NM
+		FROM GY_LIGHT_REPAIR  A, GY_LIGHT_REPAIR_PART B
+		WHERE A.REPAIR_NO=B.REPAIR_NO 
+			AND A.LIGHT_NO = #{light_no}
+		ORDER BY A.REPAIR_NO DESC
+	</select>
+	
+	<update id="updateEquipment" parameterType="hashMap">
+		UPDATE GY_LIGHT
+		SET
+			OLD_LIGHT_NO = #{old_light_no}
+			, HJ_DONG_CD = #{hj_dong_cd}
+			, MGMT_NO = #{mgmt_no}
+			, DOYEP_NO = #{doyep_no}
+			, BDJ = #{bdj}
+			, POLE_NO = #{pole_no}
+			, LAMP1_GUBUN = #{lamp1_gubun}
+			, TWIN_LIGHT = #{twin_light}
+			, LAMP1_CD = #{lamp1_cd}
+			, LAMP1_CD2 = #{lamp1_cd2}
+			, LAMP2_CD = #{lamp2_cd}
+			, LAMP2_CD2 = #{lamp2_cd2}
+			, LAMP3_CD = #{lamp3_cd}
+			, LAMP3_CD2 = #{lamp3_cd2}
+			, ONOFF_CD = #{onoff_cd}
+			, STAND_CD = #{stand_cd}
+			, KEPCO_CUST_NO = #{kepco_cust_no}
+			, KEPCO_CD = #{kepco_cd}
+			, WORK_CD = #{work_cd}
+			, SET_YMD = #{set_ymd}
+			, USE_LIGHT = #{use_light}
+			, ADDRESS = #{address}
+			, NEW_ADDRESS = #{new_address}
+		WHERE
+			LIGHT_NO = #{light_no}
+	</update>
+</mapper>
