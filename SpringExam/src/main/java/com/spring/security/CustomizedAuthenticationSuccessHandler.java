@@ -82,7 +82,6 @@ public class CustomizedAuthenticationSuccessHandler implements AuthenticationSuc
 		
 		int intRedirectStrategy = decideRedirectStrategy(request, response);
 		
-		System.out.println("#### intRedirectStrategy : "+intRedirectStrategy);
 		switch(intRedirectStrategy){
 			case 1:
 				useTargetUrl(request, response);

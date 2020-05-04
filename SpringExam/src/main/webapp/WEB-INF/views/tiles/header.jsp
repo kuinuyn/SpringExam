@@ -213,7 +213,7 @@ function chkSession() {
 				<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
 				<li><a href="#">GIS관리</a></li>
 				<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
-				<li><a href="#">사용자관리</a></li>
+				<li><a href="/system/systemMemberList">사용자관리</a></li>
 			</ul>
 			
 			<!-- 보수이력관리 -->
@@ -228,8 +228,8 @@ function chkSession() {
 
 			<!-- 보수내역관리 -->
 			<ul class="smenu05 " >
-				<li><a href="#">보수내역입력</a></li>
-				<li><a href="#" >정보변경</a></li>
+				<li><a href="/company/companyRepair">보수내역입력</a></li>
+				<li><a href="/company/companyInfo" >정보변경</a></li>
 			</ul>
 			
 			<!-- 이용안내 -->

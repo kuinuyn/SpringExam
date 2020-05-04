@@ -1,7 +1,9 @@
 package com.spring.security;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,22 +36,38 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		CustomVO vo = new CustomVO();
 		vo.setUserId(userId);
 		vo.setUserPw(userPw);
-		vo.setName("네임");
 		
 		boolean loginChk = false;
+		String resultGrade = "";
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			loginChk = customService.loginChk(vo);
+			resultMap = customService.loginChk(vo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
 		
-		if(!loginChk) {
-			return null;
+		if(resultMap != null) {
+			loginChk = (Boolean) resultMap.get("loginChk");
+			resultGrade = (String) resultMap.get("grade");
+			
+			if(!loginChk) {
+				return null;
+			}
+			else {
+				if("01".equals(resultGrade)) {
+					roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+				}
+				else if("02".equals(resultGrade) || "03".equals(resultGrade)){
+					roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+				}
+				
+				vo.setName((String) resultMap.get("member_name"));
+			}
 		}
 		else {
-			roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+			return null;
 		}
 		
 		UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(userId, userPw, roles);

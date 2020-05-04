@@ -1,62 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.spring.mapper.trouble.troubleMapper">
-	
-	<select id="getEquipmentCnt" resultType="int" parameterType="hashMap">
-		<![CDATA[
-			SELECT COUNT(*)
-			FROM GY_LIGHT A
-			WHERE
-				1=1
-		]]>
-			<if test="lightType != null and lightType != '' ">
-				AND A.LIGHT_TYPE = #{lightType}	
-			</if>
-			<if test="searchArea != null and searchArea != '' ">
-				AND HJ_DONG_CD = #{searchArea}
-			</if>
-			<if test="searchLampGubun != null and searchLampGubun != '' ">
-				AND STAND_CD = #{searchLampGubun}
-			</if>
-	</select>
-	
-	<select id="getEquipmentList" resultType="hashMap" parameterType="hashMap">
-		<![CDATA[
-			SELECT T1.*
-			FROM (
-				SELECT A.*,
-					F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM,
-					F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM,
-					F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM,
-					F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM,
-					F_GY_DATA_CODE_NM('09', LAMP1_CD) AS LAMP1_NM,
-					F_GY_DATA_CODE_NM('10', LAMP2_CD) AS LAMP2_NM,
-					F_GY_DATA_CODE_NM('11', LAMP3_CD) AS LAMP3_NM,
-					F_GY_DATA_CODE_NM('12', KEPCO_CD) AS KEPCO_NM,
-					F_GY_DATA_CODE_NM('15', ONOFF_CD) AS ONOFF_NM,
-					F_GY_DATA_CODE_NM('16', WORK_CD) AS WORK_NM,
-					F_GY_DATA_CODE_NM('14', REPAIR_CD) AS REPAIR_NM,
-					F_GY_DATA_CODE_NM('29', AUTO_JUM_TYPE1_CD) AS AUTO_JUM_TYPE1_NM
-				FROM GY_LIGHT A
-				WHERE
-					1=1
-			]]>
-					<if test="lightType != null and lightType != '' ">
-						AND A.LIGHT_TYPE = #{lightType}	
-					</if>
-					<if test="searchArea != null and searchArea != '' ">
-						AND HJ_DONG_CD = #{searchArea}
-					</if>
-					<if test="searchLampGubun != null and searchLampGubun != '' ">
-						AND STAND_CD = #{searchLampGubun}
-					</if>
-			<![CDATA[
-				ORDER BY LIGHT_NO
-			) T1
-			LIMIT #{limit} OFFSET #{offset}
-		]]>
-	</select>
+<mapper namespace="com.spring.mapper.slight.trouble.troubleMapper">
 	
 	<insert id="insertTrobleReport" parameterType="hashMap">
 		INSERT INTO GY_LIGHT_REPAIR(

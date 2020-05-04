@@ -1,5 +1,7 @@
 package com.spring.security.dao;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,10 +17,10 @@ public class CustomDao {
 	@Resource(name="sqlSessionGumi")
 	private SqlSession sqlSession;
 	
-	public int getCustomerCnt(CustomVO vo) throws Exception {
+	public Map<String, Object> getCustomerMap(CustomVO vo) throws Exception {
 		
-		int cnt = sqlSession.selectOne(NAMESPACE+".getCustomerCnt");
+		Map<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getCustomerMap", vo);
 		
-		return cnt;
+		return resultMap;
 	}
 }

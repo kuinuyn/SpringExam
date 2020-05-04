@@ -186,6 +186,10 @@ $(document).scroll(function (){
 	}
 });
 
+function loginPopup() {
+	$("#user_id").focus();
+	modal_popup('messagePop');
+}
 </script>
 
 <!--// 메인배너 -->
@@ -207,7 +211,7 @@ $(document).scroll(function (){
 			</div> 
 			<sec:authorize access="isAnonymous()">
 				<div id="login">
-					<span><a href="#" class="btn_login" onclick="modal_popup('messagePop');return false;">로그인</a></span>
+					<span><a href="#" class="btn_login" onclick="javascript:loginPopup()">로그인</a></span>
 				</div>
 			</sec:authorize>
 			<sec:authorize access="isAuthenticated()">
@@ -237,7 +241,7 @@ $(document).scroll(function (){
 				<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
 				<li><a href="#">GIS관리</a></li>
 				<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
-				<li><a href="#">사용자관리</a></li>
+				<li><a href="/system/systemMemberList">사용자관리</a></li>
 			</ul>
 			
 			<!-- 보수이력관리 -->
@@ -252,8 +256,8 @@ $(document).scroll(function (){
 
 			<!-- 보수내역관리 -->
 			<ul class="smenu05 " >
-				<li><a href="#">보수내역입력</a></li>
-				<li><a href="#" >정보변경</a></li>
+				<li><a href="/company/companyRepair">보수내역입력</a></li>
+				<li><a href="/company/companyInfo" >정보변경</a></li>
 			</ul>
 			
 			<!-- 이용안내 -->

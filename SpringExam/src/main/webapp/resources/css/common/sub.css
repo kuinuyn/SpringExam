@@ -169,6 +169,9 @@ padding-left:5px;}
 select.sel02 {font-size:14px;color:#333;background:url("../images/sub/btn_select.gif") no-repeat 97% 50%;background-color: #fff;
 width:220px; vertical-align: middle;cursor: pointer;border:solid 1px #ccc;  background-color:#fff;   height:32px;line-height:32px; 
 padding-left:5px;}
+select.sel03 {font-size:14px;color:#333;background:url("../images/sub/btn_select.gif") no-repeat 97% 50%;background-color: #fff;
+width:220px; vertical-align: middle;cursor: pointer;border:solid 1px #ccc;  background-color:#fff;   height:22px;line-height:22px; 
+padding-left:5px;}
 
 #area_box{position: relative;margin:0 auto;margin-bottom:30px;width:1130px;padding:15px;overflow:hidden;border:solid 1px #ddd;
 background-color:#f8f8f8}

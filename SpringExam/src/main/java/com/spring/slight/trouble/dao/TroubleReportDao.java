@@ -10,7 +10,7 @@ import com.spring.common.CommandMap;
 @Repository
 public class TroubleReportDao {
 	
-	private static final String NAMESPACE = "com.spring.mapper.trouble.troubleMapper";
+	private static final String NAMESPACE = "com.spring.mapper.slight.trouble.troubleMapper";
 	
 	@Resource(name="sqlSessionGumi")
 	private SqlSession sqlSession;

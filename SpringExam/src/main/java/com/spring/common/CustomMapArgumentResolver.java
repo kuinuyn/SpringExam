@@ -38,7 +38,7 @@ public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver{
 			values = request.getParameterValues(key);
 			
 			if(values != null) {
-				commandMap.put(key, (values.length > 1) ? values : values[0] );
+				commandMap.put(key, (values.length > 1) ? values.toString().trim() : values[0].toString().trim() );
 			}
 		}
 		

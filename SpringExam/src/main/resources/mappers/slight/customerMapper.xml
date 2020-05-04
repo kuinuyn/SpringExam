@@ -3,8 +3,16 @@
 
 <mapper namespace="com.spring.mapper.slight.customMapper">
 	
-	<select id="getCustomerCnt" resultType="int">
-		SELECT	COUNT(*)
-		FROM gy_member
+	<select id="getCustomerMap" resultType="hashMap" parameterType="com.spring.security.vo.CustomVO">
+		<![CDATA[
+			SELECT	MEMBER_ID
+							, PASSWORD
+							, MEMBER_NAME
+							, GRADE
+			FROM GY_MEMBER
+			WHERE
+				MEMBER_ID = #{userId}
+				AND LOGIN_YN = 'Y'
+		]]>
 	</select>
 </mapper>

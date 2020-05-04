@@ -21,9 +21,11 @@
 	
 	<http auto-config="false" use-expressions="true" disable-url-rewriting="true"  authentication-manager-ref="authManager">
 		<csrf disabled="true"/>
-		<intercept-url pattern="/equipment/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/repair/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/login/loginSuccess" access="hasAnyRole('ROLE_USER')"/>
+		<intercept-url pattern="/system/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/equipment/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/repair/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
+		<intercept-url pattern="/company/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
+		<intercept-url pattern="/login/loginSuccess" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
 		
 		<!-- // directory 권한설정-->
 		<anonymous granted-authority="ROLE_ANONYMOUS"  />

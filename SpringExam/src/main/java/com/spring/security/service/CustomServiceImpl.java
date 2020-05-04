@@ -1,5 +1,7 @@
 package com.spring.security.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +17,21 @@ public class CustomServiceImpl implements CustomService{
 	private CustomDao customDao;
 	
 	@Override
-	public boolean loginChk(CustomVO vo) throws Exception {
+	public Map<String, Object> loginChk(CustomVO vo) throws Exception {
 		
 		boolean loginChk = false;
-		if(adminId.equals(vo.getUserId())) {
-			if(password.equals(vo.getUserPw())) {
+		Map<String, Object> resultMap = customDao.getCustomerMap(vo);
+		
+		if(resultMap != null) {
+			String resultPw = (String) resultMap.get("password");
+			if(vo.getUserPw().equals(resultPw)) {
 				loginChk = true;
 			}
+			
+			resultMap.put("loginChk", loginChk);
 		}
 		
-		customDao.getCustomerCnt(vo);
-		
-		return loginChk;
+		return resultMap;
 	}
 	
 }

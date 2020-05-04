@@ -129,14 +129,14 @@ background:#3997f8; color:#FFF;
 #navi_smenu{position:fixed;top:93px; left:50%; margin-left:-580px; ;width:1160px; text-align:center;}
 #navi_smenu ul.smenu01.on{margin-left:100px;display:block;}
 #navi_smenu ul.smenu02.on{margin-left:270px;display:block;}
-#navi_smenu ul.smenu03.on{margin-left:0px;display:block;} 
+#navi_smenu ul.smenu03.on{margin-left:200px;display:block;} 
 #navi_smenu ul.smenu04.on{margin-left:400px;display:block;}
 #navi_smenu ul.smenu05.on{margin-left:660px;display:block;}
 #navi_smenu ul.smenu06.on{margin-left:600px;display:block;}
 #navi_smenu ul.smenu07.on{margin-left:800px;display:block;}
 #navi_smenu ul.smenu01{margin-left:100px;display:none;}
 #navi_smenu ul.smenu02{margin-left:270px;display:none;}
-#navi_smenu ul.smenu03{margin-left:0px;display:none;}
+#navi_smenu ul.smenu03{margin-left:200px;display:none;}
 #navi_smenu ul.smenu04{margin-left:400px;display:none;}
 #navi_smenu ul.smenu05{margin-left:660px;display:none;}
 #navi_smenu ul.smenu06{margin-left:600px;display:none;}
@@ -175,6 +175,8 @@ width:350px;color:#aaa;font-size:14px;}
 width:190px;color:#258fff;font-size:13px;}
 .tbox06{border:solid 1px #ccc;  background-color:#fff; text-indent:3px;  height:28px;line-height:28px; text-align:left; 
 width:400px;color:#258fff;font-size:15px;}
+.tbox07{border:solid 1px #ddd;  background-color:#fff; text-indent:3px;  height:22px;line-height:22px; text-align:left; 
+width:180px;color:#258fff;font-size:13px;color:#777}
 .tbox07_gray{border:solid 1px #ddd;  background-color:#eee; text-indent:3px;  height:22px;line-height:22px; text-align:left; 
 width:180px;color:#258fff;font-size:13px;float:left;color:#777}
 .tbox08_gray{border:solid 1px #ddd;  background-color:#eee; text-indent:3px;  height:22px;line-height:22px; text-align:left; 

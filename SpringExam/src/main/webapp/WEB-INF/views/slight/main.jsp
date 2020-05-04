@@ -4,7 +4,14 @@
 	var loginChk = eval("${loginChk}");
 	
 	if(typeof loginChk !== "undefined") {
+		$("#user_id").focus();
 		modal_popup('messagePop');
+	}
+	
+	if("${param.fail}" == "true") {
+		modal_popup('messagePop');
+		$("#user_id").focus();
+		alert("아이디와 비밀번호를 확인하세요.");
 	}
 	
 	$(document).scroll(function (){
