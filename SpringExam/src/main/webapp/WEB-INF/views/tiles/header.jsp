@@ -181,11 +181,11 @@ function chkSession() {
 					<li id="main_menu7" class=""><a href="#" >이용안내</a></li>
 				</ul>
 			</div> 
-			<sec:authorize access="isAnonymous()">
+			<%-- <sec:authorize access="isAnonymous()">
 				<div id="login2">
 					<span><a href="#" class="btn_login" onclick="modal_popup('messagePop');return false;">로그인</a></span>
 				</div>
-			</sec:authorize>
+			</sec:authorize> --%>
 			<sec:authorize access="isAuthenticated()">
 				<div id="login2">
 					<span><a href="/logout"  class="btn_login">로그아웃</a></span>
