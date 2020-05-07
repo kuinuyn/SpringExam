@@ -1,5 +1,92 @@
 @import url('common.css');
 
+/*map*/
+#slight_map{position: relative;margin:0 auto;margin-top:130px; width:100%;height:100%;overflow:hidden;}
+#sidebar{float:left;width:300px;height:100%;overflow:hidden;background-color: #fff; border-right:1px solid #333; }
+#bar_title{width:300px; background-color: #484f57; height:42px;line-height:42px;border-bottom:1px solid #222; text-indent:15px;overflow: hidden;}
+#bar_title li{ float:left; width:100px; color:#fff;overflow:hidden;}
+#bar_title li a{float:left; width:100px; color:#fff;font-weight:bold;font-size:15px; height:42px;line-height:42px;}
+#bar_title li a.tab_on{float:left; width:100px; color:#86c0fd;background-color: #2f3032;font-weight:bold;font-size:15px; 
+height:42px;line-height:42px;}
+
+#selbox{overflow:hidden;padding:12px 0;}
+
+#bar_btn{ position:absolute; top:42px;left:300px;color:#fff;font-weight:bold;font-size:16px;z-index:99}
+
+#sel{margin:8px 15px;overflow:hidden;}
+#sel2{margin:0px;overflow:hidden;}
+#sel3{margin:0px;overflow:hidden;height:150px;border-top:solid 1px #d5d5d5;border-bottom:solid 1px #d5d5d5;background-color: #fff; 
+overflow-y:auto;}
+#sel3 table{width:100%;margin:0; padding:7px 5px;overflow:hidden;}
+#sel3 table td{width:33%;padding:5px 0;overflow:hidden; text-align:center;color:#222;font-size:15px;}
+
+p.seltitle{width:80px;line-height:28px;font-size:14px;font-weight:bold;}
+span.seltitle{float:left;width:80px;line-height:28px;font-size:14px;font-weight:bold;}
+
+
+#search_list{position: relative;margin:0 auto;overflow:hidden;height:100%;overflow-y:auto;}
+#search_list p.stitle{padding:8px 15px;border-top: 1px solid #666;border-bottom: 1px solid #aaa;font-weight:bold;;}
+#search_list p.slist{padding:12px 15px 12px 32px;;background:url('../images/sub/icon01.png') no-repeat 5% 50%;
+border-bottom: 1px solid #d5d5d5;overflow:hidden;}
+#search_list p.slist span {display:block;color:#222;}
+#search_list p.slist span.time{display:block;color:#777}
+
+#s_map{position: relative;height:100%;;max-height:100%;color:#555;overflow:hidden;}
+#s_map img.mapbg{ width:100%;height: 100%;max-width:100%;max-height:100%; object-fit: cover;vertical-align: middle;overflow:hidden;}
+#side_map01{position:absolute; top:70px; left:20px;background-color:#fff;border:solid 1px #ccc;border-radius:10px;width:270px;height:120px;}
+#side_map02{position:absolute; top:205px; left:20px;background-color:#fff;border:solid 1px #ccc;border-radius:10px;
+width:270px;height:66%;z-index:1000}
+
+/*map_popup*/
+#mapbg{position: relative;height:100%;overflow:hidden;}
+#mapbg img.p_map{max-width:100%;height: auto;vertical-align: middle;overflow:hidden;}
+#sidebox01{position:absolute; top:20px; left:20px;background-color:#fff;border:solid 1px #ccc;border-radius:10px;width:270px;height:120px;}
+#sidebox02{position:absolute; top:155px; left:20px;background-color:#fff;border:solid 1px #ccc;border-radius:10px;width:270px;height:auto;}
+
+#side_tab{margin:0 auto ;text-align:left;width:270px;background-color:#eee;margin-bottom:20px;height:42px;overflow:hidden;
+border-top:solid 1px #d5d5d5;border-bottom:solid 1px #d5d5d5;border-right:solid 1px #d5d5d5;border-radius:10px 10px 0px 0px; }
+#side_tab ul{width:100%;overflow:hidden;}
+#side_tab li{float:left;width:135px;text-align:center;}
+#side_tab li a{width:135px;float:left;line-height:42px;height:42px;font-size:15px;border-left:solid 1px #ddd;}
+#side_tab li a.tab_on{width:135px;float:left;background-color:#258fff; color:#fff;border:none;font-weight:bold;line-height:42px;height:42px;}
+#side_tab li a.tab_on:hover{width:135px;float:left;background-color:#258fff; color:#fff;border:none;font-weight:bold;line-height:42px;height:42px;}
+#side_tab li a:hover{width:135px;float:left;background-color:#f7f7f7;font-weight:bold;line-height:42px;height:42px;color:#000;}
+
+#sidebox_search{position: relative;overflow:hidden; margin-top:8px;}
+#sbox_adr{margin:0 auto;padding:0 ;text-align:center;height:22px; }
+#sbox_adr span{padding:0 5px ;}
+#searchbox{ margin-left:20px;border:solid 1px #258fff;border-radius:5px;overflow:hidden; height:34px;width:195px;}
+#searchbox_btn{position:absolute; top:0px; right:20px;width:40px; height:36px;overflow:hidden;
+;background:url("../images/sub/btn_search.png") no-repeat }
+
+#side_list{position: relative;overflow:hidden;  height:470px;}
+#side_title{ background-color:#f3f3f3;font-size:16px;font-weight:bold;line-height:46px;height:46px;color:#222;text-indent:15px;
+border-radius:10px 10px 0px 0px;border-bottom:solid 1px #e5e5e5;overflow:hidden; }
+#side_title2{ background-color:#f3f3f3;font-size:16px;font-weight:bold;line-height:46px;height:46px;color:#222;text-indent:15px;
+border-radius:10px;overflow:hidden; }
+#side_search_list{ overflow-y:auto;  height:380px;}
+#side_search_list li{border-bottom:solid 1px #eee; padding:10px 10px 10px 33px;background:url("../images/sub/icon_spot.png") no-repeat 6% 50%;
+background-size:15px 17px}
+#map_close{position:absolute; bottom:12px; right:12px;width:23px;height:23px;;background:url("../images/sub/map_close.png") no-repeat ;}
+#map_open{position:absolute; top:13px; right:13px;width:23px;height:23px;;background:url("../images/sub/map_open.png") no-repeat ;}
+
+#area_informbox{cursor:pointer;
+background:url("../images/sub/pop_smap.png") no-repeat ;;}
+#area_inform_pop{position: relative;  width:300px;height:180px;}
+#area_inform_close{position:absolute; top:15px; right:15px;background:url("../images/sub/pop_m_close.gif") no-repeat ;
+width:17px; height:17px;}
+#area_inform_pop p{padding:15px 10px 10px 15px;}
+#area_inform_pop p.area_title{background:url("../images/sub/icon_spot.png") no-repeat 4% 58%;background-size:16px 19px;padding-left:30px;
+font-size:17px;font-weight:bold;color:#000;}
+#area_inform_pop ul {padding-left:15px;clear:both;}
+#area_inform_pop li{float:left;font-size:12px;color:#777 ;line-height:19px;}
+#area_inform_pop li.ai_title{width:72px;font-weight:bold;color:#333}
+#area_inform_btn{position:absolute; bottom:10px; right:15px;
+width:75px; height:30px;text-align:center;}
+#area_inform_btn a{float:left;font-size:13px;line-height:30px;color:#fff;font-weight:bold;width:75px; height:30px;border-radius:3px;
+background-color:#3396ff;}
+#area_inform_btn a:hover{background-color:#0d69ca;}
+
 /*main_banner*/
 #main_bnr{margin:0 auto; width:100%;overflow:hidden;color:#fff;height:750px;}
 

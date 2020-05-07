@@ -52,7 +52,7 @@
 			SELECT T1.*
 			FROM (
 				SELECT A.*,
-					F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM,
+					F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS LIGHT_GUBUN_NM,
 					F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM,
 					F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM,
 					F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM,
@@ -113,7 +113,7 @@
 	<select id="getEquipmentDet" parameterType="hashMap" resultType="hashMap">
 		SELECT A.*
 					   , CASE WHEN twin_light = 'Y' THEN '예' ELSE '아니오' END AS twin_light_nm
-					   , F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM
+					   , F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS LIGHT_GUBUN_NM
 					   , F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
 					   , F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM
 					   , F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM
@@ -157,7 +157,7 @@
 			, DOYEP_NO = #{doyep_no}
 			, BDJ = #{bdj}
 			, POLE_NO = #{pole_no}
-			, LAMP1_GUBUN = #{lamp1_gubun}
+			, LIGHT_GUBUN = #{light_gubun}
 			, TWIN_LIGHT = #{twin_light}
 			, LAMP1_CD = #{lamp1_cd}
 			, LAMP1_CD2 = #{lamp1_cd2}
@@ -174,6 +174,14 @@
 			, USE_LIGHT = #{use_light}
 			, ADDRESS = #{address}
 			, NEW_ADDRESS = #{new_address}
+		WHERE
+			LIGHT_NO = #{light_no}
+	</update>
+	
+	<update id="deleteEquipment" parameterType="hashMap">
+		UPDATE GY_LIGHT
+		SET
+			, LIGHT_GUBUN = '9'
 		WHERE
 			LIGHT_NO = #{light_no}
 	</update>

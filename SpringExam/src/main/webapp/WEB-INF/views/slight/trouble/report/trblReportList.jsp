@@ -234,10 +234,26 @@
 	}
 	
 	function searchMap() {
+		var num = 0;
+		var childNodes = $("#side_tab").find('li')
+		
+		for(var i=0; i<childNodes.size(); i++) {
+			if(childNodes.eq(i).find('.tab_on').size() > 0) {
+				num = i+1;
+			}
+		}
+		
+		var searchGubun = $("input[type=radio][name=searchGubun]:checked").val();
+		
+		if($("#keyword").val() == null || $("#keyword").val() == "") {
+			alert("검색어를 입력하세요.");
+			return;
+		}
+		
 		$.ajax({
 			type : "POST"			
 			, url : "/common/map/mapDataKakao"
-			, data : {"keyword" : $("#keyword").val(), "keytype" : 2}
+			, data : {"keyword" : $("#keyword").val(), "keytype" : num, "searchGubun" : searchGubun}
 			, dataType : "JSON"
 			, success : function(obj) {
 				getSearchMapCallback(obj);
@@ -284,6 +300,9 @@
 			resArrd += "</ul>";
 		}
 		else {
+			$("#side_title .red02").text("총 0건");
+			$("#side_title2 .red02").text("총 0건");
+			
 			resArrd = "<ul>";
 			resArrd += "<li>검색결과가 없습니다.</li>";
 			resArrd += "</ul>";
@@ -305,14 +324,14 @@
 		nodes.item(0).setAttribute('class', 'tab_on');
 		
 		if(num == 1) {
-			$("#sbox_adr").hide();
-			$("#searchbox_btn").css("top", "0");
-			$("#sidebox01").css("height", "120px");
-		}
-		else {
 			$("#sbox_adr").show();
 			$("#searchbox_btn").css("top", "22px");
 			$("#sidebox01").css("height", "125px");
+		}
+		else {
+			$("#sbox_adr").hide();
+			$("#searchbox_btn").css("top", "0");
+			$("#sidebox01").css("height", "120px");
 		}
 	}
 </script>
@@ -463,15 +482,15 @@
 					</div>
 					<div id="sidebox01">
 						<div id="side_tab">
-						<ul>
-							<li onclick="openTab(this, 1)"><a href="#" class="tab_on">관리번호</a></li>
-							<li onclick="openTab(this, 2)"><a href="#" >주소선택</a></li>
-						</ul>
+							<ul>
+								<li onclick="openTab(this, 1)"><a href="#" >주소선택</a></li>
+								<li onclick="openTab(this, 2)"><a href="#" class="tab_on">관리번호</a></li>
+							</ul>
 						</div>
 						<div id="sidebox_search">
 							<div id="sbox_adr" style="display: none;">
-								<span><input type="radio" name="searchAddress">도로명</span>
-								<span><input type="radio" name="searchAddress" >지명</span>
+								<span><input type="radio" name="searchGubun" value="new" checked="checked">도로명</span>
+								<span><input type="radio" name="searchGubun" value="">지번</span>
 							</div>
 							<div id="searchbox"><input type="text" name="keyword" id="keyword" class="tbox05"></div>
 							<a href="javascript:searchMap();"><div id="searchbox_btn"><span class="hide">검색</span></div></a>

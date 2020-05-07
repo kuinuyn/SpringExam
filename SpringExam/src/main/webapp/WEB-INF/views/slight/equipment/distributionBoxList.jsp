@@ -499,7 +499,7 @@
 								</tr>
 								<tr>
 									<th>등상태</th>
-									<td><span id="det_lamp1_gubun_nm"></span></td>
+									<td><span id="det_light_gubun_nm"></span></td>
 									<th>쌍등여부</th>
 									<td><span id="det_twin_light_nm"></span></td>
 								</tr>

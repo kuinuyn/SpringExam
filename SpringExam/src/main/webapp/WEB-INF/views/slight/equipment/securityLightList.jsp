@@ -8,7 +8,7 @@
 		var pageNo = "${param.current_page_no}";
 		var searchLampGubun = "${param.searchLampGubun}";
 		
-		//drawCodeData(리스트, 코드타입, 태그이름, 태그ID, 모드, 현재선택코드)
+		//drawCodeData(리스트, 코드타입, 태그이름, 모드, 현재선택코드)
 		drawCodeData(commonCd, "06", "", "ALL", searchArea).then(function(resolvedData) {
 			$("#tagInsert").empty();
 			$("#tagInsert").append(resolvedData);
@@ -303,6 +303,10 @@
 		$("#slightForm").attr("action", oriAction); */
 	}
 	
+	function Delete() {
+		
+	}
+	
 	function goToMod() {
 		var frm = document.slightForm;
 		frm.action = '/equipment/securityLightMod';
@@ -510,7 +514,7 @@
 								</tr>
 								<tr>
 									<th>등상태</th>
-									<td><span id="det_lamp1_gubun_nm"></span></td>
+									<td><span id="det_light_gubun_nm"></span></td>
 									<th>쌍등여부</th>
 									<td><span id="det_twin_light_nm"></span></td>
 								</tr>
@@ -600,8 +604,8 @@
 							</table>
 							<div id="btn">
 								<p>
-								<span><a href="#"  class="btn_gray02"> 삭제</a></span>
-								<span><a href="javascript:goToMod()"  class="btn_gray02">수정</a></span>
+								<span><a href="javascript:Delete()" class="btn_gray02"> 삭제</a></span>
+								<span><a href="javascript:goToMod()" class="btn_gray02">수정</a></span>
 								</p>
 							</div>
 						</div>

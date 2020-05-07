@@ -63,14 +63,14 @@
 					AND elec_no != 'gumi'	
 				</if>
 				<if test="keytype == 1 ">
-					<if test="searchGubun == 'new' ">
+					<!-- <if test="searchGubun == 'new' ">
 						and new_address like '%'||#{dongNm}||'%'
 					</if>
 					<if test="searchGubun != 'new' ">
 						<if test="area != null or area != '' ">
 							AND hj_dong_cd = #{area}
 						</if>
-					</if>
+					</if> -->
 					<if test="area2 != null and area2 != '00' ">
 						AND hj_dong_cd = #{area2}
 					</if>

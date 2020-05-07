@@ -260,7 +260,7 @@
 							<th>휴대폰번호</th>
 							<td><span><input type="text" id="mobile" name="mobile" class="tbox07" placeholder=""></span></td>
 						</tr>
-						<tr>
+						<tr id="trArea">
 							<th>담당지역</th>
 							<td id="tdArea" colspan="3">
 							</td>

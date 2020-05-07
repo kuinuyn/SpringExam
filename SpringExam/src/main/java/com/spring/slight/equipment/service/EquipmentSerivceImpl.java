@@ -101,10 +101,24 @@ public class EquipmentSerivceImpl implements EquipmentService{
 		
 		return resultCnt;
 	}
+	
+	@Override
+	public int deleteEquipment(CommandMap paramMap) throws Exception {
+		int resultCnt = equipmentDao.deleteEquipment(paramMap);
+		
+		FilesVO file = new FilesVO();
+		file.setSeq((String) paramMap.get("light_no"));
+		
+		if(resultCnt > 0) {
+			fileDao.deleteFile(file);
+		}
+		
+		return resultCnt;
+	}
 
 	@Override
 	public List<Map<String, Object>> getEquipmentExcelList(CommandMap paramMap) throws Exception {
 		return equipmentDao.getDetRepirList(paramMap);
 	}
-	
+
 }

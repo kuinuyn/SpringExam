@@ -23,7 +23,7 @@
 		<csrf disabled="true"/>
 		<intercept-url pattern="/system/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/equipment/**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/repair/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
+		<intercept-url pattern="/repair/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/company/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
 		<intercept-url pattern="/login/loginSuccess" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
 		
@@ -44,8 +44,10 @@
 					 success-handler-ref="customLogoutSuccessHandler" 
 					 invalidate-session="false" 
 		/>
-        
-        <!-- 중복 로그인 방지 설정 -->
+		
+		<access-denied-handler ref="userDeniedHandler"/>
+		
+		<!-- 중복 로그인 방지 설정 -->
 		<!-- 
 			max-sessions : 중복 로그인이 가능한 세션 수
 			expired-url : 중복 로그인 발생시, 먼저 로그인한 세션이 끊어지고 끊어진 상태에서 모든 url을 호출할 경우 끊어진 원인을 알려줄 주소를 지정한다.
@@ -57,6 +59,7 @@
     	
 	</http>
 	
+	<beans:bean id="userDeniedHandler" class="com.spring.security.CustomDeniedHandler"/>
 	<beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
 	
 	<authentication-manager id="authManager">

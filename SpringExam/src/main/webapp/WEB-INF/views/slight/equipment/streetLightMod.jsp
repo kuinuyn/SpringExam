@@ -7,8 +7,8 @@
 		var searchAreaStr = "";
 		//drawCodeData(리스트, 코드타입, 태그이름, 모드, 현재선택코드)
 		drawCodeData(commonCd, "05", "select", "").then(function(resolvedData) {
-			$("#mgmt_no").empty();
-			$("#mgmt_no").append(resolvedData);
+			$("#light_gubun").empty();
+			$("#light_gubun").append(resolvedData);
 			
 			$("#light_no").val("${param.light_no}");
 			$("#par_hj_dong").val("${param.hj_dong_cd}");
@@ -74,12 +74,6 @@
 			})
 		})
 		.then(function() {
-			drawCodeData(commonCd, "30", "select", "").then(function(resolvedData) {
-				$("#lamp1_gubun").empty();
-				$("#lamp1_gubun").append(resolvedData);
-			})
-		})
-		.then(function() {
 			getEquipmentMod();
 		});
 		
@@ -90,13 +84,19 @@
 		validation(saveSubmit);
 	};
 	
-	function validation(callback) {
-		var value = "";
-		var header = "";
-		var msg = " 항목을 입력하세요.";
-		var chk = true;
+function validation(callback) {
 		
-		$("th > span.t_red").each(function(index, item) {
+		if($("#hj_dong_cd").val() == "" || $("#hj_dong_cd").val() == null) {
+			alert("행정동을 선택하세요.");
+			return;
+		}
+		
+		if($("#light_gubun").val() == "" || $("#light_gubun").val() == null) {
+			alert("등상태를 입력하세요.");
+			return;
+		}
+		
+		/* $("th > span.t_red").each(function(index, item) {
 			header = $(item).parent().text();
 			header = header.substring(0, (header.length - 1));
 			value = $(item).parent().next().children().val();
@@ -110,17 +110,14 @@
 				return;
 			}
 			
-		});
+		}); */
 		
 		/* var filesChk = $("input[name=files]").val();
 		if(filesChk == "") {
 			$("input[name=files]").remove();
 		} */
 		
-		if(chk) {
-			callback(function(){});
-		}
-		
+		callback(function(){});
 	}
 	
 	function saveSubmit() {
@@ -373,7 +370,7 @@
 						<tr>
 							<th>등상태</th>
 							<td>
-								<select class="sel01" id="lamp1_gubun" name="lamp1_gubun">
+								<select class="sel01" id="light_gubun" name="light_gubun">
 								</select>
 							</td>
 							<th>쌍등여부</th>

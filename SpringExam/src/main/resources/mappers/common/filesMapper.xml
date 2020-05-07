@@ -65,4 +65,12 @@
 		WHERE SEQ = #{seq}
 			   AND FILE_NO = ${file_no}
 	</update>
+	
+	<update id="deleteFile" parameterType="com.spring.common.vo.FilesVO">
+		UPDATE GY_FILE_INFO
+			   SET DEL_YN = 'Y'
+					   , UPD_USER_ID = 'NONMEMBER'
+					   , UPD_DATE = NOW()
+		WHERE SEQ = #{seq}
+	</update>
 </mapper>

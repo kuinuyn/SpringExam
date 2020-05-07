@@ -1,6 +1,5 @@
 package com.spring.slight.equipment.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -108,6 +107,22 @@ public class EquipmentController {
 		int resultCnt = 0;
 		try {
 			resultCnt = equipmentSerivce.updateEquipment(paramMap, files);
+			mv.addObject("resultCnt", resultCnt);
+		} catch (Exception e) {
+			mv.addObject("resultCnt", -1);
+			e.printStackTrace();
+		}
+		
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@RequestMapping(value="/deleteEquipment", method = RequestMethod.POST)
+	public ModelAndView deleteEquipment(CommandMap paramMap) {
+		ModelAndView mv = new ModelAndView();
+		int resultCnt = 0;
+		try {
+			resultCnt = equipmentSerivce.deleteEquipment(paramMap);
 			mv.addObject("resultCnt", resultCnt);
 		} catch (Exception e) {
 			mv.addObject("resultCnt", -1);

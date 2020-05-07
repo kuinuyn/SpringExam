@@ -43,4 +43,8 @@ public class EquipmentDao {
 	public int updateEquipment(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateEquipment", paramMap.getMap());
 	}
+	
+	public int deleteEquipment(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".deleteEquipment", paramMap.getMap());
+	}
 }

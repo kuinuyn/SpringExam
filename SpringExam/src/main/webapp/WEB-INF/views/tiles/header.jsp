@@ -6,6 +6,12 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+	$("#pw").keypress(function (e) {
+		if (e.which == 13){
+			document.loginForm.submit();  // 실행할 이벤트
+		}
+	});
+	
 	//header
 	$('#main_menu1').mouseover(function() { 
 		$('#main_menu1').addClass('menu_on');
@@ -175,17 +181,29 @@ function chkSession() {
 				<ul>
 					<li id="main_menu1" class=""><a href="#" >고장신고</a></li>
 					<li id="main_menu2" class=""><a href="#" >민원처리결과조회</a></li>
-					<li id="main_menu3" class=""><a href="#" >기본정보관리</a></li>
-					<li id="main_menu4" class=""><a href="#" >보수이력관리</a></li>
-					<li id="main_menu5" class=""><a href="#" >보수내역관리</a></li>
-					<li id="main_menu7" class=""><a href="#" >이용안내</a></li>
+					<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+						<li id="main_menu3" class=""><a href="#" >기본정보관리</a></li>
+						<li id="main_menu4" class=""><a href="#" >보수이력관리</a></li>
+						<li id="main_menu5" class=""><a href="#" >보수내역관리</a></li>
+						<li id="main_menu7" class=""><a href="#" >이용안내</a></li>
+					</sec:authorize>
+					<sec:authorize access="hasAnyRole('ROLE_USER')">
+						<li id="main_menu4" class=""><a href="#" >보수내역관리</a></li>
+						<li id="main_menu5" class=""><a href="#" >이용안내</a></li>
+					</sec:authorize>
+					<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS')">
+						<li id="main_menu4" class=""><a href="#" >이용안내</a></li>
+					</sec:authorize>
 				</ul>
 			</div> 
-			<%-- <sec:authorize access="isAnonymous()">
-				<div id="login2">
-					<span><a href="#" class="btn_login" onclick="modal_popup('messagePop');return false;">로그인</a></span>
-				</div>
-			</sec:authorize> --%>
+			<sec:authorize access="isAnonymous()">
+				<c:set var="pathURI" value="${requestScope['javax.servlet.forward.servlet_path']}" />
+				<c:if test="${pathURI eq '/complaint/complaintList' or pathURI eq '/trouble/trblReportList'}">
+					<div id="login2">
+						<span><a href="#" class="btn_login" onclick="modal_popup('messagePop');return false;">로그인</a></span>
+					</div>
+				</c:if>
+			</sec:authorize>
 			<sec:authorize access="isAuthenticated()">
 				<div id="login2">
 					<span><a href="/logout"  class="btn_login">로그아웃</a></span>
@@ -206,38 +224,65 @@ function chkSession() {
 				<li><a href="/complaint/complaintList">민원처리결과조회</a></li>
 			</ul>
 			
-			<!-- 기본정보관리소메뉴-->
-			<ul class="smenu03 " >
-				<li><a href="/equipment/securityLightList">보안등관리</a></li>
-				<li><a href="/equipment/streetLightList">가로등관리</a></li>
-				<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
-				<li><a href="#">GIS관리</a></li>
-				<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
-				<li><a href="/system/systemMemberList">사용자관리</a></li>
-			</ul>
-			
-			<!-- 보수이력관리 -->
-			<ul class="smenu04 " >
-				<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-				<li><a href="#" >신설현황</a></li>
-				<li><a href="#">이설현황</a></li>
-				<li><a href="#" >철거현황</a></li>
-				<li><a href="#">자재관리</a></li>
-				<li><a href="#" >자재입/출고관리</a></li>
-			</ul>
+			<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+				<!-- 기본정보관리소메뉴-->
+				<ul class="smenu03 " >
+					<li><a href="/equipment/securityLightList">보안등관리</a></li>
+					<li><a href="/equipment/streetLightList">가로등관리</a></li>
+					<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
+					<li><a href="#">GIS관리</a></li>
+					<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
+					<li><a href="/system/systemMemberList">사용자관리</a></li>
+				</ul>
+				
+				<!-- 보수이력관리 -->
+				<ul class="smenu04 " >
+					<li><a href="/repair/systemRepairList">보수이력관리</a></li>
+					<li><a href="#" >신설현황</a></li>
+					<li><a href="#">이설현황</a></li>
+					<li><a href="#" >철거현황</a></li>
+					<li><a href="#">자재관리</a></li>
+					<li><a href="#" >자재입/출고관리</a></li>
+				</ul>
+	
+				<!-- 보수내역관리 -->
+				<ul class="smenu05 " >
+					<li><a href="/company/companyRepair">보수내역입력</a></li>
+					<li><a href="/company/companyInfo" >정보변경</a></li>
+				</ul>
+				
+				<!-- 이용안내 -->
+				<ul class="smenu07 " >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+			</sec:authorize>
+				
+			<sec:authorize access="hasAnyRole('ROLE_USER')">
+				<!-- 보수내역관리 -->
+				<ul class="smenu04" >
+					<li><a href="/company/companyRepair">보수내역입력</a></li>
+					<li><a href="/company/companyInfo" >정보변경</a></li>
+				</ul>
+				
+				<!-- 이용안내 -->
+				<ul class="smenu05" >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+				
+			</sec:authorize>
 
-			<!-- 보수내역관리 -->
-			<ul class="smenu05 " >
-				<li><a href="/company/companyRepair">보수내역입력</a></li>
-				<li><a href="/company/companyInfo" >정보변경</a></li>
-			</ul>
-			
-			<!-- 이용안내 -->
-			<ul class="smenu07 " >
-				<li><a href="#">서비스 안내</a></li>
-				<li><a href="#">자료실</a></li>
-				<li><a href="#" >공지사항</a></li>
-			</ul>
+			<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS')">
+				<!-- 이용안내 -->
+				<ul class="smenu04 " >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+			</sec:authorize>
 		</div>
 	</div>
 	<!-- // 소메뉴 영역-->

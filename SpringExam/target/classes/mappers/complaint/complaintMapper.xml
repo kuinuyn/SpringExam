@@ -10,6 +10,9 @@
 			WHERE
 				TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
 		]]>
+			<if test="light_gubun != null and light_gubun != '' ">
+				AND A.LIGHT_GUBUN = #{light_gubun}	
+			</if>
 			<if test="repair_cd != null and repair_cd != '' ">
 				AND A.REPAIR_CD = #{repair_cd}	
 			</if>
@@ -20,7 +23,7 @@
 			SELECT T1.*
 			FROM (
 				SELECT REPAIR_NO
-							   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
+							   , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS LIGHT_GUBUN
 							   , LIGHT_NO
 							   , NOTICE_NAME
 							   , CASE WHEN inform_method = '01'
@@ -39,13 +42,19 @@
 							   , LOCATION
 					FROM GY_LIGHT_REPAIR A
 				WHERE
-					TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+					1=1
 			]]>
+					<if test="sDate != null and sDate != '' and eDate != null and eDate != '' ">
+						AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+					</if>
+					<if test="light_gubun != null and light_gubun != '' ">
+						AND A.LIGHT_GUBUN = #{light_gubun}	
+					</if>
 					<if test="repair_cd != null and repair_cd != '' ">
 						AND A.REPAIR_CD = #{repair_cd}	
 					</if>
 			<![CDATA[
-				ORDER BY A.LIGHT_NO
+				ORDER BY A.REPAIR_NO DESC
 			) T1
 			LIMIT #{limit} OFFSET #{offset}
 		]]>
