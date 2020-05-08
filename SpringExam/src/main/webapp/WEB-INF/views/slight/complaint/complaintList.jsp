@@ -99,10 +99,10 @@
 						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange'>신고접수</a></span>";
 					}
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_red'>작업지시취소</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_red'>작업지시</a></span>";
 					}
 					else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_blue'>재작업지시</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_blue02'>보수완료</a></span>";
 					}
 					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					str += "</a></tr>";
@@ -160,24 +160,8 @@
 		fnNm();
 	}
 	
-	function goGisMap(lightNo) {
-		var frm = document.frm;
-		
-		frm.searchLightNo.value = lightNo;
-		frm.action =  "${contextPath}/common/map/mapContentDaum2";
-		frm.target = 'mapContentDaum';
-		frm.submit();
-		
-		modal_popup3("messagePop3");
-	}
-	
-	function goToTrbList(lightNo, light_type, address, hj_dong_cd) {
-		$("#light_no").val(lightNo);
-		$("#lightType").val(light_type);
-		$("#address").val(address);
-		$("#hj_dong_cd").val(hj_dong_cd);
-		$("#slightForm").attr({action:'/trouble/trblReportList'}).submit();
-		
+	function getComplaintDet() {
+		$("#slightForm").attr({action:'/complaint/complaintDet'}).submit();
 	}
 </script>
 <div id="container">
@@ -368,8 +352,13 @@
 					</div>
 					<div id="btn">
 						<p>
-						<span><a href="#"  class="btn_gray02"> 삭제</a></span>
-						<span><a href="#"  class="btn_gray02">수정</a></span>
+						<span><a href="#" class="btn_gray02"> 삭제</a></span>
+						<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+							<span><a href="#" onclick="javascript:getComplaintDet()" class="btn_gray02">수정</a></span>
+						</sec:authorize>
+						<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS','ROLE_USER')">
+							<span><a href="#" onclick="modal_popup5('messagePop5');return false;" class="btn_gray02">수정</a></span>
+						</sec:authorize>
 						</p>
 					</div>
 				</div>
@@ -378,3 +367,25 @@
 	</div>
 </div>
 <!--//결과조회 상세 Popup-->
+
+<!--비밀번호 Popup-->
+<div class="modal-popup5">
+	<div class="bg"></div>
+	<div id="messagePop5" class="pop-layer4">
+		<div class="pop-container">
+			<div class="pop-conts">
+				<div class="btn-r">
+					<a href="#" class="cbtn"><i class="fa fa-times" aria-hidden="true"></i><span class="hide">Close</span></a>
+				</div>
+				<div class="pop_pw">
+					<p>
+						<h3>비밀번호</h3>
+						<input type="password" name="password" id="password" class="tbox12">
+						<span ><a href="javascript:getComplaintDet()" class="btn_blue03" >확인</a></span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--//비밀번호_Popup-->

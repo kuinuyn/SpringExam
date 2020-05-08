@@ -6,9 +6,14 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+	$("#user_id").keypress(function (e) {
+		if (e.which == 13){
+			$("#pw").focus();  // 실행할 이벤트
+		}
+	});
 	$("#pw").keypress(function (e) {
 		if (e.which == 13){
-			document.loginForm.submit();  // 실행할 이벤트
+			loginProcess();  // 실행할 이벤트
 		}
 	});
 	

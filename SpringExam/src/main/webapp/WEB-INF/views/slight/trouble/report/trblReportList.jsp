@@ -398,11 +398,9 @@
 							<td>
 								<input type="text" class="tbox03_gray" id="light_no" name="light_no" readonly="readonly">
 								<span>
-									<input type="button" value="X" onclick="javascript:clearInput()">
-								</span> 
-								<span>
 									<a href="#"  class="btn_blue03" onclick="goGisMap()">관리번호 검색</a>
 								</span>
+								<span ><a href="javascript:clearInput()" class="btn_refresh">새로고침</a></span>
 							</td>
 						</tr>
 						<tr>

@@ -181,7 +181,7 @@
 	<update id="deleteEquipment" parameterType="hashMap">
 		UPDATE GY_LIGHT
 		SET
-			, LIGHT_GUBUN = '9'
+			LIGHT_GUBUN = '9'
 		WHERE
 			LIGHT_NO = #{light_no}
 	</update>

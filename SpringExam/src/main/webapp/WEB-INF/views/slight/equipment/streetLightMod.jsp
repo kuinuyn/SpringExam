@@ -84,7 +84,7 @@
 		validation(saveSubmit);
 	};
 	
-function validation(callback) {
+	function validation(callback) {
 		
 		if($("#hj_dong_cd").val() == "" || $("#hj_dong_cd").val() == null) {
 			alert("행정동을 선택하세요.");

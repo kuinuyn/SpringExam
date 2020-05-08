@@ -459,3 +459,25 @@ function isDate(str) {
 		
 		return chk;
 	}
+
+	function loginProcess() {
+		var chk = true;
+		
+		if($("#user_id").val() == "" || $("#user_id").val() == null) {
+			alert("아이디를 입력하세요.");
+			$("#user_id").focus();
+			chk = false;
+		}
+		
+		if(chk) {
+			if($("#pw").val() == "" || $("#pw").val() == null) {
+				alert("비밀번호를 입력하세요.");
+				$("#pw").focus();
+				chk = false;
+			}
+		}
+		
+		if(chk) {
+			document.loginForm.submit();
+		}
+	}

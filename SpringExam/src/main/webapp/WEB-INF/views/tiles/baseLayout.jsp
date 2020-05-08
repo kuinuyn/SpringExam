@@ -31,7 +31,7 @@
 								<form name='loginForm' action='/loginProcess' method='POST'>
 									<p><input type="text" name="user_id" id="user_id" class="tbox04" placeholder="아이디"></p>
 									<p><input type="password" name="pw" id="pw" class="tbox04" placeholder="비밀번호"></p>	
-									<p><a href="javascript:loginForm.submit()" class="btn_login">로그인</a></p>	
+									<p><a href="javascript:loginProcess()" class="btn_login">로그인</a></p>	
 								</form>
 								<p class="txt_btm">- 아이디와 비밀번호를 입력 하신 후 로그인 버튼을 누르세요.<BR>
 			- 보수업체는 보수업체 아이디와 비밀번호를 입력하신 후 로그인 하세요.</p>

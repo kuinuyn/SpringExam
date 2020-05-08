@@ -209,7 +209,12 @@ background:url("../images/main/bnr_bg.png") no-repeat center center;text-align:c
 #service_area ul li.arrow02{float:right;padding:0px;}
 
 /*footer*/
-#footer{ position:relative;margin:0 auto; height:42px;line-height:42px;width:100%; text-align:center;background-color:#404246; ; z-index:1000;
+#footer{ position:relative;margin:0 auto; height:40px;line-height:40px;width:100%; text-align:center;background-color:#404246; ; z-index:1000;
 }
 #copyright{width:1160px;  margin:0 auto; overflow:hidden;}
 #copyright p{ color:#aaa;text-align:center; font-size:12px; overflow:hidden;}
+
+
+
+
+
