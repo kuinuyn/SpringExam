@@ -9,6 +9,12 @@
 		var lightGubun = "${param.light_gubun}";
 		var paramSDate = "${param.sDate}";
 		var paramEDate = "${param.eDate}";
+		var resultCd = "${resultCd}";
+		var resultMsg = "${resultMsg}";
+		
+		if(resultCd == "N") {
+			alert(resultMsg);
+		}
 		
 		//drawCodeData(리스트, 코드타입, 태그이름, 모드, 현재선택코드)
 		drawCodeData(commonCd, "13", "select", "ALL", lightGubun).then(function(resolvedData) {
@@ -17,11 +23,59 @@
 			
 		})
 		.then(function() {
+			drawCodeData(commonCd, "01", "select", "").then(function(resolvedData) {
+				$("#trouble_cd").empty();
+				$("#trouble_cd").append(resolvedData);
+				$("#trouble_cd").parents("li").hide();
+			})
+		})
+		.then(function() {
+			drawCodeData(commonCd, "03", "select", "").then(function(resolvedData) {
+				$("#progress_status").empty();
+				$("#progress_status").append(resolvedData);
+				$("#progress_status").parents("li").hide();
+			})
+		})
+		.then(function() {
 			if(pageNo != "" && pageNo != null) {
 				Search(pageNo);
 			}
 			else {
 				Search();
+			}
+		});
+		
+		$("#searchType").change(function() {
+			var searchType = $(this).val();
+			
+			if(searchType == "") {
+				$("#keyword").val("");
+				$("#keyword").show();
+				$("#keyword").addClass("tbox03_gray");
+				$("#keyword").attr("readonly", true);
+				$("#trouble_cd").parents("li").hide();
+				$("#progress_status").parents("li").hide();
+			}
+			else if(searchType == 1 || searchType == 2 || searchType == 3 || searchType == 7) {
+				$("#keyword").val("");
+				$("#keyword").show();
+				$("#keyword").removeClass("tbox03_gray");
+				$("#keyword").addClass("tbox03");
+				$("#keyword").attr("readonly", false);
+				$("#trouble_cd").parents("li").hide();
+				$("#progress_status").parents("li").hide();
+			}
+			else if(searchType == 4) {
+				$("#keyword").val("");
+				$("#keyword").hide();
+				$("#trouble_cd").parents("li").show();
+				$("#progress_status").parents("li").hide();
+			}
+			else if(searchType == 5) {
+				$("#keyword").val("");
+				$("#keyword").hide();
+				$("#trouble_cd").parents("li").hide();
+				$("#progress_status").parents("li").show();
 			}
 		});
 		
@@ -56,6 +110,22 @@
 		}
 		
 		$("#current_page_no").val(currentPageNo);
+		
+		var searchType = $("#searchType").val();
+		if(searchType == 4) {
+			if($("#trouble_cd").val() == "" || $("#trouble_cd").val() == null) {
+				alert("고장상태을 선택하세요.");
+				$("#trouble_cd").focus();
+				return;
+			}
+		}
+		else if(searchType == 5) {
+			if($("#progress_status").val() == "" || $("#progress_status").val() == null) {
+				alert("처리상태를 선택하세요.");
+				$("#progress_status").focus();
+				return;
+			}
+		}
 		
 		$.ajax({
 			type : "POST"			
@@ -93,7 +163,7 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].light_no+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].location+" </a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].notice_name+" </a></span></td>";
-					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].contact+" </a></span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+formatContactNumber(list[i].contact)+" </a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].repair_date+" </a></span></td>";
 					if(list[i].progress_status == "01") {
 						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange'>신고접수</a></span>";
@@ -107,10 +177,19 @@
 					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					str += "</a></tr>";
 				}
+				
+				var summaryChildNodes = $("#summary").find('td');
+				var key = "";
+				summaryChildNodes.eq(0).find(".red02").text(totalCount+"건");
+				for(var i=0; i<summaryChildNodes.size(); i++) {
+					key = "status0"+(i+1)+"Cnt";
+					statusCnt = data[key];
+					summaryChildNodes.eq(i).find(".red02").text(statusCnt+"건");
+				}
 			}
 			else {
 				str += "<tr>";
-				str += "	<td colspan='9' style='text-align: center;'>등록된 글이 존재하지 않습니다.</td>";
+				str += "	<td colspan='10' style='text-align: center;'>등록된 글이 존재하지 않습니다.</td>";
 				str += "</tr>";
 			}
 			
@@ -145,13 +224,23 @@
 			for(key in data) {
 				element = "det_"+key;
 				if($("#"+element).length > 0) {
-					$("#"+element).text(data[key]);
+					if(key == "contact") {
+						$("#"+element).text(formatContactNumber(data[key]));
+					}
+					else {
+						$("#"+element).text(data[key]);
+					}
+				}
+				
+				if(key == "repair_no") {
+					$("#repairNo").val(data['repair_no'].trim());
 				}
 			}
 		}
 		
 		modalPopupCallback( function() {
 			modal_popup2('messagePop2');
+			$("#password").focus();
 		});
 		
 	}
@@ -161,7 +250,14 @@
 	}
 	
 	function getComplaintDet() {
-		$("#slightForm").attr({action:'/complaint/complaintDet'}).submit();
+		<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS','ROLE_USER')">
+			if($("#password").val() == null || $("#password").val() == "") {
+				alert("비밀번호를 입력하세요.");
+				
+				return;
+			}
+		</sec:authorize>
+		$("#detailForm").attr({action:'/complaint/complaintDet'}).submit();
 	}
 </script>
 <div id="container">
@@ -196,28 +292,28 @@
 				<ul class="inform_num">
 					<li>
 						<table align="center" cellpadding="0" cellspacing="0">
-							<tbody>
+							<tbody id="summary">
 								<tr>
 									<td>
 										<span class="black07">총건수</span>
 										<span class="red02">0건</span>
 									</td>
-									<!-- <td>
+									<td>
 										<span class="black07">신고접수</span>
 										<span class="red02">0건</span>
-									</td> -->
-									<!-- <td>
+									</td>
+									<td>
 										<span class="black07">작업지시</span>
 										<span class="red02">0건</span>
-									</td> -->
-									<!-- <td>
+									</td> 
+									<td>
 										<span class="black07">보수완료</span>
 										<span class="red02">0건</span>
-									</td> -->
-									<!-- <td>
+									</td>
+									<td>
 										<span class="black07">일일신고접수</span>
 										<span class="red02">0건</span>
-									</td> -->
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -235,13 +331,24 @@
 						</select>
 					</li>
 					<li>
-						<select class="sel01">
-							<option selected>검색조건</option>
-							<option>관리번호</option>
-							<option>이메일주소</option>
+						<select class="sel01" id="searchType" name="searchType">
+							<option selected value="">전체</option>
+							<option value="1">신고인</option>
+							<option value="2">주소</option>
+							<option value="3">관리번호</option>
+							<option value="4">고장상태</option>
+							<option value="5">처리상태</option>
 						</select>
 					</li>
-					<li><input type="text" name="" class="tbox03"></li>
+					<li><input type="text" name="keyword" id="keyword" class="tbox03_gray" readonly="readonly"></li>
+					<li>
+						<select id="trouble_cd" name="trouble_cd" class="sel01">
+						</select>
+					</li>
+					<li>
+						<select id="progress_status" name="progress_status" class="sel01">
+						</select>
+					</li>
 					<li><a href="javascript:Search()"  class="btn_search01">검 색</a></li>
 				</ul>
 			</div>
@@ -345,7 +452,7 @@
 									<th>보수처리일</th>
 									<td><span id="det_repair_date">2016.11.02</span></td>
 									<th>처리결과회신</th>
-									<td><span id="det_inform_method"></span></td>
+									<td><span id="det_inform_method_nm"></span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -377,13 +484,16 @@
 				<div class="btn-r">
 					<a href="#" class="cbtn"><i class="fa fa-times" aria-hidden="true"></i><span class="hide">Close</span></a>
 				</div>
-				<div class="pop_pw">
-					<p>
-						<h3>비밀번호</h3>
-						<input type="password" name="password" id="password" class="tbox12">
-						<span ><a href="javascript:getComplaintDet()" class="btn_blue03" >확인</a></span>
-					</p>
-				</div>
+				<form id="detailForm" name="detailForm" method="post" action="">
+					<input type="hidden" id="repairNo" name="repairNo" />
+					<div class="pop_pw">
+						<p>
+							<h3>비밀번호</h3>
+							<input type="password" name="password" id="password" class="tbox12">
+							<span ><a href="javascript:getComplaintDet()" class="btn_blue03" >확인</a></span>
+						</p>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

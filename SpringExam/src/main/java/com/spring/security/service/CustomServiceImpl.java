@@ -10,8 +10,6 @@ import com.spring.security.vo.CustomVO;
 
 @Service("CustomService")
 public class CustomServiceImpl implements CustomService{
-	protected final static String adminId = "admin";
-	protected final static String password = "admin";
 	
 	@Autowired
 	private CustomDao customDao;

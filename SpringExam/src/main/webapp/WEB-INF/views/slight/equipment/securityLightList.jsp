@@ -143,6 +143,7 @@
 			<input type="hidden" name="codeType" value="">
 			<input type="hidden" id="light_no" name="light_no" value="">
 			<input type="hidden" id="function_name" name="function_name" value="Search" />
+			<input type="hidden" id="excelHeader" name="excelHeader">
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
 			<!-- 지역선택box -->
 			<div id="area_box">

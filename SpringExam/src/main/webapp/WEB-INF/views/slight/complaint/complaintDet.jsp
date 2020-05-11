@@ -24,7 +24,9 @@
 	var lightGubunlDefault;
 	
 	$(function(){
-		drawCodeData(commonCd, "01", "select", "").then(function(resolvedData) {
+		var troubleCd = "${resultMap.trouble_cd }";
+		var inform_method = "${resultMap.inform_method }";
+		drawCodeData(commonCd, "01", "select", "", troubleCd).then(function(resolvedData) {
 			$("#trouble_cd").empty();
 			$("#trouble_cd").append(resolvedData);
 		})
@@ -39,6 +41,9 @@
 				$("#repair_cd").empty();
 				$("#repair_cd").append(resolvedData);
 			})
+		})
+		.then(function (){
+			$('input:radio[name=inform_method][value='+inform_method+']').prop("checked", true);
 		})
 		.then(function (){
 			if(lightNo != null && lightNo != "") {
@@ -56,17 +61,6 @@
 	});
 	
 	function Save() {
-		if($("#light_gubun").val() == "" || $("#light_gubun").val() == null) {
-			alert("민원종류를 입력하세요");
-			$("#light_gubun").focus();
-			return;
-		}
-		
-		if($("#repair_cd").val() == "" || $("#repair_cd").val() == null) {
-			alert("신고종류를 입력하세요");
-			$("#repair_cd").focus();
-			return;
-		}
 		
 		if($("#notice_name").val() == "" || $("#notice_name").val() == null) {
 			alert("신고인을 입력하세요");
@@ -96,7 +90,7 @@
 		
 		var inform_method = $('input:radio[name=inform_method]:checked').val();
 		if(inform_method == "01") {
-			var mobile = $("#phone").val();
+			var mobile = $("#mobile").val();
 			if(!chkContactNumber(mobile)) {
 				alert("SMS 회신 요청 시 연락처를 정확히 입력하세요.");
 				return;
@@ -116,15 +110,15 @@
 			}
 		}
 		
-		var yn = confirm("고장신고 하시겠습니까?");
+		var yn = confirm("민원결과를 수정 하시겠습니까?");
 		if(yn){
 			$.ajax({
 				type : "POST"			
-				, url : "/trouble/insertTrobleReport"
-				, data : $("#troubleForm").serialize()
+				, url : "/complaint/updateComplaint"
+				, data : $("#slightForm").serialize()
 				, dataType : "JSON"
 				, success : function(obj) {
-					getInsertTrobleCallback(obj);
+					getupdateComplaintCallback(obj);
 				}
 				, error : function(xhr, status, error) {
 					
@@ -133,11 +127,11 @@
 		}
 	}
 	
-	function getInsertTrobleCallback(obj) {
+	function getupdateComplaintCallback(obj) {
 		if(obj != null) {
 			if(obj.resultCnt > -1) {
 				alert("신고를 성공하였습니다.");
-				location.reload();
+				goToList();
 			}
 			else {
 				alert("신고를 실패하였습니다.");	
@@ -180,6 +174,8 @@
 		<div id="sub_title"><h3>민원처리결과조회</h3></div>
 		<form id="slightForm" name="slightForm">
 			<input type="hidden" name="dong" id="dong">
+			<input type="hidden" name="repair_no" id="repair_no" value="${resultMap.repair_no }">
+			<input type="hidden" name="light_no" id="light_no" value="${resultMap.light_no }">
 			<div id="board_view2">
 				<table summary="고장신고목록" cellpadding="0" cellspacing="0">
 					<colgroup>
@@ -192,41 +188,59 @@
 						<tr>
 							<th>신고종류</th>
 							<td>
-								<c:out value="${param.repair_nm }" />
+								<c:out value="${resultMap.light_gubun }" />
 							</td>
 							<th>관리번호</th>
 							<td>
-								<c:out value="${param.light_no }" />
+								<c:out value="${resultMap.light_no }" />
 							</td>
 						</tr>
 						<tr>
 							<th>신고인</th>
-							<td><input type="text" id="notice_name" name="notice_name" class="tbox03"></td>
+							<td><input type="text" id="notice_name" name="notice_name" class="tbox03" value="${resultMap.notice_name }"></td>
 							<th>비밀번호</th>
-							<td><input type="text" id="password" name="password" class="tbox03"></td>
+							<td><input type="password" id="password" name="password" class="tbox03" value="${resultMap.password }"></td>
 						</tr>
 						<tr>
 							<th>주소</th>
 							<td id="addr" colspan="3">
-								<div style="margin-bottom: 5px;"><input type="text" class="tbox06" id="address" name="address"></div>
+								<div style="margin-bottom: 5px;"><input type="text" class="tbox06" id="address" name="address" value="${resultMap.location }"></div>
 							</td>
 						</tr>
 						<tr>
 							<th>접수일</th>
-							<td><c:out value="${param.light_no }" /></td>
+							<td><c:out value="${resultMap.notice_date }" /></td>
 							<th>처리상황</th>
-							<td><c:out value="${param.light_no }" /></td>
+							<td><c:out value="${resultMap.progress_name }" /></td>
 						</tr>
 						<tr>
 							<th>핸드폰</th>
-							<td><input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
+							<td>
+								<c:choose>
+									<c:when test="${resultMap.inform_method eq '01'}">
+										<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.contact }">
+									</c:when>
+									<c:otherwise>
+										<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="">
+									</c:otherwise>
+								</c:choose>
+							</td>
 							<th>전화번호</th>
-							<td><input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
+							<td>
+								<c:choose>
+									<c:when test="${resultMap.inform_method eq '03'}">
+										<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.contact }">
+									</c:when>
+									<c:otherwise>
+										<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="">
+									</c:otherwise>
+								</c:choose>
+							</td>
 						</tr>
 						<tr>
 							<th>이메일</th>
 							<td>
-								<input name="email" type="text" class="tbox03" id="email" size="35">
+								<input name="email" type="text" class="tbox03" id="email" size="35" value="${resultMap.email }">
 							</td>
 							<th>고장상태</th>
 							<td>
@@ -236,7 +250,7 @@
 						</tr>
 						<tr>
 							<th>상태설명</th>
-							<td colspan="3"><textarea name="trouble_detail" id="trouble_detail" cols="55" rows="3"></textarea></td>
+							<td colspan="3"><textarea name="trouble_detail" id="trouble_detail" cols="55" rows="3">${resultMap.trouble_detail }</textarea></td>
 						</tr>
 						<tr>
 							<th>회신처리결과</th>

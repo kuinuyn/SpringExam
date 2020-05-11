@@ -16,6 +16,25 @@
 			<if test="repair_cd != null and repair_cd != '' ">
 				AND A.REPAIR_CD = #{repair_cd}	
 			</if>
+			<if test="searchType != null and searchType != '' ">
+				<choose>
+					<when test="searchType == 1">
+						AND NOTICE_NAME LIKE '%'||#{keyword}||'%'
+					</when>
+					<when test="searchType == 2">
+						AND LOCATION LIKE '%'||#{keyword}||'%'
+					</when>
+					<when test="searchType == 3">
+						AND LIGHT_NO LIKE '%'||#{keyword}||'%'
+					</when>
+					<when test="searchType == 4">
+						AND TROUBLE_CD = #{trouble_cd}
+					</when>
+					<when test="searchType == 5">
+						AND PROGRESS_STATUS = #{progress_status}
+					</when>
+				</choose>
+			</if>
 	</select>
 	
 	<select id="getComplaintList" resultType="hashMap" parameterType="hashMap">
@@ -26,9 +45,9 @@
 							   , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS LIGHT_GUBUN
 							   , LIGHT_NO
 							   , NOTICE_NAME
-							   , CASE WHEN inform_method = '01'
+							   , CASE WHEN inform_method = '03'
 							   				THEN PHONE
-							   				WHEN inform_method = '02'
+							   				WHEN inform_method = '01'
 							   				THEN MOBILE
 							   				WHEN inform_method = '04'
 							   				THEN ''
@@ -53,10 +72,39 @@
 					<if test="repair_cd != null and repair_cd != '' ">
 						AND A.REPAIR_CD = #{repair_cd}	
 					</if>
+					<if test="searchType != null and searchType != '' ">
+						<choose>
+							<when test="searchType == 1">
+								AND NOTICE_NAME LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 2">
+								AND LOCATION LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 3">
+								AND LIGHT_NO LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 4">
+								AND TROUBLE_CD = #{trouble_cd}
+							</when>
+							<when test="searchType == 5">
+								AND PROGRESS_STATUS = #{progress_status}
+							</when>
+						</choose>
+					</if>
 			<![CDATA[
 				ORDER BY A.REPAIR_NO DESC
 			) T1
 			LIMIT #{limit} OFFSET #{offset}
+		]]>
+	</select>
+	
+	<select id="getComplaintStatisCnt" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+							, PROGRESS_STATUS
+							, TO_CHAR(NOTICE_DATE, 'YYYYMMDD') AS NOTICE_DATE
+			FROM GY_LIGHT_REPAIR A
+			GROUP BY PROGRESS_STATUS, TO_CHAR(NOTICE_DATE, 'YYYYMMDD')
 		]]>
 	</select>
 	
@@ -66,9 +114,10 @@
 						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
 						   , LIGHT_NO
 						   , NOTICE_NAME
-						   , CASE WHEN inform_method = '01'
+						   , PASSWORD
+						   , CASE WHEN inform_method = '03'
 						   				THEN PHONE
-						   				WHEN inform_method = '02'
+						   				WHEN inform_method = '01'
 						   				THEN MOBILE
 						   				WHEN inform_method = '04'
 						   				THEN ''
@@ -77,18 +126,48 @@
 						   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
 						   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
 						   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+						   , TROUBLE_CD
 						   , EMAIL
 						   , TROUBLE_DETAIL
 						   , PROGRESS_STATUS
 						   , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS PROGRESS_NAME
 						   , LOCATION
-						   , F_GY_DATA_CODE_NM('02', inform_method) AS INFORM_METHOD
+						   , INFORM_METHOD
+						   , F_GY_DATA_CODE_NM('02', inform_method) AS INFORM_METHOD_NM
 				FROM GY_LIGHT_REPAIR A
 				WHERE
 					A.REPAIR_NO = #{repairNo}	
 				ORDER BY A.LIGHT_NO
 			]]>
 	</select>
+	
+	<select id="getComplaintRoleChk" resultType="String" parameterType="hashMap">
+		SELECT CASE 
+							WHEN A.PASSWORD = #{password}
+							THEN 'Y'
+							ELSE 'N'
+						END AS 	"PW_CHK"
+		FROM GY_LIGHT_REPAIR A
+		WHERE
+			A.REPAIR_NO = #{repairNo}	
+	</select>
+	
+	<update id="updateComplaint" parameterType="hashMap">
+		UPDATE GY_LIGHT_REPAIR
+		SET
+			PASSWORD = #{password}
+			, NOTICE_NAME = #{notice_name}
+			, LOCATION = #{address}
+			, PHONE = #{phone}
+			, MOBILE = #{mobile}
+			, EMAIL = #{email}
+			, TROUBLE_CD = #{trouble_cd} 
+			, TROUBLE_DETAIL = #{trouble_detail}
+			, INFORM_METHOD = #{inform_method}
+		WHERE
+			REPAIR_NO = #{repair_no}
+			AND LIGHT_NO = #{light_no}
+	</update>
 	
 	<insert id="insertComplaint" parameterType="hashMap">
 		INSERT INTO GY_LIGHT_REPAIR(

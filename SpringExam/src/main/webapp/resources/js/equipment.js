@@ -73,7 +73,7 @@ function searchArea(code) {
 					str += "	<td><span>"+list[i].lamp2_nm+"</span> </td>";
 					str += "	<td><span>"+list[i].lamp3_nm+"</span> </td>";
 					str += "	<td><span>"+list[i].kepco_cust_no+"</span> </td>";
-					str += "	<td><span><a href='#' class='btn_more'>수리내역</a></span> </td>";
+					str += "	<td><span><a href='javascript:excelDownload(\""+list[i].light_no+"\")' class='btn_more'>수리내역</a></span> </td>";
 					str += "</tr>";
 				}
 			}
@@ -244,13 +244,13 @@ function searchArea(code) {
 		$("#slightForm").attr({action:'/trouble/trblReportList'}).submit();
 	}
 	
-	function excelDownload() {
-		var currentRow = $("#board_list > table > thead> tr > th").length;
+	function excelDownload(light_no) {
 		var headerArr = ['접수번호', '보수일자', '고장상태', '보수내역', '진행상태'];
 		
 		var f = document.slightForm;
 		f.method = "POST";
-		f.action = "${contextPath}/repair/downloadExcel";
+		f.action = "/equipment/downloadExcel";
+		f.light_no.value = light_no;
 		f.excelHeader.value = headerArr;
 		f.submit();
 	}
