@@ -373,7 +373,7 @@
 							</table>
 							<div id="btn">
 								<p>
-								<span><a href="#"  class="btn_gray02"> 삭제</a></span>
+								<span><a href="javascript:deleteEquipment()"  class="btn_gray02"> 삭제</a></span>
 								<span><a href="javascript:goToMod()"  class="btn_gray02">수정</a></span>
 								</p>
 							</div>

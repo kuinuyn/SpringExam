@@ -250,6 +250,12 @@
 			return;
 		}
 		
+		resArrd = "<ul>";
+		resArrd += "<li>처리중</li>";
+		resArrd += "</ul>";
+	
+		$("#side_search_list").html(resArrd);
+		
 		$.ajax({
 			type : "POST"			
 			, url : "/common/map/mapDataKakao"

@@ -93,7 +93,7 @@ function searchArea(code) {
 		$.ajax({
 			type : "POST"			
 			, url : "/equipment/equipmentDet"
-			, data : {"light_no" : lightNo}
+			, data : {"light_no" : lightNo, "light_type" : $("#lightType").val()}
 			, dataType : "JSON"
 			, success : function(obj) {
 				getSearchDetailCallback(obj);
@@ -174,19 +174,23 @@ function searchArea(code) {
 		fnNm();
 	}
 	
-	function deleteEquipment(lightNo) {
-		$.ajax({
-			type : "POST"			
-			, url : "/equipment/deleteEquipment"
-			, data : {"light_no" : $("#det_light_no").text()}
-			, dataType : "JSON"
-			, success : function(obj) {
-				deleteEquipmentCallback(obj);
-			}
-			, error : function(xhr, status, error) {
-				
-			}
-		});
+	function deleteEquipment() {
+		var yn = confirm("기본 정보를 삭제 하시겠습니까?");
+		
+		if(yn){
+			$.ajax({
+				type : "POST"			
+				, url : "/equipment/deleteEquipment"
+				, data : {"light_no" : $("#det_light_no").text(), "light_type" : $("#lightType").val()}
+				, dataType : "JSON"
+				, success : function(obj) {
+					deleteEquipmentCallback(obj);
+				}
+				, error : function(xhr, status, error) {
+					
+				}
+			});
+		}
 	}
 	
 	function deleteEquipmentCallback(obj) {
@@ -212,13 +216,13 @@ function searchArea(code) {
 		frm.searchLightNo.value = light_no;
 		frm.center_x.value = center_x;
 		frm.center_y.value = center_y;
-		frm.action =  "${contextPath}/common/map/mapContentDaum2";
+		frm.action =  "/common/map/mapContentDaum2";
 		frm.target = 'mapContentDaum';
 		frm.submit();
 		
 		modal_popup3("messagePop3");
 		
-		/* var url = "${contextPath}/common/map/mapContentDaum2?center_x="+center_x+"&center_y="+center_y;
+		/* var url = "/common/map/mapContentDaum2?center_x="+center_x+"&center_y="+center_y;
 		var oriAction = $("#slightForm").attr("action");
 		detailPrintPopup = window.open("", "mapContentDaum2", "left=250, top=20, width=850, height=750, menubar=no, location=no, status=no, scrollbars=yes");
 		$("#slightForm").attr("action", url);
@@ -230,8 +234,19 @@ function searchArea(code) {
 	}
 	
 	function goToMod() {
+		var url = "";
+		
+		if($("#lightType").val() == "1") {
+			url = "/equipment/securityLightMod";
+		}
+		else if($("#lightType").val() == "2") {
+			url = "/equipment/streetLightMod";
+		}
+		else if($("#lightType").val() == "3") {
+			url = "/equipment/distributionBoxMod";
+		}
 		var frm = document.slightForm;
-		frm.action = '/equipment/streetLightMod';
+		frm.action = url;
 		frm.method ="post";
 		frm.submit();
 	};

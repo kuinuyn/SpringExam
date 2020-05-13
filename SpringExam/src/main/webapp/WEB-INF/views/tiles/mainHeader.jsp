@@ -255,7 +255,7 @@ function loginPopup() {
 					<li><a href="/equipment/securityLightList">보안등관리</a></li>
 					<li><a href="/equipment/streetLightList">가로등관리</a></li>
 					<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
-					<li><a href="#">GIS관리</a></li>
+					<li><a href="/equipment/gisLightList">GIS관리</a></li>
 					<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
 					<li><a href="/system/systemMemberList">사용자관리</a></li>
 				</ul>

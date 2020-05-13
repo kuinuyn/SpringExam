@@ -117,6 +117,22 @@ public class EquipmentController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/saveGisEquipment", method = RequestMethod.POST)
+	public ModelAndView saveGisEquipment(CommandMap paramMap) {
+		ModelAndView mv = new ModelAndView();
+		int resultCnt = 0;
+		try {
+			resultCnt = equipmentSerivce.saveGisEquipment(paramMap);
+			mv.addObject("resultCnt", resultCnt);
+		} catch (Exception e) {
+			mv.addObject("resultCnt", -1);
+			e.printStackTrace();
+		}
+		
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
 	@RequestMapping(value="/deleteEquipment", method = RequestMethod.POST)
 	public ModelAndView deleteEquipment(CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();

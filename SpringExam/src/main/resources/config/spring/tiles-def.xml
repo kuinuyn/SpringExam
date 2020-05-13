@@ -5,10 +5,6 @@
 
 <tiles-definitions>
 	<!-- (1) 레이아웃을 적용하지 않은 화면 -->
-	<definition name="webLogin" template="/WEB-INF/views/tiles/loginLayout.jsp">
-		<put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp" />
-	</definition>
-	
 	<definition name="webMainBase" template="/WEB-INF/views/tiles/baseMainLayout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/tiles/mainHeader.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/mainFooter.jsp" />
@@ -20,10 +16,6 @@
 	</definition>
 	
 	<!-- (1) -->    
-	<definition name="login/*" extends="webLogin">
-		<put-attribute name="body" value="/WEB-INF/views/login/{1}.jsp" />
-	</definition>
-	
 	<definition name="slight/*" extends="webMainBase">
 		<put-attribute name="body" value="/WEB-INF/views/slight/{1}.jsp" />
 	</definition>
@@ -43,10 +35,6 @@
 	
 	<definition name="common/*/*" extends="webBase">
 		<put-attribute name="body" value="/WEB-INF/views/common/{1}/{2}.jsp" />
-	</definition>
-	
-	<definition name="board/*" extends="webLocalBase">
-		<put-attribute name="body" value="/WEB-INF/views/board/{1}.jsp" />
 	</definition>
 	
 </tiles-definitions>

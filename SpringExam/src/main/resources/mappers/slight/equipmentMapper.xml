@@ -129,6 +129,7 @@
 		FROM GY_LIGHT A
 		WHERE
 			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
 			<if test="par_hj_dong != null and par_hj_dong != '' ">
 				AND HJ_DONG_CD = #{par_hj_dong}
 			</if>
@@ -146,6 +147,13 @@
 		WHERE A.REPAIR_NO=B.REPAIR_NO 
 			AND A.LIGHT_NO = #{light_no}
 		ORDER BY A.REPAIR_NO DESC
+	</select>
+	
+	<select id="getChkLightNo" parameterType="hashMap" resultType="Int">
+		SELECT COUNT(*) AS CNT
+		FROM GY_LIGHT
+		WHERE
+			TRIM(LIGHT_NO) = TRIM(#{light_no})
 	</select>
 	
 	<update id="updateEquipment" parameterType="hashMap">
@@ -174,15 +182,50 @@
 			, USE_LIGHT = #{use_light}
 			, ADDRESS = #{address}
 			, NEW_ADDRESS = #{new_address}
+			, LAST_UPDATE = TO_CHAR(now(), 'yyyy-mm-dd')
 		WHERE
 			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
 	</update>
 	
 	<update id="deleteEquipment" parameterType="hashMap">
 		UPDATE GY_LIGHT
 		SET
 			LIGHT_GUBUN = '9'
+			, LAST_UPDATE = now()
 		WHERE
 			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
 	</update>
+	
+	<update id="updateGisEquipment" parameterType="hashMap">
+		UPDATE GY_LIGHT
+		SET
+			HJ_DONG_CD = #{hj_dong_cd}
+			, POLE_NO = #{pole_no}
+			, LAMP2_CD = #{lamp2_cd}
+			, LAMP3_CD = #{lamp3_cd}
+			, KEPCO_CUST_NO = #{kepco_cust_no}
+			, KEPCO_CD = #{kepco_cd}
+			, USE_LIGHT = #{use_light}
+			, ADDRESS = #{address}
+			, NEW_ADDRESS = #{new_address}
+			, LAST_UPDATE = now()
+		WHERE
+			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
+	</update>
+	
+	<insert id="insertGisEquipment" parameterType="hashMap">
+		INSERT INTO GY_LIGHT (
+			LIGHT_NO, LIGHT_TYPE, HJ_DONG_CD, LIGHT_GUBUN, LAMP2_CD
+			, LAMP3_CD, POLE_NO, KEPCO_CUST_NO, KEPCO_CD, USE_LIGHT
+			, MAP_X_POS_GL, MAP_Y_POS_GL, ADDRESS, NEW_ADDRESS
+		)
+		VALUES (
+			#{light_no}, #{light_type}, #{hj_dong_cd}, '1', #{lamp2_cd}
+			, #{lamp3_cd}, #{pole_no}, #{kepco_cust_no}, #{kepco_cd}, #{use_light}
+			, #{mapPosX}, #{mapPosY}, #{address}, #{new_address}
+		)
+	</insert>
 </mapper>

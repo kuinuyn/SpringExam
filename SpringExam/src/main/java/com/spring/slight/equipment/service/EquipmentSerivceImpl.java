@@ -103,6 +103,29 @@ public class EquipmentSerivceImpl implements EquipmentService{
 	}
 	
 	@Override
+	public int saveGisEquipment(CommandMap paramMap) throws Exception {
+		String flag = (String) paramMap.get("flag");
+		int cnt = 0;
+		
+		String lightNo = ((String) paramMap.get("light_no")).replaceAll("\\p{Z}", "").trim();
+		paramMap.put("light_no", lightNo);
+		
+		if(flag.equals("I")) {
+			if(equipmentDao.getChkLightNo(paramMap) < 1) {
+				cnt = equipmentDao.insertGisEquipment(paramMap);
+			}
+			else {
+				cnt = -2;
+			}
+		}
+		else if(flag.equals("U")){
+			cnt = equipmentDao.updateGisEquipment(paramMap);
+		}
+		
+		return cnt;
+	}
+
+	@Override
 	public int deleteEquipment(CommandMap paramMap) throws Exception {
 		int resultCnt = equipmentDao.deleteEquipment(paramMap);
 		

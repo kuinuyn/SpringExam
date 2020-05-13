@@ -32,7 +32,7 @@
 			var num = 0;
 			var childNodes = $("#tabmenu").find('li')
 			var title = "가로등";
-			var childrens = $("#all_rtime > p").children('span');
+			var children = $("#all_rtime > p").children('span');
 			
 			if($(this).val() == 2) {
 				var title = "보안등";
@@ -41,7 +41,7 @@
 				var title = "분점함";
 			}
 			
-			childrens.eq(0).text(title);
+			children.eq(0).text(title);
 			
 			for(var i=0; i<childNodes.size(); i++) {
 				if(childNodes.eq(i).find('.tab_on').size() > 0) {

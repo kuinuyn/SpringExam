@@ -49,12 +49,12 @@
 				$("#lamp3_cd2").append(resolvedData);
 			})
 		})
-		.then(function() {
+		/* .then(function() {
 			drawCodeData(commonCd, "12", "select", "").then(function(resolvedData) {
 				$("#kepco_cd").empty();
 				$("#kepco_cd").append(resolvedData);
 			})
-		})
+		}) */
 		.then(function() {
 			drawCodeData(commonCd, "15", "select", "").then(function(resolvedData) {
 				$("#onoff_cd").empty();
@@ -307,6 +307,7 @@
 		<div id="sub_title"><h3>보안등관리</h3></div>
 		<form id="slightForm" name="slightForm">
 			<input type="hidden" id="light_no" name="light_no" >
+			<input type="hidden" id="light_type" name="light_type" value="${param.lightType }">
 			<input type="hidden" id="par_hj_dong" name="par_hj_dong" >
 			<input type="hidden" id="current_page_no" name="current_page_no" value="${param.current_page_no }" />
 			<input type="hidden" id="searchLampGubun" name="searchLampGubun" value="${param.searchLampGubun }" />

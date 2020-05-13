@@ -6,10 +6,10 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/common/sub.css" /> 
 
 <style>
-	#container {overflow:hidden;height:100%;position:relative;}
-	#container.view_map #mapWrapper {z-index: 10;}
-	#container.view_map #btnMap {display: none;}
-	#container.view_roadview #mapWrapper {z-index: 0;}
+	#mapContainer {overflow:hidden;height:100%;position:relative;}
+	#mapContainer.view_map #mapWrapper {z-index: 10;}
+	#mapContainer.view_map #btnMap {display: none;}
+	#mapContainer.view_roadview #mapWrapper {z-index: 0;}
 
 	.label * {display: inline-block;vertical-align: top;}
 	.label .left {background: url("//i1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
@@ -35,7 +35,7 @@
 	.custom_typecontrol .selected_btn:hover {color:#fff;}
 </style>
 
-<div id="container" class="view_map">
+<div id="mapContainer" class="view_map">
 	<div id="mapWrapper" style="width:100%;height:100%;position:relative;">
 		<div id="map" style="width:100%;height:100%;"></div> <!-- 지도를 표시할 div 입니다 -->
 		<div class="custom_typecontrol radius_border">
@@ -77,6 +77,10 @@
 	var marker = new Array();  //마커 배열
 	var customOverlay = new Array(); //인포윈도우 배열	
 	var infowindow = new Array(); //인포윈도우 배열	
+	var mark_chk;
+	
+	var drag_marker;
+	var drag_markers = [];
 	
 	//ajax용	
 	var httpRequest;
@@ -101,6 +105,9 @@
 	var markers;
 	var marker2;	//주소검색시 찍힌 마커 관리
 	var circle2;	//주소검색시 영역표시
+	
+	var geocoder = new kakao.maps.services.Geocoder(); //검색기능
+	var defaultAddress = "";
 	
 	document.addEventListener("DOMContentLoaded", function(){
 		onInit();
@@ -170,6 +177,8 @@
 	}
 	
 	function cl(a){
+		mark_chk = "N";
+		
 		for(var i=0; i<infowindow.length; i++){
 			if(infowindow[i]){
 				infowindow[i].close();
@@ -181,11 +190,67 @@
 		center_x = latlng.getLat();
 		center_y = latlng.getLng();
 		map_move(center_x, center_y, positions[a].light_no);
+		
+		callbackLeftMenu(a);
+	}
+	
+	function callbackLeftMenu(a) {
+		var parentFrame = parent.document.getElementById('gisMap');
+		if(parentFrame != null) {
+			parent.document.slightForm.light_type.value = positions[a].light_type;
+			parent.document.slightForm.light_no.value = positions[a].light_no;
+			parent.document.slightForm.hj_dong_cd.value = positions[a].hj_dong_cd;
+			parent.document.slightForm.lamp2_cd.value = positions[a].lamp2_cd;
+			parent.document.slightForm.lamp3_cd.value = positions[a].lamp3_cd;
+			parent.document.slightForm.pole_no.value = positions[a].pole_no;
+			parent.document.slightForm.kepco_cust_no.value = positions[a].kepco_cust_no;
+			parent.document.slightForm.kepco_cd.value = positions[a].kepco_cd;
+			parent.document.slightForm.mapPosX.value = center_x;
+			parent.document.slightForm.mapPosY.value = center_y;
+			parent.document.slightForm.address.value = positions[a].address;
+			parent.document.slightForm.new_address.value = (positions[a].new_address != null && positions[a].new_address != "") ? positions[a].new_address : "";
+			parent.document.slightForm.use_light.value = positions[a].use_light;
+			parent.document.slightForm.flag.value = "U";
+			parent.changeMapInfo();
+			parent.chkEquipment();
+		}
 	}
 	
 	function onHideWindow(close_num){
 		infowindow[close_num].close();
 		info_window = "";
+	}
+	
+	function onAddIcon(){
+		mark_chk = "Y";
+		drag_center = map.getCenter(); //지도 중심좌표
+		drag_center_x = center.getLng();
+		drag_center_y = center.getLat();
+		drag_markerPosition = new daum.maps.LatLng(center_x, center_y); 
+
+		setMarkers(null);  
+		
+		drag_marker = new daum.maps.Marker({
+			position: drag_markerPosition //마커위치
+		});
+
+		drag_marker.setMap(map);
+		
+		drag_markers.push(drag_marker);
+	}
+	
+	function setMarkers(map){
+		for (var i = 0; i < drag_markers.length; i++) {
+			drag_markers[i].setMap(map);
+		}
+	}
+
+	function getMapInfo() {
+		var mapInfo = new Array();
+		var mapInfoCenter = map.getCenter();
+		mapInfo[0] = mapInfoCenter.getLat();
+		mapInfo[1] = mapInfoCenter.getLng();
+		return mapInfo;	
 	}
 
 	function setVal(){
@@ -200,7 +265,10 @@
 			center_y = "128.34425314675426";
 		}
 		
-		container = document.getElementById('container');
+		mark_chk = "N";
+		drag_marker = new Array();
+		
+		container = document.getElementById('mapContainer');
 		mapWrapper = document.getElementById('mapWrapper');
 	
 		//로드뷰관련
@@ -263,6 +331,16 @@
 			position: mapCenter,
 			draggable: true
 		});
+		
+		searchDetailAddrFromCoords(mapCenter, function(result, status) {
+			if (status === kakao.maps.services.Status.OK) {
+				
+				var detailAddr = !!result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
+				var defaultAddr = detailAddr.split(/\s/g);
+				
+				defaultAddress = defaultAddr[0]+" "+defaultAddr[1];
+			}
+		});
 	
 		daum.maps.event.addListener(map, 'click', function(e){ //로드뷰 도로에 표시 후 클릭 이벤트
 			// 지도 위에 로드뷰 도로 오버레이가 추가된 상태가 아니면 클릭이벤트를 무시 
@@ -297,6 +375,64 @@
 	
 			//데이터 조회
 			onAjaxData(center_x, center_y,"");	
+		});
+		
+		daum.maps.event.addListener(map, 'click', function(mouseEvent) {
+			if(mark_chk=="Y"){
+				for(var i=0; i<infowindow.length; i++){
+					if(infowindow[i]){
+						infowindow[i].close();
+					}
+				}
+				
+				// 클릭한 위도, 경도 정보를 가져옵니다 
+				var latlng = mouseEvent.latLng; 
+				
+				// 마커 위치를 클릭한 위치로 옮깁니다
+				drag_marker.setPosition(latlng);
+				
+				parent.document.slightForm.mapPosX.value = latlng.getLat();
+				parent.document.slightForm.mapPosY.value  = latlng.getLng();
+				
+				searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+					if (status === kakao.maps.services.Status.OK) {
+						
+						parent.document.slightForm.new_address.value = !!result[0].road_address ? result[0].road_address.address_name : "";
+						parent.document.slightForm.address.value  = result[0].address.address_name;
+					}
+				});
+			}
+		});
+	}
+	
+	function searchDetailAddrFromCoords(coords, callback) {
+		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+	}
+	
+	// 주소로 좌표를 검색합니다
+	function searchDetailAddrSearch(keyword) {
+		var searchAddress = defaultAddress+" "+keyword
+		geocoder.addressSearch(searchAddress, function(result, status) {
+			// 정상적으로 검색이 완료됐으면 
+			if (status === kakao.maps.services.Status.OK) {
+				var center_x = result[0].x;
+				var center_y = result[0].y;
+				var coords = new kakao.maps.LatLng(center_y, center_x);
+		
+				// 결과값으로 받은 위치를 마커로 표시합니다
+				var marker = new kakao.maps.Marker({
+					map: map,
+					position: coords
+				});
+		
+				// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+				map.setCenter(coords);
+				
+				onAjaxData(center_x, center_y, "");
+			}
+			else if(status == kakao.maps.services.Status.ZERO_RESULT){
+				alert("주소를 정확히 입력하여 주세요.")
+			}
 		});
 	}
 	
@@ -399,6 +535,14 @@
 						var lightSatndCd = arrList[k][6];
 						var light_type_nm = "";
 						var hj_dong_cd = arrList[k][16];
+						var address = arrList[k][2];
+						var new_address = arrList[k][12];
+						var lamp2_cd = arrList[k][7];
+						var lamp3_cd = arrList[k][8];
+						var pole_no = arrList[k][5];
+						var kepco_cust_no = arrList[k][15];
+						var kepco_cd = arrList[k][17];
+						var use_light = arrList[k][18];
 						
 						if(light_type == 1){
 							if(lightSatndCd == "01"){
@@ -420,15 +564,6 @@
 						else if(light_type == 3){
 							imageSrc = "/common/images/map/bun.png";
 						}
-						else if(light_type == 4){
-							imageSrc = "/common/images/map/bora.png";
-						}
-						else if(light_type == 5){
-							imageSrc = "/common/images/map/bora_1.png";
-						}
-						else if(light_type == 6){
-							imageSrc = "/common/images/map/black.png";
-						}
 	
 						if(light_type=="1"){
 							if(lightSatndCd == "01"){
@@ -449,7 +584,19 @@
 							light_type_nm = "분전함";
 						}
 	
-	
+						var light_no = arrList[k][1];
+						var light_type = arrList[k][14];
+						var latlng = new daum.maps.LatLng(arrList[k][3], arrList[k][4]);
+						var hj_dong_cd = arrList[k][16];
+						var address = arrList[k][2];
+						var new_address = arrList[k][12];
+						var lamp2_cd = arrList[k][7];
+						var lamp3_cd = arrList[k][8];
+						var pole_no = arrList[k][5];
+						var kepco_cust_no = arrList[k][15];
+						var kepco_cd = arrList[k][17];
+						var use_light = arrList[k][18];
+						
 						var iwContent = "<div class ='label'><a href='javascript:cl("+k+");'><span class='left'></span><span class='center'>"+light_no+"</span><span class='right'></span></a></div>";
 						//var iwContent2 = "<div class=\"sc2\"><h1><img src=\"/common/images/map/nuj_simg.gif\" width=\"18\" height=\"18\"></h1><h2>"+light_no+"</h2><div><table class=\"tic\"> <colgroup><col width=\"80\" /> <col width=\"170\" /> </colgroup><tbody><tr> <td id=\"nb\">종류</td> <td>  | "+light_type_nm+"</td></tr><tr><td id=\"nb\">주소</td> <td>  | "+arrList[k][2]+"</td></tr><tr><td id=\"nb\">새주소</td><td>  | "+arrList[k][12]+"</td></tr><tr><td id=\"nb\">인입주번호</td><td> | "+arrList[k][5]+"</td></tr> </tbody> </table></div><br><p style=\"margin: 1px\"></p><div class=\"ftf\"><p class=\"ft4\"><A class=\"lk2\" href=\"javascript:goToTrbList(\'"+light_no+"\',\'"+light_type+"\',\'"+arrList[k][2]+"\',\'"+hj_dong_cd+"\')\" ></A><A class=\"lk1\" href=\"javascript:onHideWindow("+k+")\"></A></p> </div></div>"
 						var iwContent2 = "<div id='area_informbox'><h4 class='hide'>고장신고상세 정보</h4><div id='area_inform_pop'><div id='area_inform_close' onclick='javascript:infoWindowClose()'></div><p class='area_title'>"+light_no+"</p><ul><li class='ai_title'>종류</li><li>"+light_type_nm+"</li></ul><ul><li class='ai_title'>주소</li><li>"+arrList[k][2]+"</li></ul><ul><li class='ai_title'>도로명주소</li><li>"+arrList[k][12]+"</li></ul></div><div id='area_inform_btn'><a href=\"javascript:goToTrbList(\'"+light_no+"\',\'"+light_type+"\',\'"+arrList[k][2]+"\',\'"+hj_dong_cd+"\')\">고장신고</a></div></div>"
@@ -457,6 +604,16 @@
 						positions[k] = {
 							light_no: light_no, 
 							latlng: latlng,
+							light_type: light_type,
+							address: address,
+							new_address: new_address,
+							lamp2_cd: lamp2_cd,
+							lamp3_cd: lamp3_cd,
+							pole_no: pole_no,
+							kepco_cust_no: kepco_cust_no,
+							kepco_cd: kepco_cd,
+							use_light: use_light,
+							hj_dong_cd: hj_dong_cd,
 							iwContent : iwContent,
 							iwContent2 : iwContent2
 						};
@@ -495,6 +652,9 @@
 							});
 							
 							infowindow[k].open(map, marker[k]);  //윈도우 표시
+							
+							callbackLeftMenu(k);
+							
 						}
 	
 						(function(k){
