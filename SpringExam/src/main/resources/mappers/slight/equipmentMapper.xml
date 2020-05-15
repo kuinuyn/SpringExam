@@ -156,6 +156,137 @@
 			TRIM(LIGHT_NO) = TRIM(#{light_no})
 	</select>
 	
+	<select id="getEquipHJStaitstice" parameterType="hashMap" resultType="java.util.LinkedHashMap">
+		SELECT '' AS IDX 
+					   , HJ_DONG_NM
+					   , COUNT(*) AS TOTAL_CNT
+					   , SUM(A.CNT_1) AS "CNT_1"
+					   , SUM(A.CNT_2) AS "CNT_2"
+					   , SUM(A.CNT_3) AS "CNT_3"
+		FROM (
+			SELECT F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
+				   , LIGHT_TYPE
+				   , HJ_DONG_CD
+				   , COALESCE(CASE WHEN LIGHT_GUBUN = '1' THEN 1 END, 0) AS CNT_1
+				   , COALESCE(CASE WHEN LIGHT_GUBUN = '2' THEN 1 END, 0) AS CNT_2
+				   , COALESCE(CASE WHEN LIGHT_GUBUN = '3' THEN 1 END, 0) AS CNT_3
+			FROM GY_LIGHT
+		) A
+		WHERE
+			1=1
+			<if test="light_type != null and light_type != '' ">
+				AND LIGHT_TYPE = #{light_type}
+			</if>
+		GROUP BY HJ_DONG_NM
+		ORDER BY HJ_DONG_NM
+	</select>
+	
+	<select id="getEquipStandStaitstice" parameterType="hashMap" resultType="java.util.LinkedHashMap">
+		SELECT '' AS IDX 
+					   , HJ_DONG_NM
+					   , SUM(A.CNT_1) AS "CNT_1" 
+					   , SUM(A.CNT_2) AS "CNT_2" 
+					   , SUM(A.CNT_3) AS "CNT_3" 
+					   , SUM(A.CNT_4) AS "CNT_4" 
+					   , SUM(A.CNT_5) AS "CNT_5" 
+					   , SUM(A.CNT_6) AS "CNT_6" 
+					   , SUM(A.CNT_7) AS "CNT_7" 
+					   , SUM(A.CNT_8) AS "CNT_8" 
+					   , SUM(A.CNT_9) AS "CNT_9" 
+					   , SUM(A.CNT_10) AS "CNT_10"
+					   , SUM(A.CNT_11) AS "CNT_11"
+					   , SUM(A.CNT_12) AS "CNT_12"
+				       , COUNT(*) AS TOTAL_CNT
+		FROM (
+			SELECT F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
+				   , LIGHT_TYPE
+				   , COALESCE((CASE WHEN STAND_CD = '01' THEN 1 END), 0) AS CNT_1
+				   , COALESCE((CASE WHEN STAND_CD = '02' THEN 1 END), 0) AS CNT_2
+				   , COALESCE((CASE WHEN STAND_CD = '03' THEN 1 END), 0) AS CNT_3
+				   , COALESCE((CASE WHEN STAND_CD = '04' THEN 1 END), 0) AS CNT_4
+				   , COALESCE((CASE WHEN STAND_CD = '05' THEN 1 END), 0) AS CNT_5
+				   , COALESCE((CASE WHEN STAND_CD = '06' THEN 1 END), 0) AS CNT_6
+				   , COALESCE((CASE WHEN STAND_CD = '07' THEN 1 END), 0) AS CNT_7
+				   , COALESCE((CASE WHEN STAND_CD = '08' THEN 1 END), 0) AS CNT_8
+				   , COALESCE((CASE WHEN STAND_CD = '09' THEN 1 END), 0) AS CNT_9
+				   , COALESCE((CASE WHEN STAND_CD = '10' THEN 1 END), 0) AS CNT_10
+				   , COALESCE((CASE WHEN STAND_CD = '11' THEN 1 END), 0) AS CNT_11
+				   , COALESCE((CASE WHEN STAND_CD = '12' THEN 1 END), 0) AS CNT_12
+			FROM GY_LIGHT
+		) A
+		WHERE
+			1=1
+			<if test="light_type != null and light_type != '' ">
+				AND LIGHT_TYPE = #{light_type}
+			</if>
+		GROUP BY HJ_DONG_NM
+		ORDER BY HJ_DONG_NM
+	</select>
+	
+	<select id="getEquipLamp2Staitstice" parameterType="hashMap" resultType="java.util.LinkedHashMap">
+		SELECT '' AS IDX 
+					   , HJ_DONG_NM
+					   , SUM(A.CNT_1) AS "CNT_1" 
+					   , SUM(A.CNT_2) AS "CNT_2" 
+					   , SUM(A.CNT_3) AS "CNT_3" 
+					   , SUM(A.CNT_4) AS "CNT_4" 
+				       , COUNT(*) AS TOTAL_CNT
+		FROM (
+			SELECT F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
+				   , LIGHT_TYPE
+				   , COALESCE((CASE WHEN STAND_CD = '01' THEN 1 END), 0) AS CNT_1
+				   , COALESCE((CASE WHEN STAND_CD = '02' THEN 1 END), 0) AS CNT_2
+				   , COALESCE((CASE WHEN STAND_CD = '03' THEN 1 END), 0) AS CNT_3
+				   , COALESCE((CASE WHEN STAND_CD = '04' THEN 1 END), 0) AS CNT_4
+			FROM GY_LIGHT
+		) A
+		WHERE
+			1=1
+			<if test="light_type != null and light_type != '' ">
+				AND LIGHT_TYPE = #{light_type}
+			</if>
+		GROUP BY HJ_DONG_NM
+		ORDER BY HJ_DONG_NM
+	</select>
+	
+	<select id="getEquipLamp3Staitstice" parameterType="hashMap" resultType="java.util.LinkedHashMap">
+		SELECT '' AS IDX 
+					   , HJ_DONG_NM
+					   , SUM(A.CNT_1) AS "CNT_1" 
+					   , SUM(A.CNT_2) AS "CNT_2" 
+					   , SUM(A.CNT_3) AS "CNT_3" 
+					   , SUM(A.CNT_4) AS "CNT_4" 
+					   , SUM(A.CNT_5) AS "CNT_5" 
+					   , SUM(A.CNT_6) AS "CNT_6" 
+					   , SUM(A.CNT_7) AS "CNT_7" 
+					   , SUM(A.CNT_8) AS "CNT_8" 
+					   , SUM(A.CNT_9) AS "CNT_9" 
+					   , SUM(A.CNT_10) AS "CNT_10"
+				       , COUNT(*) AS TOTAL_CNT
+		FROM (
+			SELECT F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
+				   , LIGHT_TYPE
+				   , COALESCE((CASE WHEN STAND_CD = '01' THEN 1 END), 0) AS CNT_1
+				   , COALESCE((CASE WHEN STAND_CD = '02' THEN 1 END), 0) AS CNT_2
+				   , COALESCE((CASE WHEN STAND_CD = '03' THEN 1 END), 0) AS CNT_3
+				   , COALESCE((CASE WHEN STAND_CD = '04' THEN 1 END), 0) AS CNT_4
+				   , COALESCE((CASE WHEN STAND_CD = '05' THEN 1 END), 0) AS CNT_5
+				   , COALESCE((CASE WHEN STAND_CD = '06' THEN 1 END), 0) AS CNT_6
+				   , COALESCE((CASE WHEN STAND_CD = '07' THEN 1 END), 0) AS CNT_7
+				   , COALESCE((CASE WHEN STAND_CD = '08' THEN 1 END), 0) AS CNT_8
+				   , COALESCE((CASE WHEN STAND_CD = '09' THEN 1 END), 0) AS CNT_9
+				   , COALESCE((CASE WHEN STAND_CD = '10' THEN 1 END), 0) AS CNT_10
+			FROM GY_LIGHT
+		) A
+		WHERE
+			1=1
+			<if test="light_type != null and light_type != '' ">
+				AND LIGHT_TYPE = #{light_type}
+			</if>
+		GROUP BY HJ_DONG_NM
+		ORDER BY HJ_DONG_NM
+	</select>
+	
 	<update id="updateEquipment" parameterType="hashMap">
 		UPDATE GY_LIGHT
 		SET

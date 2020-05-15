@@ -1,6 +1,7 @@
 package com.spring.slight.equipment.dao;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,30 @@ public class EquipmentDao {
 	
 	public List<Map<String, Object>> getDetRepirList(CommandMap paramMap) throws Exception {
 		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getDetRepirList", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipHJStaitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipHJStaitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipStandStaitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipStandStaitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipLamp2Staitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipLamp2Staitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipLamp3Staitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipLamp3Staitstice", paramMap.getMap());
 		
 		return resultMap;
 	}

@@ -1,6 +1,9 @@
 package com.spring.slight.equipment.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +66,65 @@ public class EquipmentSerivceImpl implements EquipmentService{
 		}
 		
 		return resultData;
+	}
+	
+	
+
+	@Override
+	public List<LinkedHashMap<String, Object>> getEquipStaitstice(CommandMap paramMap) throws Exception {
+		String searchGubun = (String) paramMap.get("searchGubun");
+		List<LinkedHashMap<String, Object>> resultList = new ArrayList<LinkedHashMap<String,Object>>();
+		
+		if(searchGubun.equals("0")) {
+			resultList = equipmentDao.getEquipHJStaitstice(paramMap);
+		}
+		else if(searchGubun.equals("1")) {
+			resultList = equipmentDao.getEquipStandStaitstice(paramMap);
+		}
+		else if(searchGubun.equals("2")) {
+			resultList = equipmentDao.getEquipLamp2Staitstice(paramMap);
+		}
+		else if(searchGubun.equals("3")) {
+			resultList = equipmentDao.getEquipLamp3Staitstice(paramMap);
+		}
+		
+		LinkedHashMap<String,  Object> hjEmpty = resultList.get(0);
+		hjEmpty.put("hj_dong_nm", "기타");
+		
+		resultList.remove(0);
+		resultList.add(hjEmpty);
+		
+		LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("idx", "");
+		map.put("hj_dong_nm", "합계");
+		Iterator<String> itr = null;
+		String key = "";
+		int total = 0;
+		for(int i=0; i<resultList.size(); i++) {
+			resultList.get(i).put("idx", (i+1));
+			itr = resultList.get(i).keySet().iterator();
+			
+			while(itr.hasNext()) {
+				key = itr.next();
+				total = 0;
+				
+				if(!key.toUpperCase().equals("IDX") && !key.toUpperCase().equals("HJ_DONG_NM")) {
+					if(i == 0) {
+						total = Integer.parseInt(String.valueOf(resultList.get(i).get(key)));
+					}
+					else {
+						
+						total = Integer.parseInt(String.valueOf(resultList.get(i).get(key)))+Integer.parseInt(String.valueOf(map.get(key)));
+					}
+					
+					map.put(key, total);
+				}
+			}
+		}
+		
+		resultList.add(map);
+		
+		return resultList;
 	}
 
 	@Override

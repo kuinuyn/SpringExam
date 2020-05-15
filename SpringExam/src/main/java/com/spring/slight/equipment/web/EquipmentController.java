@@ -1,6 +1,8 @@
 package com.spring.slight.equipment.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -91,6 +93,23 @@ public class EquipmentController {
 		
 		try {
 			result = equipmentSerivce.getEquipmentDet(paramMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		mv.addObject("resultData", result);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="/getEquipStaitsticeList")
+	public ModelAndView getEquipStaitstice(HttpServletRequest request, CommandMap paramMap) {
+		ModelAndView mv = new ModelAndView();
+		List<LinkedHashMap<String, Object>> result = new ArrayList<LinkedHashMap<String, Object>>();
+		
+		try {
+			result = equipmentSerivce.getEquipStaitstice(paramMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

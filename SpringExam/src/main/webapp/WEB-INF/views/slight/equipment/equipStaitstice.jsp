@@ -10,13 +10,12 @@
 		
 		$("#searchGubun").change(function() {
 			headerNm();
+			$("#board_list4").scrollTop(0);
+			Search();
 		});
-	});
-	
-	
-	function init() {
 		
-	}
+		Search();
+	});
 	
 	function Search() {
 		$.ajax({
@@ -34,69 +33,79 @@
 	}
 	
 	function getSearchCallback(obj) {
-		var state = obj.state;
-		if(state == "SUCCESS"){
-			var data = obj.data;			
-			var list = data.list;
-			var listLen = list.length;		
-			var totalCount = data.totalCount;
-			var pagination = data.pagination;
+		var data = obj.resultData;			
+		if(data != null){
+			//var list = data.list;
+			var listLen = data.length;		
+			//var pagination = data.pagination;
 			
 			var str = "";
 			if(listLen > 0) {
 				for(i=0; i<listLen; i++) {
 					str += "<tr>";
+					for(var key in data[i]) {
+						str += "	<td><span>"+data[i][key]+"</span></td>";
+					}
+					str += "</tr>";
+					/* str += "<tr>";
 					str += "	<td><span>"+list[i].light_no+"</span></td>";
 					str += "	<td><span>"+((list[i].address.trim()=="" || list[i].address == null)?"":list[i].address)+"</span></td>";
 					str += "	<td><span>"+list[i].new_address+"</span></td>";
 					str += "	<td><span>"+list[i].stand_nm+"</span> </td>";
 					str += "	<td><span>"+list[i].lamp1_nm+"</span> </td>";
 					str += "	<td><span>"+list[i].lamp2_nm+"</span> </td>";
-					str += "</tr>";
+					str += "</tr>"; */
 				}
 			}
 			else {
-				str += "<tr>";
+				/* str += "<tr>";
 				str += "	<td colspan='6'><span>등록된 글이 존재하지 않습니다.</span></td>";
-				str += "</tr>";
+				str += "</tr>"; */
 			}
 			
 			$("#tbody").html(str);
-			$("#pagination").html(pagination);
+			//$("#pagination").html(pagination);
 		}
 	}
 	
 	function headerNm() {
 		var searchGubun = $("#searchGubun").val();
+		var title = "";
 		
 		if(searchGubun == 0) {
 			$("#thead").empty();
 			$("#headerGroup").empty();
+			title = "읍면별 현황";
 			
-			$("#thead").html("<th>번호</th><th>구분</th><th>등주</th><th>신설</th><th>이설</th><th>합계</th>");
+			$("#thead").html("<th>번호</th><th>구분</th><th>등주</th><th>신설</th><th>이설</th><th>철거</th>");
 			$("#headerGroup").html("<col width='10%'><col width='18%'><col width='18%'><col width='18%'><col width='18%'><col width='18%'>");
 		}
 		else if(searchGubun == 1) {
 			$("#thead").empty();
 			$("#headerGroup").empty();
+			title = "설치형태별 현황";
 			
-			$("#thead").html("<th>번호</th><th>구분</th><th>한전주</th><th>건축물</th><th>통신주</th><th>보조인입주</th><th>합계</th>")
-			$("#headerGroup").html("<col width='10%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'>");
+			$("#thead").html("<th>번호</th><th>구분</th><th>한전주</th><th>강관주</th><th>테파주</th><th>기타주</th><th>벽부등</th><th>터널주</th><th>팔각주</th><th>통신주</th><th>스텐주</th><th>촐주</th><th>주물주</th><th>주철주</th><th>합계</th>")
+			$("#headerGroup").html("<col width='7%'><col width='15%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'>");
 		}
 		else if(searchGubun == 2) {
 			$("#thead").empty();
 			$("#headerGroup").empty();
+			title = "광원별 현황";
 			
-			$("#thead").html("<th>번호</th><th>구분</th><th>나트륨</th><th>메탈</th><th>LED</th><th>UCD</th><th>CDM</th><th>삼파장</th><th>합계</th>");
-			$("#headerGroup").html("<col width='10%'><col width='13%'><col width='11%'><col width='11%'><col width='11%'><col width='11%'><col width='11%'><col width='11%'><col width='11%'>");
+			$("#thead").html("<th>번호</th><th>구분</th><th>나트륨</th><th>CDM</th><th>무전극</th><th>LED</th><th>합계</th>");
+			$("#headerGroup").html("<col width='10%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'>");
 		}
 		else if(searchGubun == 3) {
 			$("#thead").empty();
 			$("#headerGroup").empty();
+			title = "소비전력별 현황";
 			
-			$("#thead").html("<th>번호</th><th>구분</th><th>25W</th><th>50W</th><th>70W</th><th>250W</th><th>합계</th>");
-			$("#headerGroup").html("<col width='10%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'><col width='15%'>");
+			$("#thead").html("<th>번호</th><th>구분</th><th>25W</th><th>40W</th><th>50W</th><th>60W</th><th>70W</th><th>80W</th><th>100W</th><th>120W</th><th>150W</th><th>250W</th><th>합계</th>");
+			$("#headerGroup").html("<col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'><col width='7%'>");
 		}
+		
+		$(".black05").text(title);
 	}
 	
 	function openTab(ele, num) {
@@ -104,9 +113,37 @@
 		var nodes = ele.childNodes;
 		nodes.item(0).setAttribute('class', 'tab_on');
 		
-		if(num != 0) {
-			$("#lightType").val(num);
+		var title = "";
+		if(num < 4) {
+			$(".btn_gray03").show();
+			if(num != 0) {
+				$("#light_type").val(num);
+			}
+			else {
+				$("#light_type").val('');
+			}
+			$("#search_box").css("display", "block");
+			$("#board_list4").attr("style", "overflow-y: auto; display: block;");
+			$("#board_list").css("display", "none");
+			$(".b_right").css("display", "block");
+			
+			$('#searchGubun').trigger("change");
 		}
+		else if(num == 4) {
+			$(".black05").text("민원신고내역");
+			$("#search_box").css("display", "none");
+			$("#board_list4").css("display", "none");
+			$("#board_list").css("display", "none");
+			$(".b_right").css("display", "block");
+		}
+		else if(num == 5) {
+			$(".black05").text("엑셀 다운로드");
+			$("#search_box").css("display", "none");
+			$("#board_list4").css("display", "none");
+			$("#board_list").css("display", "block");
+			$(".b_right").css("display", "none");
+		}
+		
 	}
 </script>
 <div id="container">
@@ -144,17 +181,17 @@
 		<!-- 탭메뉴 -->
 			<div id="list_tab2">
 				<ul>
-					<li onclick="openTab(this, 0)"><a href="#"  class="tab_on">전체</a></li>
+					<li onclick="openTab(this, '')"><a href="#"  class="tab_on">전체</a></li>
 					<li onclick="openTab(this, 1)"><a href="#" >보안등</a></li>
 					<li onclick="openTab(this, 2)"><a href="#" >가로등</a></li>
 					<li onclick="openTab(this, 3)"><a href="#" >분전함</a></li>
-					<li onclick="openTab(this, 0)"><a href="#" >민원신고내역</a></li>
-					<li onclick="openTab(this, 0)"><a href="#" >엑셀다운로드</a></li>
+					<li onclick="openTab(this, 4)"><a href="#" >민원신고내역</a></li>
+					<li onclick="openTab(this, 5)"><a href="#" >엑셀다운로드</a></li>
 				</ul>
 			</div>
 		<!-- 검색박스 -->
 		<form id="slightForm" name="slightForm" method="post">
-			<input type="hidden" id="lightType" name="lightType">
+			<input type="hidden" id="light_type" name="light_type">
 			
 			<div id="search_box">
 				<ul>
@@ -172,10 +209,50 @@
 		</form>
 		<div id="toptxt">
 			<ul>
-				<li><span class="black05">전체 동별 현황</span></li>
+				<li><span class="black05">읍면별 현황</span></li>
 				<li class="b_right"><span ><a href="#" class="btn_gray03">엑셀 다운로드</a></span></li>
 			</ul>
 		</div>
+		<div id="board_list" style="display:none;">
+			<table summary=" 현황목록" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col width="70%">
+					<col width="30%">
+				</colgroup>
+				
+				<tbody>
+					<tr>
+						<td class="ex_title"><span>전체현황</span></td>
+						<td class="ex_down"><a onclick="modal_popup4('messagePop4');return false;" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+					<tr>
+						<td class="ex_title"><span>보안등현황</span></td>
+						<td class="ex_down"><a href="#" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+					<tr>
+						<td class="ex_title"><span>가로등현황</span></td>
+						<td class="ex_down"><a href="#" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+					<tr>
+						<td class="ex_title"><span>분전함현황</span></td>
+						<td class="ex_down"><a href="#" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+					<tr>
+						<td class="ex_title"><span>자재입/출고내역</span></td>
+						<td class="ex_down"><a href="#" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+					<tr>
+						<td class="ex_title"><span>보수처리내역</span></td>
+						<td class="ex_down"><a href="#" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+					<tr>
+						<td class="ex_title"><span>자재사용현황</span></td>
+						<td class="ex_down"><a href="#" class="downbtn">DOWNLOAD</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
 		<div id="board_list4" style="overflow-y:auto;">
 			<!-- 가로등관리 리스트 -->
 			<table summary="현황목록" cellpadding="0" cellspacing="0">
@@ -201,7 +278,96 @@
 				</tbody>
 			</table>
 		</div>
-		<div id="pagination">
+		<!-- <div id="pagination">
+		</div> -->
+	</div>
+</div>
+
+<!--엑셀다운로드 Popup-->
+<div class="modal-popup4">
+	<div class="bg"></div>
+	<div id="messagePop4" class="pop-layer3">
+		<div class="pop-container">
+			<div class="pop-conts">
+				<div class="btn-r">
+					<a href="#" class="cbtn"><i class="fa fa-times" aria-hidden="true"></i><span class="hide">Close</span></a>
+				</div>
+				<div class="pop_system">
+					<div id="board_view3">
+						<h3>엑셀다운로드</h3>
+						<table  cellpadding="0" cellspacing="0">
+							<colgroup>
+								<col width="27%">
+								<col width="73%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>행정동</th>
+									<td>
+										<span class="">
+											<select class="sel06" id="" name="">
+											</select>
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<th>빌링등록상태</th>
+									<td>
+										<span class="">
+											<select id="" name="" class="sel06">
+											<option selected>전체</option>
+											<option value="Y">등록</option>
+											<option value="N">미등록</option>
+											</select>
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<th>시설현황</th>
+									<td>
+										<p>
+											<span class="">
+												<select class="sel06" id="" name="">
+												</select>
+											</span>
+											<span class="">
+												<select class="sel03" id="" name="">
+												</select>
+											</span>
+										</p>
+										<p>
+											<span class="">
+												<select class="sel03" id="" name="">
+												</select>
+											</span>
+											<span class="">
+												<select class="sel03" id="" name="">
+												</select>
+											</span>
+										</p>
+										<p>
+											<span class="">
+												<select class="sel03" id="" name="">
+												</select>
+											</span>
+											<span class="">
+												<select class="sel03" id="" name="">
+												</select>
+											</span>
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" class="bnone">
+										<a href="#"  class="btn_sky03"><span class="">엑셀다운로드</span></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+<!--//엑셀다운로드_Popup-->

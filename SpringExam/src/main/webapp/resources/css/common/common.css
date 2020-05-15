@@ -243,6 +243,11 @@ background-color: #fff;font-weight:bold;cursor: pointer;}
 a:hover.btn_sky02{padding: 0 15px;color:#fff;border:solid 1px #247ad5;line-height:28px;height:30px;
 background-color: #247ad5;font-weight:bold;cursor: pointer}
 
+a.btn_sky03 span{float:right;padding:5px 15px;;text-align:center;margin:10px 0px 0px 7px;color:#fff;border:solid 1px #418cdb;
+background-color: #4b96e6;font-weight:bold;overflow:hidden; cursor: pointer;}
+a:hover.btn_sky03 span{padding:5px 15px;;text-align:center;margin:10px 0px 0px 7px;;color:#fff;
+border:solid 1px #2074ce;background-color: #247bd7;font-weight:bold;overflow:hidden; cursor: pointer;}
+
 a.btn_blue p{width:250px;height:30px;line-height:30px;text-align:center;margin:10px 20px;border:solid 1px #77829d;color:#fff;
 background-color: #818ca5;font-weight:bold;overflow:hidden; cursor: pointer;}
 a:hover.btn_blue p{width:250px;height:30px;line-height:30px;text-align:center;margin:10px 20px;border:solid 1px #69748c;color:#fff;

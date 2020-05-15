@@ -58,11 +58,14 @@ function modal_popup2(el){
         }else{
             temp.fadeOut();
         }
+        
+        $(this).scrollTop(0);
         e.preventDefault();
     });
 
     $('.modal-popup2 .bg').click(function(e){  //배경을 클릭하면 레이어를 사라지게 하는 이벤트 핸들러
         $('.modal-popup2').fadeOut();
+        $(this).scrollTop(0);
         e.preventDefault();
     });
 
