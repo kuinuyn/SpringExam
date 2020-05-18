@@ -6,14 +6,14 @@
 	$(function(){
 		var searchArea = "${param.par_hj_dong}";
 		var pageNo = "${param.current_page_no}";
-		var repairCd = "${param.repair_cd}";
+		var lightGubun = "${param.light_gubun}";
 		var paramSDate = "${param.sDate}";
 		var paramEDate = "${param.eDate}";
 		
-		//drawCodeData(리스트, 코드타입, 태그이름, 태그ID, 모드, 현재선택코드)
-		drawCodeData(commonCd, "14", "select", "ALL", "", repairCd).then(function(resolvedData) {
-			$("#repair_cd").empty();
-			$("#repair_cd").append(resolvedData);
+		//drawCodeData(리스트, 코드타입, 태그이름, 모드, 현재선택코드)
+		drawCodeData(commonCd, "13", "select", "ALL", lightGubun).then(function(resolvedData) {
+			$("#light_gubun").empty();
+			$("#light_gubun").append(resolvedData);
 			
 		})
 		.then(function() {
@@ -229,7 +229,7 @@
 						<input type="text" id="eDate" name="eDate" class="tbox02">
 					</li>
 					<li class="pdl10">
-						<select class="sel01" id="repair_cd" name="repair_cd">
+						<select class="sel01" id="light_gubun" name="light_gubun">
 						</select>
 					</li>
 					<li>

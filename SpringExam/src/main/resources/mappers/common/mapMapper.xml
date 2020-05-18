@@ -34,7 +34,9 @@
 			coalesce(z.lamp1_cd, '') as lamp1_cd,
 			coalesce(bdj, '') as bdj,
 			coalesce(up_lighter, '') as up_lighter, 
-			coalesce(z.light_gubun, '') as light_gubun
+			coalesce(z.light_gubun, '') as light_gubun,
+			coalesce(kepco_cd, '') as kepco_cd, 
+			coalesce(z.use_light, '') as use_light
 			  from (select light_type,
 			               light_no,
 			               pole_no,
@@ -52,7 +54,9 @@
 			               lamp1_cd,
 			               bdj,
 			               up_lighter,
-			               light_gubun
+			               light_gubun,
+			               use_light,
+			               kepco_cd
 			          from gy_light
 			<if test="dgubun != null and dgubun == 1 ">
 				where light_gubun in ('1','2','3')
@@ -63,14 +67,14 @@
 					AND elec_no != 'gumi'	
 				</if>
 				<if test="keytype == 1 ">
-					<if test="searchGubun == 'new' ">
+					<!-- <if test="searchGubun == 'new' ">
 						and new_address like '%'||#{dongNm}||'%'
 					</if>
 					<if test="searchGubun != 'new' ">
 						<if test="area != null or area != '' ">
 							AND hj_dong_cd = #{area}
 						</if>
-					</if>
+					</if> -->
 					<if test="area2 != null and area2 != '00' ">
 						AND hj_dong_cd = #{area2}
 					</if>

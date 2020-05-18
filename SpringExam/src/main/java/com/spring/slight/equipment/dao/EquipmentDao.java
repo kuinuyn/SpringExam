@@ -34,6 +34,10 @@ public class EquipmentDao {
 		return resultMap;
 	}
 	
+	public int getChkLightNo(CommandMap paramMap) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".getChkLightNo", paramMap.getMap());
+	}
+	
 	public List<Map<String, Object>> getDetRepirList(CommandMap paramMap) throws Exception {
 		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getDetRepirList", paramMap.getMap());
 		
@@ -42,5 +46,17 @@ public class EquipmentDao {
 	
 	public int updateEquipment(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateEquipment", paramMap.getMap());
+	}
+	
+	public int insertGisEquipment(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".insertGisEquipment", paramMap.getMap());
+	}
+	
+	public int updateGisEquipment(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateGisEquipment", paramMap.getMap());
+	}
+	
+	public int deleteEquipment(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".deleteEquipment", paramMap.getMap());
 	}
 }

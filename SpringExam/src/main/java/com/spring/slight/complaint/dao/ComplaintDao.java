@@ -30,4 +30,16 @@ public class ComplaintDao {
 		Map<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getComplaintDetail", paramMap.getMap());
 		return resultMap;
 	}
+	
+	public String getComplaintRoleChk(CommandMap paramMap) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".getComplaintRoleChk", paramMap.getMap());
+	}
+	
+	public int updateComplaint(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateComplaint", paramMap.getMap());
+	}
+	
+	public List<Map<String, Object>> getComplaintStatisCnt(CommandMap paramMap) throws Exception {
+		return sqlSession.selectList(NAMESPACE+".getComplaintStatisCnt", paramMap.getMap());
+	}
 }

@@ -52,7 +52,7 @@
 			SELECT T1.*
 			FROM (
 				SELECT A.*,
-					F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM,
+					F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS LIGHT_GUBUN_NM,
 					F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM,
 					F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM,
 					F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM,
@@ -113,7 +113,7 @@
 	<select id="getEquipmentDet" parameterType="hashMap" resultType="hashMap">
 		SELECT A.*
 					   , CASE WHEN twin_light = 'Y' THEN '예' ELSE '아니오' END AS twin_light_nm
-					   , F_GY_DATA_CODE_NM('05', MGMT_NO) AS MGMT_NM
+					   , F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS LIGHT_GUBUN_NM
 					   , F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
 					   , F_GY_DATA_CODE_NM('06', BJ_DONG_CD) AS BJ_DONG_NM
 					   , F_GY_DATA_CODE_NM('08', STAND_CD) AS STAND_NM
@@ -129,6 +129,7 @@
 		FROM GY_LIGHT A
 		WHERE
 			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
 			<if test="par_hj_dong != null and par_hj_dong != '' ">
 				AND HJ_DONG_CD = #{par_hj_dong}
 			</if>
@@ -148,6 +149,13 @@
 		ORDER BY A.REPAIR_NO DESC
 	</select>
 	
+	<select id="getChkLightNo" parameterType="hashMap" resultType="Int">
+		SELECT COUNT(*) AS CNT
+		FROM GY_LIGHT
+		WHERE
+			TRIM(LIGHT_NO) = TRIM(#{light_no})
+	</select>
+	
 	<update id="updateEquipment" parameterType="hashMap">
 		UPDATE GY_LIGHT
 		SET
@@ -157,7 +165,7 @@
 			, DOYEP_NO = #{doyep_no}
 			, BDJ = #{bdj}
 			, POLE_NO = #{pole_no}
-			, LAMP1_GUBUN = #{lamp1_gubun}
+			, LIGHT_GUBUN = #{light_gubun}
 			, TWIN_LIGHT = #{twin_light}
 			, LAMP1_CD = #{lamp1_cd}
 			, LAMP1_CD2 = #{lamp1_cd2}
@@ -174,7 +182,50 @@
 			, USE_LIGHT = #{use_light}
 			, ADDRESS = #{address}
 			, NEW_ADDRESS = #{new_address}
+			, LAST_UPDATE = TO_CHAR(now(), 'yyyy-mm-dd')
 		WHERE
 			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
 	</update>
+	
+	<update id="deleteEquipment" parameterType="hashMap">
+		UPDATE GY_LIGHT
+		SET
+			LIGHT_GUBUN = '9'
+			, LAST_UPDATE = now()
+		WHERE
+			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
+	</update>
+	
+	<update id="updateGisEquipment" parameterType="hashMap">
+		UPDATE GY_LIGHT
+		SET
+			HJ_DONG_CD = #{hj_dong_cd}
+			, POLE_NO = #{pole_no}
+			, LAMP2_CD = #{lamp2_cd}
+			, LAMP3_CD = #{lamp3_cd}
+			, KEPCO_CUST_NO = #{kepco_cust_no}
+			, KEPCO_CD = #{kepco_cd}
+			, USE_LIGHT = #{use_light}
+			, ADDRESS = #{address}
+			, NEW_ADDRESS = #{new_address}
+			, LAST_UPDATE = now()
+		WHERE
+			LIGHT_NO = #{light_no}
+			AND LIGHT_TYPE = #{light_type}
+	</update>
+	
+	<insert id="insertGisEquipment" parameterType="hashMap">
+		INSERT INTO GY_LIGHT (
+			LIGHT_NO, LIGHT_TYPE, HJ_DONG_CD, LIGHT_GUBUN, LAMP2_CD
+			, LAMP3_CD, POLE_NO, KEPCO_CUST_NO, KEPCO_CD, USE_LIGHT
+			, MAP_X_POS_GL, MAP_Y_POS_GL, ADDRESS, NEW_ADDRESS
+		)
+		VALUES (
+			#{light_no}, #{light_type}, #{hj_dong_cd}, '1', #{lamp2_cd}
+			, #{lamp3_cd}, #{pole_no}, #{kepco_cust_no}, #{kepco_cd}, #{use_light}
+			, #{mapPosX}, #{mapPosY}, #{address}, #{new_address}
+		)
+	</insert>
 </mapper>

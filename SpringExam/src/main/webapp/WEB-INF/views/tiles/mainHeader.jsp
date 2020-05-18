@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/common/main.css'/>" />
+<sec:authentication var="principal" property="principal" />
 <script type="text/javascript">
 
 $(document).ready(function() {
+	$("#user_id").keypress(function (e) {
+		if (e.which == 13){
+			$("#pw").focus();  // 실행할 이벤트
+		}
+	});
 	$("#pw").keypress(function (e) {
 		if (e.which == 13){
-			document.loginForm.submit();  // 실행할 이벤트
+			loginProcess();  // 실행할 이벤트
 		}
 	});
 	
@@ -201,12 +207,21 @@ function loginPopup() {
 			<div id="navi">
 			<h2 class="hide">메뉴</h2>
 				<ul>
-					<li id="main_menu1" class=""><a href="#" >고장신고</a></li>
-					<li id="main_menu2" class=""><a href="#" >민원처리결과조회</a></li>
-					<li id="main_menu3" class=""><a href="#" >기본정보관리</a></li>
-					<li id="main_menu4" class=""><a href="#" >보수이력관리</a></li>
-					<li id="main_menu5" class=""><a href="#" >보수내역관리</a></li>
-					<li id="main_menu7" class=""><a href="#" >이용안내</a></li>
+						<li id="main_menu1" class=""><a href="#" >고장신고</a></li>
+						<li id="main_menu2" class=""><a href="#" >민원처리결과조회</a></li>
+					<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+						<li id="main_menu3" class=""><a href="#" >기본정보관리</a></li>
+						<li id="main_menu4" class=""><a href="#" >보수이력관리</a></li>
+						<li id="main_menu5" class=""><a href="#" >보수내역관리</a></li>
+						<li id="main_menu7" class=""><a href="#" >이용안내</a></li>
+					</sec:authorize>
+					<sec:authorize access="hasAnyRole('ROLE_USER')">
+						<li id="main_menu4" class=""><a href="#" >보수내역관리</a></li>
+						<li id="main_menu5" class=""><a href="#" >이용안내</a></li>
+					</sec:authorize>
+					<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS')">
+						<li id="main_menu4" class=""><a href="#" >이용안내</a></li>
+					</sec:authorize>
 				</ul>
 			</div> 
 			<sec:authorize access="isAnonymous()">
@@ -234,38 +249,65 @@ function loginPopup() {
 				<li><a href="/complaint/complaintList">민원처리결과조회</a></li>
 			</ul>
 			
-			<!-- 기본정보관리소메뉴-->
-			<ul class="smenu03 " >
-				<li><a href="/equipment/securityLightList">보안등관리</a></li>
-				<li><a href="/equipment/streetLightList">가로등관리</a></li>
-				<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
-				<li><a href="#">GIS관리</a></li>
-				<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
-				<li><a href="/system/systemMemberList">사용자관리</a></li>
-			</ul>
-			
-			<!-- 보수이력관리 -->
-			<ul class="smenu04 " >
-				<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-				<li><a href="#" >신설현황</a></li>
-				<li><a href="#">이설현황</a></li>
-				<li><a href="#" >철거현황</a></li>
-				<li><a href="#">자재관리</a></li>
-				<li><a href="#" >자재입/출고관리</a></li>
-			</ul>
+			<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+				<!-- 기본정보관리소메뉴-->
+				<ul class="smenu03 " >
+					<li><a href="/equipment/securityLightList">보안등관리</a></li>
+					<li><a href="/equipment/streetLightList">가로등관리</a></li>
+					<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
+					<li><a href="/equipment/gisLightList">GIS관리</a></li>
+					<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
+					<li><a href="/system/systemMemberList">사용자관리</a></li>
+				</ul>
+				
+				<!-- 보수이력관리 -->
+				<ul class="smenu04 " >
+					<li><a href="/repair/systemRepairList">보수이력관리</a></li>
+					<li><a href="#" >신설현황</a></li>
+					<li><a href="#">이설현황</a></li>
+					<li><a href="#" >철거현황</a></li>
+					<li><a href="#">자재관리</a></li>
+					<li><a href="#" >자재입/출고관리</a></li>
+				</ul>
+	
+				<!-- 보수내역관리 -->
+				<ul class="smenu05 " >
+					<li><a href="/company/companyRepair">보수내역입력</a></li>
+					<li><a href="/company/companyInfo" >정보변경</a></li>
+				</ul>
+				
+				<!-- 이용안내 -->
+				<ul class="smenu07 " >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+			</sec:authorize>
+				
+			<sec:authorize access="hasAnyRole('ROLE_USER')">
+				<!-- 보수내역관리 -->
+				<ul class="smenu04" >
+					<li><a href="/company/companyRepair">보수내역입력</a></li>
+					<li><a href="/company/companyInfo" >정보변경</a></li>
+				</ul>
+				
+				<!-- 이용안내 -->
+				<ul class="smenu05" >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+				
+			</sec:authorize>
 
-			<!-- 보수내역관리 -->
-			<ul class="smenu05 " >
-				<li><a href="/company/companyRepair">보수내역입력</a></li>
-				<li><a href="/company/companyInfo" >정보변경</a></li>
-			</ul>
-			
-			<!-- 이용안내 -->
-			<ul class="smenu07 " >
-				<li><a href="#">서비스 안내</a></li>
-				<li><a href="#">자료실</a></li>
-				<li><a href="#" >공지사항</a></li>
-			</ul>
+			<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS')">
+				<!-- 이용안내 -->
+				<ul class="smenu04 " >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+			</sec:authorize>
 		</div>
 	</div>
 	<!-- // 소메뉴 영역-->
@@ -286,7 +328,7 @@ function loginPopup() {
 					<form name='loginForm' action='/loginProcess' method='POST'>
 						<p><input type="text" name="user_id" id="user_id" class="tbox04" placeholder="아이디"></p>
 						<p><input type="password" name="pw" id="pw" class="tbox04" placeholder="비밀번호"></p>	
-						<p><a href="javascript:loginForm.submit()" class="btn_login">로그인</a></p>	
+						<p><a href="javascript:loginProcess()" class="btn_login">로그인</a></p>	
 					</form>
 					<p class="txt_btm">- 아이디와 비밀번호를 입력 하신 후 로그인 버튼을 누르세요.<BR>
 - 보수업체는 보수업체 아이디와 비밀번호를 입력하신 후 로그인 하세요.</p>

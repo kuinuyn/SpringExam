@@ -459,3 +459,45 @@ function isDate(str) {
 		
 		return chk;
 	}
+	
+	function formatContactNumber(str) {
+		if(str.length > 0) {
+			if(str.length < 10 && str.length > 11) {
+				alert("연락처가 정확하지 않습니다.");
+				
+				return;
+			}
+			else {
+				if(str.length == 10) {
+					str = str.substring(0, 3)+"-"+str.substring(3, 6)+"-"+str.substring(7, 10);
+				}
+				else if(str.length == 11) {
+					str = str.substring(0, 3)+"-"+str.substring(3, 7)+"-"+str.substring(7, 11);
+				}
+			}
+		}
+		
+		return str;
+	}
+
+	function loginProcess() {
+		var chk = true;
+		
+		if($("#user_id").val() == "" || $("#user_id").val() == null) {
+			alert("아이디를 입력하세요.");
+			$("#user_id").focus();
+			chk = false;
+		}
+		
+		if(chk) {
+			if($("#pw").val() == "" || $("#pw").val() == null) {
+				alert("비밀번호를 입력하세요.");
+				$("#pw").focus();
+				chk = false;
+			}
+		}
+		
+		if(chk) {
+			document.loginForm.submit();
+		}
+	}

@@ -24,6 +24,10 @@ public class FileDao {
 		return sqlSession.update(NAMESPACE+".deleteFiles", vo);
 	}
 	
+	public int deleteFile(FilesVO vo) throws Exception {
+		return sqlSession.update(NAMESPACE+".deleteFile", vo);
+	}
+	
 	public int insertFiles(FilesVO vo) throws Exception {
 		return sqlSession.insert(NAMESPACE+".insertFiles", vo);
 	}

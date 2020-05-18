@@ -42,7 +42,7 @@ public class MapServiceImpl implements MapService {
 							.concat((String) list.get(i).get("lamp2_cd")).concat("|").concat((String) list.get(i).get("lamp3_cd")).concat("|").concat((String) list.get(i).get("auto_jum_type1_cd")).concat("|")
 							.concat((String) list.get(i).get("lamp1_cd")).concat("|").concat((String) list.get(i).get("bdj")).concat("|").concat((String) list.get(i).get("new_address")).concat("|")
 							.concat((String) list.get(i).get("up_lighter")).concat("|").concat((String) list.get(i).get("light_type")).concat("|").concat((String) list.get(i).get("kepco_cust_no")).concat("|")
-							.concat((String) list.get(i).get("hj_dong_cd"));
+							.concat((String) list.get(i).get("hj_dong_cd")).concat("|").concat((String) list.get(i).get("kepco_cd")).concat("|").concat((String) list.get(i).get("use_light")).concat("|");
 				}
 				else {
 					rstData = i+"|".concat((String) list.get(i).get("light_no")).concat("|").concat((String) list.get(i).get("address")).concat("|").concat((String) list.get(i).get("map_x_pos")).concat("|")
@@ -50,7 +50,7 @@ public class MapServiceImpl implements MapService {
 							.concat((String) list.get(i).get("lamp2_cd")).concat("|").concat((String) list.get(i).get("lamp3_cd")).concat("|").concat((String) list.get(i).get("auto_jum_type1_cd")).concat("|")
 							.concat((String) list.get(i).get("lamp1_cd")).concat("|").concat((String) list.get(i).get("bdj")).concat("|").concat((String) list.get(i).get("new_address")).concat("|")
 							.concat((String) list.get(i).get("up_lighter")).concat("|").concat((String) list.get(i).get("light_type")).concat("|").concat((String) list.get(i).get("kepco_cust_no")).concat("|")
-							.concat((String) list.get(i).get("hj_dong_cd"));
+							.concat((String) list.get(i).get("hj_dong_cd")).concat("|").concat((String) list.get(i).get("kepco_cd")).concat("|").concat((String) list.get(i).get("use_light")).concat("|");
 				}
 			}
 			
