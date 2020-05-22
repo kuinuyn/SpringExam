@@ -287,11 +287,187 @@
 		ORDER BY HJ_DONG_NM
 	</select>
 	
+	<select id="getComplaintList" resultType="java.util.LinkedHashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT A.REPAIR_NO
+						   , F_GY_DATA_CODE_NM('14', A.REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS LIGHT_GUBUN
+						   , F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NM
+						   , A.LIGHT_NO
+						   , A.LOCATION
+						   , A.NOTICE_NAME
+						   , CASE WHEN A.inform_method = '03'
+						   				THEN A.PHONE
+						   				WHEN A.inform_method = '01'
+						   				THEN A.MOBILE
+						   				WHEN A.inform_method = '02'
+						   				THEN A.EMAIL
+						   				WHEN A.inform_method = '04'
+						   				THEN ''
+						   	END AS CONTACT
+						   , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS PROGRESS_STATUS
+						   , COALESCE(C.MEMBER_NAME, '') AS MEMBER_NAME
+				FROM GY_LIGHT_REPAIR A
+				LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B
+				ON A.REPAIR_NO = B.REPAIR_NO
+				LEFT OUTER JOIN GY_MEMBER C
+				ON B.COMPANY_ID = C.MEMBER_ID
+				WHERE 1=1
+		]]>
+				<if test="sDate != null and sDate != '' and eDate != null and eDate != '' ">
+					AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate}
+				</if>
+				<if test="light_gubun != null and light_gubun != '' ">
+					AND A.LIGHT_GUBUN = #{light_gubun}	
+				</if>
+				<if test="repair_cd != null and repair_cd != '' ">
+					AND A.REPAIR_CD = #{repair_cd}	
+				</if>
+				<if test="searchType != null and searchType != '' ">
+					<choose>
+						<when test="searchType == 1">
+							AND A.NOTICE_NAME LIKE '%'||#{keyword}||'%'
+						</when>
+						<when test="searchType == 2">
+							AND A.LOCATION LIKE '%'||#{keyword}||'%'
+						</when>
+						<when test="searchType == 3">
+							AND A.LIGHT_NO LIKE '%'||#{keyword}||'%'
+						</when>
+						<when test="searchType == 4">
+							AND A.TROUBLE_CD = #{trouble_cd}
+						</when>
+						<when test="searchType == 5">
+							AND A.PROGRESS_STATUS = #{progress_status}
+						</when>
+					</choose>
+				</if>
+		<![CDATA[
+			ORDER BY A.REPAIR_NO DESC
+		]]>
+	</select>
+	
+	<select id="getCompanyId" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT A.MEMBER_ID AS DATA_CODE, A.MEMBER_NAME AS DATA_CODE_NAME
+				FROM GY_MEMBER A
+				WHERE
+					A.GRADE = '03'
+		]]>
+				<if test="searchYear != null and searchYear != '' ">
+					AND A.YEAR = #{searchYear}
+				</if>
+		<![CDATA[
+			ORDER BY A.MEMBER_ID DESC
+		]]>
+	</select>
+	
+	<select id="getLightList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT LIGHT_NO AS "관리번호",
+					ADDRESS AS "주소",
+					NEW_ADDRESS AS "새주소",
+					POLE_NO AS "인입주", 
+					BDJ AS "변대주",
+					SET_YMD AS "설치년도",
+					MAP_X_POS_GL AS "X좌표",
+					MAP_Y_POS_GL AS "Y좌표",
+					F_GY_DATA_CODE_NM('13', LIGHT_TYPE) AS "등종류",
+					F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS "등상태",
+					F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS "행정동",
+					F_GY_DATA_CODE_NM('08', STAND_CD) AS "지지방식",
+					F_GY_DATA_CODE_NM('09', LAMP1_CD) AS "등기구형태",
+					F_GY_DATA_CODE_NM('10', LAMP2_CD) AS "광원종류",
+					F_GY_DATA_CODE_NM('11', LAMP3_CD) AS "광원용량",
+					KEPCO_CUST_NO AS "한전고객번호",
+					F_GY_DATA_CODE_NM('15', ONOFF_CD) AS "점멸기"
+				FROM GY_LIGHT A
+				WHERE
+					1=1
+			]]>
+					<if test="excelLightType != null and excelLightType != '' ">
+						AND A.LIGHT_TYPE = #{excelLightType}	
+					</if>
+					<if test="hj_dong_cd != null and hj_dong_cd != '' ">
+						AND A.HJ_DONG_CD = #{hj_dong_cd}	
+					</if>
+					<if test="stand_cd != null and stand_cd != '' ">
+						AND STAND_CD = #{stand_cd}
+					</if>
+					<if test="lamp1_cd != null and lamp1_cd != '' ">
+						AND LAMP1_CD = #{lamp1_cd}
+					</if>
+					<if test="lamp2_cd != null and lamp2_cd != '' ">
+						AND LAMP2_CD = #{lamp2_cd}
+					</if>
+					<if test="lamp3_cd != null and lamp3_cd != '' ">
+						AND LAMP3_CD = #{lamp3_cd}
+					</if>
+					<if test="onoff_cd != null and onoff_cd != '' ">
+						AND ONOFF_CD = #{onoff_cd}
+					</if>
+					<choose>
+						<when test='kepco_cd != null and kepco_cd == "Y".toString() '>
+							AND (KEPCO_CUST_NO IS NOT NULL AND KEPCO_CUST_NO != '' AND KEPCO_CUST_NO != '0')
+						</when>
+						<when test='kepco_cd != null and kepco_cd == "N".toString() '>
+							AND (KEPCO_CUST_NO IS NULL OR KEPCO_CUST_NO = '')
+						</when>
+					</choose>
+			<![CDATA[
+				ORDER BY LIGHT_NO
+			]]>
+	</select>
+	
+	<select id="getRepairList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT
+				A.REPAIR_NO AS "접수번호"
+				, A.LIGHT_NO AS "관리번호"
+				, F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS "등구분"
+				, F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS "처리현황"
+				, F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NAME
+				, F_GY_DATA_CODE_NM('06', A.DONG) AS "행정동"
+				, COALESCE(B.REPAIR_DESC, '') AS "작업비고"
+				, COALESCE(TO_CHAR(LAST_UPDATE, 'YYYY-MM-DD'), '') AS "최종등록일"
+			FROM GY_LIGHT_REPAIR  A
+						LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B
+						ON A.REPAIR_NO=B.REPAIR_NO
+				WHERE 1=1
+		]]>
+				<choose>
+					<when test='gubun != null and gubun == "period".toString() '>
+						AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate3} AND #{eDate3}
+					</when>
+					<when test='gubun != null and gubun == "company".toString() '>
+						AND B.COMPANY_ID = #{company_id2}
+					</when>
+				</choose>
+		<![CDATA[		
+			ORDER BY A.REPAIR_NO DESC
+		]]>
+	</select>
+	
+	<select id="getMaterialUseList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			
+		]]>
+		<![CDATA[
+			
+		]]>
+	</select>
+	
+	<select id="getMaterialList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			
+		]]>
+	</select>
+	
 	<update id="updateEquipment" parameterType="hashMap">
 		UPDATE GY_LIGHT
 		SET
 			OLD_LIGHT_NO = #{old_light_no}
 			, HJ_DONG_CD = #{hj_dong_cd}
+			, LIGHT_TYPE = #{light_type}
 			, MGMT_NO = #{mgmt_no}
 			, DOYEP_NO = #{doyep_no}
 			, BDJ = #{bdj}
@@ -316,7 +492,6 @@
 			, LAST_UPDATE = TO_CHAR(now(), 'yyyy-mm-dd')
 		WHERE
 			LIGHT_NO = #{light_no}
-			AND LIGHT_TYPE = #{light_type}
 	</update>
 	
 	<update id="deleteEquipment" parameterType="hashMap">
@@ -333,6 +508,9 @@
 		UPDATE GY_LIGHT
 		SET
 			HJ_DONG_CD = #{hj_dong_cd}
+			, LIGHT_TYPE = #{light_type}
+			, MAP_X_POS_GL = #{mapPosX}
+			, MAP_Y_POS_GL = #{mapPosY}
 			, POLE_NO = #{pole_no}
 			, LAMP2_CD = #{lamp2_cd}
 			, LAMP3_CD = #{lamp3_cd}
@@ -344,7 +522,6 @@
 			, LAST_UPDATE = now()
 		WHERE
 			LIGHT_NO = #{light_no}
-			AND LIGHT_TYPE = #{light_type}
 	</update>
 	
 	<insert id="insertGisEquipment" parameterType="hashMap">

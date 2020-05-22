@@ -73,56 +73,107 @@ public class EquipmentSerivceImpl implements EquipmentService{
 	@Override
 	public List<LinkedHashMap<String, Object>> getEquipStaitstice(CommandMap paramMap) throws Exception {
 		String searchGubun = (String) paramMap.get("searchGubun");
+		String tabGun = (String) paramMap.get("tabGubun");
 		List<LinkedHashMap<String, Object>> resultList = new ArrayList<LinkedHashMap<String,Object>>();
+		LinkedHashMap<String,  Object> hjEmpty = new LinkedHashMap<String, Object>();
 		
-		if(searchGubun.equals("0")) {
-			resultList = equipmentDao.getEquipHJStaitstice(paramMap);
-		}
-		else if(searchGubun.equals("1")) {
-			resultList = equipmentDao.getEquipStandStaitstice(paramMap);
-		}
-		else if(searchGubun.equals("2")) {
-			resultList = equipmentDao.getEquipLamp2Staitstice(paramMap);
-		}
-		else if(searchGubun.equals("3")) {
-			resultList = equipmentDao.getEquipLamp3Staitstice(paramMap);
-		}
-		
-		LinkedHashMap<String,  Object> hjEmpty = resultList.get(0);
-		hjEmpty.put("hj_dong_nm", "기타");
-		
-		resultList.remove(0);
-		resultList.add(hjEmpty);
-		
-		LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("idx", "");
-		map.put("hj_dong_nm", "합계");
-		Iterator<String> itr = null;
-		String key = "";
-		int total = 0;
-		for(int i=0; i<resultList.size(); i++) {
-			resultList.get(i).put("idx", (i+1));
-			itr = resultList.get(i).keySet().iterator();
+		if("RIGHT".equals(tabGun)) {
+			if(searchGubun.equals("0")) {
+				resultList = equipmentDao.getEquipHJStaitstice(paramMap);
+			}
+			else if(searchGubun.equals("1")) {
+				resultList = equipmentDao.getEquipStandStaitstice(paramMap);
+			}
+			else if(searchGubun.equals("2")) {
+				resultList = equipmentDao.getEquipLamp2Staitstice(paramMap);
+			}
+			else if(searchGubun.equals("3")) {
+				resultList = equipmentDao.getEquipLamp3Staitstice(paramMap);
+			}
 			
-			while(itr.hasNext()) {
-				key = itr.next();
-				total = 0;
+			hjEmpty = resultList.get(0);
+			hjEmpty.put("hj_dong_nm", "기타");
+			
+			resultList.remove(0);
+			resultList.add(hjEmpty);
+			
+			LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+			map.put("idx", "");
+			map.put("hj_dong_nm", "합계");
+			Iterator<String> itr = null;
+			String key = "";
+			int total = 0;
+			for(int i=0; i<resultList.size(); i++) {
+				resultList.get(i).put("idx", String.valueOf((i+1)));
+				itr = resultList.get(i).keySet().iterator();
 				
-				if(!key.toUpperCase().equals("IDX") && !key.toUpperCase().equals("HJ_DONG_NM")) {
-					if(i == 0) {
-						total = Integer.parseInt(String.valueOf(resultList.get(i).get(key)));
-					}
-					else {
-						
-						total = Integer.parseInt(String.valueOf(resultList.get(i).get(key)))+Integer.parseInt(String.valueOf(map.get(key)));
-					}
+				while(itr.hasNext()) {
+					key = itr.next();
+					total = 0;
 					
-					map.put(key, total);
+					if(!key.toUpperCase().equals("IDX") && !key.toUpperCase().equals("HJ_DONG_NM")) {
+						if(i == 0) {
+							total = Integer.parseInt(String.valueOf(resultList.get(i).get(key)));
+						}
+						else {
+							
+							total = Integer.parseInt(String.valueOf(resultList.get(i).get(key)))+Integer.parseInt(String.valueOf(map.get(key)));
+						}
+						
+						map.put(key, total);
+					}
 				}
 			}
+			
+			resultList.add(map);
+		}
+		else if("REPAIR".equals(tabGun)) {
+			resultList = equipmentDao.getComplaintList(paramMap);
 		}
 		
-		resultList.add(map);
+		return resultList;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getCompanyId(CommandMap paramMap) throws Exception {
+		return equipmentDao.getCompanyId(paramMap);
+	}
+	
+	@Override
+	public List<Map<String, Object>> excelListDownLoad(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		String excelGubun = (String) paramMap.get("excelGubun");
+		int idx = 0;
+		
+		if("LIGHT".equals(excelGubun)) {
+			resultList = equipmentDao.getLightList(paramMap);
+			
+			for(Map<String, Object> resultMap : resultList) {
+				resultMap.put("순번", ++idx);
+			}
+			
+		}
+		else if("REPAIR".equals(excelGubun)) {
+			resultList = equipmentDao.getRepairList(paramMap);
+			
+			for(Map<String, Object> resultMap : resultList) {
+				resultMap.put("순번", ++idx);
+			}
+		}
+		else if("USE".equals(excelGubun)) {
+			resultList = equipmentDao.getMaterialUseList(paramMap);
+			
+			for(Map<String, Object> resultMap : resultList) {
+				resultMap.put("순번", ++idx);
+			}
+		}
+		else {
+			resultList = equipmentDao.getMaterialList(paramMap);
+			
+			for(Map<String, Object> resultMap : resultList) {
+				resultMap.put("순번", ++idx);
+			}
+		}
 		
 		return resultList;
 	}

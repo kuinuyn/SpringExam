@@ -2,7 +2,6 @@ package com.spring.slight.complaint.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +90,11 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Override
 	public int updateComplaint(CommandMap paramMap) throws Exception {
 		return complaintDao.updateComplaint(paramMap);
+	}
+
+	@Override
+	public int deleteComplaint(CommandMap paramMap) throws Exception {
+		return complaintDao.deleteComplaint(paramMap);
 	}
 	
 }

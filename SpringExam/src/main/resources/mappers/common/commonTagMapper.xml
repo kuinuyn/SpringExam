@@ -7,6 +7,7 @@
 						, code_type_name
 						, data_code
 						, data_code_name
+						, year
 		FROM GY_CODE
 		WHERE
 			1=1

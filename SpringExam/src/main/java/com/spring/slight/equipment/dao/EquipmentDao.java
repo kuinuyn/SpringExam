@@ -69,6 +69,36 @@ public class EquipmentDao {
 		return resultMap;
 	}
 	
+	public List<LinkedHashMap<String, Object>> getComplaintList(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getComplaintList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getCompanyId(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getCompanyId", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getLightList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getLightList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getMaterialList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getMaterialList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getRepairList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getRepairList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getMaterialUseList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getMaterialUseList", paramMap.getMap());
+		return resultList;
+	}
+	
 	public int updateEquipment(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateEquipment", paramMap.getMap());
 	}

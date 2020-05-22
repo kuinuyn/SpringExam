@@ -222,6 +222,7 @@ function chkSession() {
 			<!--  고장신고 소메뉴-->
 			<ul class="smenu01" >
 				<li><a href="/trouble/trblReportList">고장신고</a></li>
+				<li><a href="/trouble/trblCreateList">기타사항</a></li>
 			</ul>
 			 
 			<!--  민원처리 소메뉴 -->

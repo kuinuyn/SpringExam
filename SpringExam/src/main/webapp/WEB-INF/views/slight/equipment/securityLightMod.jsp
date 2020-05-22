@@ -7,6 +7,7 @@
 		var searchAreaStr = "";
 		//drawCodeData(리스트, 코드타입, 태그이름, 모드, 현재선택코드)
 		drawCodeData(commonCd, "05", "select", "").then(function(resolvedData) {
+			//등사용구분
 			$("#light_gubun").empty();
 			$("#light_gubun").append(resolvedData);
 			
@@ -15,18 +16,21 @@
 		})
 		.then(function() {
 			drawCodeData(commonCd, "06", "select", "", "${param.par_hj_dong}").then(function(resolvedData) {
+				//행정동
 				$("#hj_dong_cd").empty();
 				$("#hj_dong_cd").append(resolvedData);
 			})
 		})
 		.then(function() {
 			drawCodeData(commonCd, "08", "select", "").then(function(resolvedData) {
+				//지지방식
 				$("#stand_cd").empty();
 				$("#stand_cd").append(resolvedData);
 			})
 		})
 		.then(function() {
 			drawCodeData(commonCd, "09", "select", "").then(function(resolvedData) {
+				//등기구모형
 				$("#lamp1_cd").empty();
 				$("#lamp1_cd").append(resolvedData);
 				$("#lamp1_cd2").empty();
@@ -35,6 +39,7 @@
 		})
 		.then(function() {
 			drawCodeData(commonCd, "10", "select", "").then(function(resolvedData) {
+				//광원종류
 				$("#lamp2_cd").empty();
 				$("#lamp2_cd").append(resolvedData);
 				$("#lamp2_cd2").empty();
@@ -43,6 +48,7 @@
 		})
 		.then(function() {
 			drawCodeData(commonCd, "11", "select", "").then(function(resolvedData) {
+				//광원용량
 				$("#lamp3_cd").empty();
 				$("#lamp3_cd").append(resolvedData);
 				$("#lamp3_cd2").empty();
@@ -57,18 +63,20 @@
 		}) */
 		.then(function() {
 			drawCodeData(commonCd, "15", "select", "").then(function(resolvedData) {
+				//스위치종류
 				$("#onoff_cd").empty();
 				$("#onoff_cd").append(resolvedData);
 			})
 		})
 		.then(function() {
 			drawCodeData(commonCd, "16", "select", "").then(function(resolvedData) {
+				//작업진행현황
 				$("#work_cd").empty();
 				$("#work_cd").append(resolvedData);
 			})
 		})
 		.then(function() {
-			drawCodeData(commonCd, "29", "select", "").then(function(resolvedData) {
+			drawCodeData(commonCd, "12", "select", "").then(function(resolvedData) {
 				$("#auto_jum_type1_cd").empty();
 				$("#auto_jum_type1_cd").append(resolvedData);
 			})

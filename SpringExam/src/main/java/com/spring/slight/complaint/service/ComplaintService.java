@@ -10,4 +10,5 @@ public interface ComplaintService {
 	public Map<String, Object> getComplaintDetail(CommandMap paramMap) throws Exception;
 	public String getComplaintRoleChk(CommandMap paramMap) throws Exception;
 	public int updateComplaint(CommandMap paramMap) throws Exception;
+	public int deleteComplaint(CommandMap paramMap) throws Exception;
 }

@@ -18,4 +18,6 @@ public interface EquipmentService {
 	public int saveGisEquipment(CommandMap paramMap) throws Exception;
 	public int deleteEquipment(CommandMap paramMap) throws Exception;
 	public List<Map<String, Object>> getEquipmentExcelList(CommandMap paramMap) throws Exception;
+	public List<Map<String, Object>> getCompanyId(CommandMap paramMap) throws Exception;
+	public List<Map<String, Object>> excelListDownLoad(CommandMap paramMap) throws Exception;
 }

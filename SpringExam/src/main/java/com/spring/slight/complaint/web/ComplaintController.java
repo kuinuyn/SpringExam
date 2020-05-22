@@ -86,6 +86,25 @@ public class ComplaintController {
 		return resultPage;
 	}
 	
+	@RequestMapping(value="/deleteComplaint")
+	public String deleteComplaint(HttpServletRequest request, Model model, CommandMap paramMap) {
+		String resultMsg = "";
+		int cnt = 0;
+		
+		try {
+			cnt = complaintService.deleteComplaint(paramMap);
+		} catch (Exception e) {
+			cnt = -1;
+			resultMsg = "관리자에게 문의하세요.";
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("resultMsg", resultMsg);
+		model.addAttribute("resultCnt", cnt);
+		
+		return "jsonView";
+	}
+	
 	@RequestMapping(value="/getComplaintDetail")
 	public ModelAndView getComplaintDetail(HttpServletRequest reuqest, CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();
