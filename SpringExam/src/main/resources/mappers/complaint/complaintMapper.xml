@@ -42,7 +42,11 @@
 			SELECT T1.*
 			FROM (
 				SELECT REPAIR_NO
-							   , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS LIGHT_GUBUN
+							   , CASE WHEN REPAIR_CD = '6' THEN '신설'||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN)
+							   				WHEN REPAIR_CD = '7' THEN '이설'||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN)
+							   				WHEN REPAIR_CD = '8' THEN '철거'||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN)
+							   				ELSE F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) 
+							   				END AS LIGHT_GUBUN
 							   , LIGHT_NO
 							   , NOTICE_NAME
 							   , CASE WHEN inform_method = '03'
@@ -111,7 +115,12 @@
 	<select id="getComplaintDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 			SELECT REPAIR_NO
-						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
+						   , CASE WHEN REPAIR_CD = '6' THEN '신설'
+									    WHEN REPAIR_CD = '7' THEN '이설'
+									    WHEN REPAIR_CD = '8' THEN '철거'
+									    ELSE F_GY_DATA_CODE_NM('14', REPAIR_CD) 
+									    END AS LIGHT_GUBUN
+						   , REPAIR_CD
 						   , LIGHT_NO
 						   , NOTICE_NAME
 						   , PASSWORD
@@ -182,4 +191,9 @@
 			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}, #{repair_date}
 		)
 	</insert>
+	
+	<delete id="deleteComplaint" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_REPAIR
+		WHERE REPAIR_NO = #{repair_no}
+	</delete>
 </mapper>

@@ -23,21 +23,9 @@
 	var lightGubunlDefault;
 	
 	$(function(){
-		drawCodeData(commonCd, "01", "select", "").then(function(resolvedData) {
-			$("#trouble_cd").empty();
-			$("#trouble_cd").append(resolvedData);
-		})
-		.then(function (){
-			drawCodeData(commonCd, "13", "select", "").then(function(resolvedData) {
-				$("#light_gubun").empty();
-				$("#light_gubun").append(resolvedData);
-			})
-		})
-		.then(function (){
-			drawCodeData(commonCd, "14", "select", "").then(function(resolvedData) {
-				$("#repair_cd").empty();
-				$("#repair_cd").append(resolvedData);
-			})
+		drawCodeData(commonCd, "13", "select", "").then(function(resolvedData) {
+			$("#light_gubun").empty();
+			$("#light_gubun").append(resolvedData);
 		})
 		.then(function (){
 			if(lightNo != null && lightNo != "") {
@@ -56,6 +44,20 @@
 		$( '#light_gubun' ).change(function() {
 			if($("#light_no").val() != null && $("#light_no").val() != "") {
 				$(this)[0].selectedIndex = lightGubunlDefault;
+			}
+		});
+		
+		$( '#repair_cd' ).change(function() {
+			if($( '#repair_cd' ).val() == "6") {
+				$("#light_no").val('');
+				$("#address").attr("readonly", false);
+				$("#address").css('background-color', '');
+				$("#light_no").next().hide();
+				$("#light_no").next().next().hide();
+			}
+			else {
+				$("#light_no").next().show();
+				$("#light_no").next().next().show();
 			}
 		});
 		
@@ -142,12 +144,6 @@
 		if($("#password").val() == "" || $("#password").val() == null) {
 			alert("비밀번호를 입력하세요");
 			$("#password").focus();
-			return;
-		}
-		
-		if($("#trouble_cd").val() == "" || $("#trouble_cd").val() == null) {
-			alert("고장상태를 선택하세요");
-			$("#trouble_cd").focus();
 			return;
 		}
 		
@@ -357,7 +353,7 @@
 						<li><a href="#">이용안내</a></li>
 					</ul>
 				</li>
-				<li><a href="#">고장신고  <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
+				<li><a href="#">기타사항  <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
 						<li><a href="/trouble/trblReportList">고장신고</a></li>
 						<li><a href="/trouble/trblCreateList">기타사항</a></li>
@@ -392,6 +388,10 @@
 							<th>신고종류</th>
 							<td>
 								<select class="sel01" id="repair_cd" name="repair_cd">
+									<option value="">선택</option>
+									<option value="6">신설</option>
+									<option value="7">이설</option>
+									<option value="8">철거</option>
 								</select>
 							</td>
 						</tr>
@@ -428,13 +428,6 @@
 							<th height="28">이메일</th>
 							<td>
 								<input name="email" type="text" class="tbox03" id="email" size="35">
-							</td>
-						</tr>
-						<tr>
-							<th>고장상태</th>
-							<td>
-								<select class="sel02" name="trouble_cd" size="1" id="trouble_cd">
-								</select>
 							</td>
 						</tr>
 						<tr>

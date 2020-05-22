@@ -83,7 +83,7 @@
 				FROM GY_LIGHT_REPAIR A
 				WHERE
 					A.REPAIR_NO = #{repairNo}	
-				ORDER BY A.LIGHT_NO
+				ORDER BY A.REPAIR_NO
 			]]>
 	</select>
 	
@@ -115,7 +115,7 @@
 						AND A.REPAIR_CD = #{repair_cd}	
 					</if>
 			<![CDATA[
-				ORDER BY A.LIGHT_NO
+				ORDER BY A.REPAIR_NO
 		]]>
 	</select>
 	

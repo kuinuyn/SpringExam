@@ -45,6 +45,12 @@
 			}
 		});
 		
+		$("#password").keypress(function (e) {
+			if (e.which == 13){
+				getComplaintDet();  // 실행할 이벤트
+			}
+		});
+		
 		$("#searchType").change(function() {
 			var searchType = $(this).val();
 			
@@ -249,6 +255,21 @@
 		fnNm();
 	}
 	
+	function chkComplaint(flag) {
+		if($("#password").val() == null || $("#password").val() == "") {
+			alert("비밀번호를 입력하세요.");
+			
+			return;
+		}
+		
+		if(flag == "D") {
+			deleteComplaint();
+		}
+		else {
+			$("#detailForm").attr({action:'/complaint/complaintDet'}).submit();
+		}
+	}
+	
 	function getComplaintDet() {
 		<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS','ROLE_USER')">
 			if($("#password").val() == null || $("#password").val() == "") {
@@ -256,9 +277,15 @@
 				
 				return;
 			}
+			else {
+				$("#detailForm").attr({action:'/complaint/complaintDet'}).submit();
+			}
 		</sec:authorize>
-		$("#detailForm").attr({action:'/complaint/complaintDet'}).submit();
+		<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+			$("#detailForm").attr({action:'/complaint/complaintDet'}).submit();
+		</sec:authorize>
 	}
+	
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -459,7 +486,6 @@
 					</div>
 					<div id="btn">
 						<p>
-						<span><a href="#" class="btn_gray02"> 삭제</a></span>
 						<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 							<span><a href="#" onclick="javascript:getComplaintDet()" class="btn_gray02">수정</a></span>
 						</sec:authorize>

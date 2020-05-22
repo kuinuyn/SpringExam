@@ -10,7 +10,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -75,41 +79,52 @@ public class FileDownloadUtil extends AbstractView{
 	/**
 	 * 엑셀 워크북 객체로 생성
 	 */
-	public SXSSFWorkbook makeSimpleExcelWorkbook(List<Map<String, Object>> list, String[] headerNm) {
+	public SXSSFWorkbook makeSimpleExcelWorkbook(List<?> list, String[] headerNm) {
 		SXSSFWorkbook workbook = new SXSSFWorkbook();
 		
 		//시트생성
 		SXSSFSheet sheet = workbook.createSheet();
+		CellStyle style = workbook.createCellStyle();
+		//테두리 선 (우,좌,위,아래)
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderBottom(BorderStyle.THIN);
+		
+		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		
 		//행 생성
 		int row = 0;
-		Row headerRow = sheet.createRow(row);
+		Row headerRow = sheet.createRow(row++);
 		Cell headerCell = null;
 		
 		Row bodyRow = null;
 		Cell bodyCell = null;
 		String val = "";
+		for(int j=0; j<headerNm.length; j++) {
+			headerCell = headerRow.createCell(j);
+			headerCell.setCellValue(headerNm[j]);
+			headerCell.setCellStyle(style);
+		}
+		
+		style = workbook.createCellStyle();
+		//테두리 선 (우,좌,위,아래)
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderBottom(BorderStyle.THIN);
+		
 		for(int i=0; i<list.size(); i++) {
-			row++;
 			for(int j=0; j<headerNm.length; j++) {
 				if(j == 0) {
-					bodyRow = sheet.createRow(row);
+					bodyRow = sheet.createRow(row++);
 				}
 				
-				if(i == 0) {
-					headerCell = headerRow.createCell(j);
-					headerCell.setCellValue(headerNm[j]);
-					
-					bodyCell = bodyRow.createCell(j);
-					val = String.valueOf(list.get(i).get(headerNm[j]));
-					bodyCell.setCellValue(val);
-				}
-				else {
-					
-					bodyCell = bodyRow.createCell(j);
-					val = String.valueOf(list.get(i).get(headerNm[j]));
-					bodyCell.setCellValue(val);
-				}
+				bodyCell = bodyRow.createCell(j);
+				val = String.valueOf(((Map<String, Object>) list.get(i)).get(headerNm[j]));
+				bodyCell.setCellValue(val);
+				bodyCell.setCellStyle(style);
 			}
 		}
 		

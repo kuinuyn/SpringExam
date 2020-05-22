@@ -35,11 +35,15 @@ public class ComplaintDao {
 		return sqlSession.selectOne(NAMESPACE+".getComplaintRoleChk", paramMap.getMap());
 	}
 	
+	public List<Map<String, Object>> getComplaintStatisCnt(CommandMap paramMap) throws Exception {
+		return sqlSession.selectList(NAMESPACE+".getComplaintStatisCnt", paramMap.getMap());
+	}
+	
 	public int updateComplaint(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateComplaint", paramMap.getMap());
 	}
 	
-	public List<Map<String, Object>> getComplaintStatisCnt(CommandMap paramMap) throws Exception {
-		return sqlSession.selectList(NAMESPACE+".getComplaintStatisCnt", paramMap.getMap());
+	public int deleteComplaint(CommandMap paramMap) throws Exception {
+		return sqlSession.delete(NAMESPACE+".deleteComplaint", paramMap.getMap());
 	}
 }

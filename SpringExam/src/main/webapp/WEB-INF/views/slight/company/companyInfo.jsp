@@ -4,10 +4,10 @@
 	var commonCd = ${MAXRESULT};
 	
 	$(function() {
-		areaTag("${searchYearList}");
+		areaTag();
 	});
 	
-	function areaTag(searchYearList) {
+	function areaTag() {
 		var list = commonCd;
 		var listCnt = list.length;
 		var restr = "<p>";
@@ -215,7 +215,7 @@
 								<span>
 								<select id="year" name="year" class="sel01">
 									<c:forEach items="${searchYearList}" var="year">
-										<option value="${year.year }">${year.year }년</option>
+										<option value="${year }">${year }년</option>
 									</c:forEach>
 								</select>
 								</span>

@@ -238,10 +238,17 @@
 			$("#light_no").prop("readonly", false);
 			$("#light_no").removeClass("tbox11_grey");
 			$("#light_no").addClass("tbox11");
-			alert("지도내에 원하는 위치를 마우스로 클릭하세요.");
 		}else{
+			if($("#light_no").val() == "" || $("#light_no").val() == null) {
+				alert("수정대상을 선택하세요.");
+				
+				return;
+			}
+			
 			slightForm.flag.value = "U";
 		}
+		
+		alert("지도내에 원하는 위치를 마우스로 클릭하세요.");
 		
 		changeMapInfo();
 		
@@ -391,7 +398,7 @@
 		</div>
 	</div>
 
-	<div id="sub">
+	<div id="sub" style="padding-top: 130px;">
 		<div id="s_map">
 			<!-- <img src="/resources/css/images/sub/map.gif" class="mapbg"> -->
 			<iframe id="gisMap" name="gisMap" src="/common/map/mapContentDaum2" style="width: 100%;height:840px;" class="mapbg"></iframe>
@@ -518,7 +525,7 @@
 						<div id="btm_gisbtn">
 							<ul>
 								<li><a href="javascript:onNewPos('I')" class="gisbtn01">신규등록</a></li>
-								<!-- <li><a href="#" class="gisbtn02">위치정보 등록 및 수정</a></li> -->
+								<li><a href="javascript:onNewPos('')" class="gisbtn02">위치정보 등록 및 수정</a></li>
 								<li><a href="#" class="gisbtn03">보안등 이력관리</a></li>
 							</ul>
 						</div>

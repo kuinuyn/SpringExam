@@ -37,12 +37,6 @@
 			})
 		})
 		.then(function (){
-			drawCodeData(commonCd, "14", "select", "").then(function(resolvedData) {
-				$("#repair_cd").empty();
-				$("#repair_cd").append(resolvedData);
-			})
-		})
-		.then(function (){
 			$('input:radio[name=inform_method][value='+inform_method+']').prop("checked", true);
 		})
 		.then(function (){
@@ -83,9 +77,11 @@
 		}
 		
 		if($("#trouble_cd").val() == "" || $("#trouble_cd").val() == null) {
-			alert("고장상태를 선택하세요");
-			$("#trouble_cd").focus();
-			return;
+			if($("#repair_cd").val() < 6) {
+				alert("고장상태를 선택하세요");
+				$("#trouble_cd").focus();
+				return;
+			}
 		}
 		
 		var inform_method = $('input:radio[name=inform_method]:checked').val();
@@ -140,6 +136,26 @@
 		}
 	}
 	
+	function Delete() {
+		if(confirm("삭제하시겠습니까?")) {
+			$.ajax({
+				type : "POST"			
+				, url : "/complaint/deleteComplaint"
+				, data : $("#slightForm").serialize()
+				, dataType : "JSON"
+				, success : function(obj) {
+					if(obj.resultCnt > -1) {
+						alert("삭제 되었습니다.");
+						goToList();
+					}
+				}
+				, error : function(xhr, status, error) {
+					alert("실패하였습니다.");
+				}
+			});
+		}
+	}
+	
 	function goToList() {
 		var frm = document.slightForm;
 		frm.action = '/complaint/complaintList';
@@ -176,6 +192,7 @@
 			<input type="hidden" name="dong" id="dong">
 			<input type="hidden" name="repair_no" id="repair_no" value="${resultMap.repair_no }">
 			<input type="hidden" name="light_no" id="light_no" value="${resultMap.light_no }">
+			<input type="hidden" name="repair_cd" id="repair_cd" value="${resultMap.repair_cd }">
 			<div id="board_view2">
 				<table summary="고장신고목록" cellpadding="0" cellspacing="0">
 					<colgroup>
@@ -244,8 +261,10 @@
 							</td>
 							<th>고장상태</th>
 							<td>
-								<select class="sel02" name="trouble_cd" size="1" id="trouble_cd">
-								</select>
+								<c:if test="${resultMap.repair_cd < '6'}">
+									<select class="sel02" name="trouble_cd" size="1" id="trouble_cd" >
+									</select>
+								</c:if>
 							</td>
 						</tr>
 						<tr>
@@ -267,6 +286,7 @@
 			<div id="btn2">
 				<p>
 					<span ><a href="javascript:Save()" class="btn_blue">수정</a></span>
+					<span><a href="javascript:Delete()"  class="btn_gray">삭제</a></span>
 					<span><a href="javascript:goToList()"  class="btn_gray">목록으로</a></span>
 				</p>
 			</div>

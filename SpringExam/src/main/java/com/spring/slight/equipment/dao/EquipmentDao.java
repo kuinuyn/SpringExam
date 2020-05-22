@@ -1,6 +1,7 @@
 package com.spring.slight.equipment.dao;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,60 @@ public class EquipmentDao {
 		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getDetRepirList", paramMap.getMap());
 		
 		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipHJStaitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipHJStaitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipStandStaitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipStandStaitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipLamp2Staitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipLamp2Staitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getEquipLamp3Staitstice(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipLamp3Staitstice", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
+	public List<LinkedHashMap<String, Object>> getComplaintList(CommandMap paramMap) throws Exception {
+		List<LinkedHashMap<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getComplaintList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getCompanyId(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getCompanyId", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getLightList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getLightList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getMaterialList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getMaterialList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getRepairList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getRepairList", paramMap.getMap());
+		return resultList;
+	}
+	
+	public List<Map<String, Object>> getMaterialUseList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getMaterialUseList", paramMap.getMap());
+		return resultList;
 	}
 	
 	public int updateEquipment(CommandMap paramMap) throws Exception {

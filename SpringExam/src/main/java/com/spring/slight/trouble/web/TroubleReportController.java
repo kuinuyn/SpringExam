@@ -23,6 +23,11 @@ public class TroubleReportController {
 		return "slight/trouble/report/trblReportList";
 	}
 	
+	@RequestMapping("/trblCreateList")
+	public String trblCreateList (HttpServletRequest rquest, CommandMap map) {
+		return "slight/trouble/report/trblCreateList";
+	}
+	
 	@RequestMapping(value="/insertTrobleReport", method = RequestMethod.POST)
 	public ModelAndView insertTrobleReport(CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();
