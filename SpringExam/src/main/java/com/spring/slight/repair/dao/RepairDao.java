@@ -17,6 +17,14 @@ public class RepairDao {
 	@Resource(name="sqlSessionGumi")
 	private SqlSession sqlSession;
 	
+	public List<Map<String, Object>>getSystemRepairSearchCom() throws Exception {
+		return sqlSession.selectList(NAMESPACE+".getSystemRepairSearchCom");
+	}
+	
+	public List<Map<String, Object>>getSystemRepairSearchYear() throws Exception {
+		return sqlSession.selectList(NAMESPACE+".getSystemRepairSearchYear");
+	}	
+	
 	public int getSystemRepairCnt(CommandMap paramMap) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+".getSystemRepairCnt", paramMap.getMap());
 	}
@@ -35,4 +43,24 @@ public class RepairDao {
 		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getSystemRepairExcelList", paramMap.getMap());
 		return resultList;
 	}
+	
+	public int updateRepair(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateRepair", paramMap.getMap());
+	}
+	
+	public int updateRepairPart(CommandMap paramMap) throws Exception {
+		int cnt = sqlSession.update(NAMESPACE+".updateRepairPart", paramMap.getMap());
+		
+		return cnt;
+	}
+	
+	public int insertRepairPart(CommandMap paramMap) throws Exception {
+		int cnt = sqlSession.update(NAMESPACE+".insertRepairPart", paramMap.getMap());
+		
+		return cnt;
+	}
+		
+	public int updateRepairCancel(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateRepairCancel", paramMap.getMap());
+	}	
 }

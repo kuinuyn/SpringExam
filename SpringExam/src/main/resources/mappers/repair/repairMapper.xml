@@ -20,7 +20,8 @@
 	
 	<select id="getSystemRepairList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-			SELECT T1.*
+			SELECT * FROM 
+			(SELECT T1.*, B.COMPANY_ID
 			FROM (
 				SELECT REPAIR_NO
 							   , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS LIGHT_GUBUN
@@ -39,6 +40,7 @@
 							   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
 							   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
 							   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+							   , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS PROGRESS_NAME							   
 							   , PROGRESS_STATUS
 					FROM GY_LIGHT_REPAIR A
 				WHERE
@@ -53,15 +55,40 @@
 					<if test="repair_cd != null and repair_cd != '' ">
 						AND A.REPAIR_CD = #{repair_cd}	
 					</if>
+					<if test="searchType != null and searchType != '' ">
+						<choose>
+							<when test="searchType == 1">
+								AND NOTICE_NAME LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 2">
+								AND LOCATION LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 3">
+								AND NEW_ADDRESS LIKE '%'||#{keyword}||'%'
+							</when>
+							<when test="searchType == 4">
+								AND LIGHT_NO LIKE '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</if>
 			<![CDATA[
 				ORDER BY A.REPAIR_NO DESC
 			) T1
+			LEFT OUTER JOIN GY_LIGHT_REPAIR_PART AS B  ON T1.REPAIR_NO = B.REPAIR_NO ) A
+			]]>			
+					<if test="searchType != null and searchType != '' ">
+						<choose>
+							<when test="searchType == 5">
+								WHERE COMPANY_ID LIKE '%'||#{searchCom}||'%'
+							</when>						
+						</choose>
+					</if>	
 			LIMIT #{limit} OFFSET #{offset}
-		]]>
 	</select>
 	
 	<select id="getSystemRepairDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
+<<<<<<< HEAD
 			SELECT REPAIR_NO
 						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
 						   , LIGHT_NO
@@ -84,9 +111,76 @@
 				WHERE
 					A.REPAIR_NO = #{repairNo}	
 				ORDER BY A.REPAIR_NO
+=======
+				SELECT A.REPAIR_NO AS REPAIR_NO,
+				       F_GY_DATA_CODE_NM('14', A.REPAIR_CD) AS LIGHT_GUBUN ,
+				       A.LIGHT_NO AS LIGHT_NO,
+				       A.NOTICE_NAME AS NOTICE_NAME,
+				       CASE
+					         WHEN A.inform_method = '03' THEN A.PHONE
+					         WHEN A.inform_method = '01' THEN A.MOBILE
+					         WHEN A.inform_method = '02' THEN A.EMAIL
+					         WHEN A.inform_method = '04' THEN ''
+				       END AS CONTACT ,
+				       TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE ,
+				       TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE ,
+				       TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE ,
+				       F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NM ,
+				       A.PROGRESS_STATUS AS PROGRESS_STATUS ,
+				       B.REPAIR_NO AS REPAIR_NO1
+  				FROM GY_LIGHT_REPAIR A
+  				LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B ON A.REPAIR_NO = B.REPAIR_NO
+ 				WHERE A.REPAIR_NO = #{repairNo}
+>>>>>>> refs/remotes/origin/200512
 			]]>
 	</select>
 	
+	<select id="getSystemRepairExcelList1" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			  SELECT A.*
+			  FROM (SELECT A.REPAIR_NO AS "접수번호" ,
+			               A.REPAIR_CD ,
+			               F_GY_DATA_CODE_NM('14', A.REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS "민원종류" ,
+			               COALESCE(A.LIGHT_NO, '') AS "관리번호" ,
+			               COALESCE(A.NOTICE_NAME, '') AS "신고인" ,
+			               COALESCE(A.LOCATION, '') AS "지번주소",
+			               COALESCE((SELECT NEW_ADDRESS
+			                          FROM GY_LIGHT
+			                         WHERE LIGHT_NO = A.LIGHT_NO), '') AS "도로명주소" ,               
+			               CASE
+			                 WHEN inform_method = '03' THEN PHONE
+			                 WHEN inform_method = '01' THEN MOBILE
+			                 WHEN inform_method = '02' THEN EMAIL
+			                 WHEN inform_method = '04' THEN ''
+			               END AS "전화번호" ,               
+					       TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS "접수일" ,
+			       		   TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS "지시일" ,
+					       TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS "보수일" ,
+			               (SELECT DATA_CODE_NAME
+			                  FROM GY_CODE
+			                 WHERE CODE_TYPE ='01'
+			                   AND DATA_CODE = A.TROUBLE_CD)||'/'||COALESCE(A.TROUBLE_DETAIL, '') AS "고장상태" , 
+			               A.PROGRESS_STATUS, 
+			               (SELECT DATA_CODE_NAME
+			                  FROM GY_CODE
+			                 WHERE CODE_TYPE = '03'
+			                   AND PROGRESS_STATUS = DATA_CODE) AS "처리상황" ,
+			               (SELECT COM_NAME
+			                  FROM GY_MEMBER
+			                 WHERE MEMBER_ID = B.COMPANY_ID) AS "시공업체" ,
+			               B.REPAIR_DESC AS "수리내역"                 
+	          FROM GY_LIGHT_REPAIR A LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B ON A.REPAIR_NO = B.REPAIR_NO
+	          WHERE A.PROGRESS_STATUS = '04'
+			]]>
+			<if test="repair_cd != null and repair_cd != '' ">
+				AND A.REPAIR_CD = #{repair_cd}	
+			</if>
+			<![CDATA[	          
+	            AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} AND #{eDate} 
+	          ORDER BY A.REPAIR_NO) A 
+			]]>	          		
+	</select>
+
 	<select id="getSystemRepairExcelList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 				SELECT REPAIR_NO AS "접수번호"
@@ -106,6 +200,7 @@
 							   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS "지시일"
 							   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS "보수일"
 							   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
+							   , PROGRESS_STATUS
 							   , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS "처리상황"
 					FROM GY_LIGHT_REPAIR A
 				WHERE
@@ -132,4 +227,61 @@
 			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}, #{repair_date}
 		)
 	</insert>
+	
+	<select id="getSystemRepairSearchCom" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT MEMBER_ID, PASSWORD, MEMBER_NAME, PHONE,
+					  MOBILE, EMAIL, GRADE, AREA, COM_NAME, COM_CEO, 
+					  COM_ADDR, COM_BID, BID_RATE, CHK_SMS, SMS_STIME, 
+					  SMS_ETIME, YEAR 
+			   FROM GY_MEMBER
+			  WHERE GRADE = '03' 
+			    AND LOGIN_YN = 'Y'
+		]]>
+	</select>
+	
+	<select id="getSystemRepairSearchYear" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT A.YEAR
+			 FROM GY_MEMBER A
+			 GROUP BY A.YEAR
+			 ORDER BY 
+			 	A.YEAR DESC
+		]]>
+	</select>
+	
+	<update id="updateRepair" parameterType="hashMap">
+        UPDATE GY_LIGHT_REPAIR 
+        SET
+            PROGRESS_STATUS = '02'
+        	, REMARK_ETC = #{remark_etc} 
+        	, MODIFY_DATE = NOW()
+        WHERE 
+            REPAIR_NO = #{repair_no}			
+	</update>	
+	
+	<update id="updateRepairPart" parameterType="hashMap">
+		UPDATE GY_LIGHT_REPAIR_PART
+		SET
+			LAST_UPDATE = NOW()
+			, COMPANY_ID = #{searchCom1}
+		WHERE
+			REPAIR_NO = #{repair_no}            
+	</update>
+
+	<insert id="insertRepairPart" parameterType="hashMap">
+		INSERT INTO GY_LIGHT_REPAIR_PART(
+			REPAIR_NO, LIGHT_NO, COMPANY_ID, LAST_UPDATE
+		) VALUES (
+			#{repair_no}, #{light_no}, #{searchCom1}, NOW()
+		)		
+	</insert>
+	
+	<update id="updateRepairCancel" parameterType="hashMap">
+		UPDATE GY_LIGHT_REPAIR SET
+	        PROGRESS_STATUS = '01'
+		   ,REMARK_ETC = ''
+		  WHERE REPAIR_NO = #{repairNo}				
+	</update>
+	
 </mapper>
