@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.system.systemMapper">
+	<select id="getSystemMemberSearchYear" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT A.YEAR
+			 FROM GY_MEMBER A
+			 GROUP BY A.YEAR
+			 ORDER BY 
+			 	A.YEAR DESC
+		]]>
+	</select>
+	
+	<select id="getSystemMemberCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+			 FROM GY_MEMBER A,GY_CODE B
+			WHERE A.GRADE = B.DATA_CODE
+			  AND B.CODE_TYPE = '04'
+			  AND (A.GRADE = '01' OR A.YEAR = #{searchYear})
+		]]>
+	</select>
+	
+	<select id="getSystemMemberList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT T1.*
+			FROM (
+				SELECT MEMBER_ID, PASSWORD, MEMBER_NAME,
+					TRIM(PHONE) AS PHONE,
+					TRIM(MOBILE) AS MOBILE,
+					EMAIL, B.DATA_CODE_NAME, A.COM_NAME, A.LOGIN_YN
+				 FROM GY_MEMBER A,GY_CODE B
+				WHERE A.GRADE = B.DATA_CODE
+				  AND B.CODE_TYPE = '04'
+				  AND (A.GRADE = '01' OR A.YEAR = #{searchYear})
+			) T1
+			LIMIT #{limit} OFFSET #{offset}
+		]]>
+	</select>
+	
+	<select id="getSystemMemberDetail" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT MEMBER_ID, PASSWORD, MEMBER_NAME,
+				TRIM(PHONE) AS PHONE,
+				TRIM(MOBILE) AS MOBILE,
+				EMAIL, B.DATA_CODE_NAME, A.COM_NAME, A.LOGIN_YN,
+				AREA, GRADE
+			 FROM GY_MEMBER A,GY_CODE B
+			WHERE A.GRADE = B.DATA_CODE
+			  AND B.CODE_TYPE = '04'
+			  AND A.MEMBER_ID = #{memberId}
+		]]>
+	</select>
+	
+	<select id="getDupIdChk" parameterType="hashmap" resultType="Int">
+		SELECT COUNT(*) AS CNT
+		FROM GY_MEMBER
+		WHERE
+			MEMBER_ID = TRIM(#{member_id})
+	</select>
+	
+	<insert id="insertSystemMember" parameterType="hashMap">
+		INSERT INTO GY_MEMBER (
+			MEMBER_ID ,PASSWORD, MEMBER_NAME
+			, GRADE ,COM_NAME, COM_CEO
+			, EMAIL, PHONE, MOBILE
+			, AREA, LOGIN_YN, YEAR
+		 )  VALUES (
+		 	#{member_id}, #{password}, #{member_name}
+		 	, #{grade}, #{com_name}, #{com_ceo}
+		 	, #{email}, #{phone}, #{mobile}
+		 	, #{area}, #{login_yn}, #{year}
+		 )
+	</insert>
+	
+	<update id="updateSystemMember" parameterType="hashMap">
+		UPDATE GY_MEMBER
+		SET
+			PASSWORD = #{password}
+			, MEMBER_NAME = #{member_name}
+			, GRADE = #{grade}
+			, COM_NAME = #{com_name}
+			, COM_CEO = #{com_ceo}
+			, EMAIL = #{email}
+			, PHONE = #{phone}
+			, MOBILE = #{mobile}
+			, AREA = #{area}
+			, LOGIN_YN = #{login_yn}
+			, YEAR = #{year}
+		WHERE
+			MEMBER_ID = #{member_id}
+	</update>
+	
+	<update id="deleteSystemMember" parameterType="hashMap">
+		DELETE FROM GY_MEMBER
+		WHERE
+			MEMBER_ID = #{member_id}
+	</update>
+</mapper>

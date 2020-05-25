@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	
+	<!-- resources 폴더 안에 있는 파일들은 security 대상이 아님 -->
+	<http pattern="/index.jsp" security="none" />
+	<http pattern="/upload/**" security="none" />
+	<http pattern="/resources/**" security="none" />
+	<http pattern="/common/**" security="none" />
+	<http pattern="/css/**" security="none" />
+	<http pattern="/img/**" security="none" />
+	<http pattern="/js/**" security="none" />
+	
+	<http auto-config="false" use-expressions="true" disable-url-rewriting="true"  authentication-manager-ref="authManager">
+		<csrf disabled="true"/>
+		<intercept-url pattern="/system/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/equipment/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/repair/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/company/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
+		<intercept-url pattern="/login/loginSuccess" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
+		
+		<!-- // directory 권한설정-->
+		<anonymous granted-authority="ROLE_ANONYMOUS"  />
+		
+		<form-login
+			login-page="/login"
+			username-parameter="user_id"
+			password-parameter="pw"
+			login-processing-url="/loginProcess"
+			authentication-success-handler-ref="customizedAuthenticationSuccessHandler"
+			authentication-failure-url="/main?fail=true"
+			always-use-default-target='true'
+		/>
+
+		<logout logout-url="/logout"
+					 success-handler-ref="customLogoutSuccessHandler" 
+					 invalidate-session="false" 
+		/>
+		
+		<access-denied-handler ref="userDeniedHandler"/>
+		
+		<!-- 중복 로그인 방지 설정 -->
+		<!-- 
+			max-sessions : 중복 로그인이 가능한 세션 수
+			expired-url : 중복 로그인 발생시, 먼저 로그인한 세션이 끊어지고 끊어진 상태에서 모든 url을 호출할 경우 끊어진 원인을 알려줄 주소를 지정한다.
+			error-if-maximum-exceeded : 원래는 먼저 로그인한 사용자의 세션이 끊어지지만 true로 설정할 경우 첫번째 로그인이 아닌 세션이 살아 있는 상태에서의 로그인은 거부된다. 
+		 -->
+		<!-- <session-management>
+    		<concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
+    	</session-management> -->
+    	
+	</http>
+	
+	<beans:bean id="userDeniedHandler" class="com.spring.security.CustomDeniedHandler"/>
+	<beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+	
+	<authentication-manager id="authManager">
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+	
+	<beans:bean id="customAuthenticationProvider" class="com.spring.security.CustomAuthenticationProvider"/> 
+	<beans:bean id="customLogoutSuccessHandler" class="com.spring.security.CustomLogoutSuccessHandler"/> 
+	
+	<beans:bean id="customizedAuthenticationSuccessHandler" class="com.spring.security.CustomizedAuthenticationSuccessHandler" >
+		<beans:property name="useAjaxParameter" value="isAjax" />
+		<beans:property name="targetUrlParameter" value="loginRedirect" />
+		<beans:property name="useReferrer" value="false" />
+		<beans:property name="defaultUrl" value="/" />
+	</beans:bean>
+	
+</beans:beans>

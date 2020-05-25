@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.trouble.troubleMapper">
+	
+	<insert id="insertTrobleReport" parameterType="hashMap">
+		INSERT INTO GY_LIGHT_REPAIR(
+			REPAIR_NO, REPAIR_CD, PASSWORD, LIGHT_NO, NOTICE_DATE,
+			NOTICE_NAME, LOCATION, NEW_ADDRESS, TROUBLE_CD, TROUBLE_DETAIL, 
+			PHONE, MOBILE, EMAIL, INFORM_METHOD, PROGRESS_STATUS, SATI_RATING,
+			MODIFY_DATE, REMARK, DONG, LIGHT_GUBUN, REPAIR_PHOTO, REPAIR_DATE
+		) VALUES(
+			#{repair_no}||nextval('public.gy_light_repair_seq_no'::regclass), #{repair_cd}, #{password}, #{light_no}, #{notice_date},
+			#{notice_name}, #{location}, #{new_address}, #{trouble_cd}, #{trouble_detail},
+			#{phone}, #{mobile}, #{email}, #{inform_method}, #{progress_status}, #{sati_rating},
+			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}, #{repair_date}
+		)
+	</insert>
+</mapper>

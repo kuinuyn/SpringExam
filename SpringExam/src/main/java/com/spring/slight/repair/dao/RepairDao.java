@@ -21,6 +21,10 @@ public class RepairDao {
 		return sqlSession.selectList(NAMESPACE+".getSystemRepairSearchCom");
 	}
 	
+	public List<Map<String, Object>>getSystemRepairSearchCom1() throws Exception {
+		return sqlSession.selectList(NAMESPACE+".getSystemRepairSearchCom1");
+	}	
+	
 	public List<Map<String, Object>>getSystemRepairSearchYear() throws Exception {
 		return sqlSession.selectList(NAMESPACE+".getSystemRepairSearchYear");
 	}	

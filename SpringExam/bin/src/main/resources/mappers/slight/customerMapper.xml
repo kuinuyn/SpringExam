@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.customMapper">
+	
+	<select id="getCustomerMap" resultType="hashMap" parameterType="com.spring.security.vo.CustomVO">
+		<![CDATA[
+			SELECT	MEMBER_ID
+							, PASSWORD
+							, MEMBER_NAME
+							, GRADE
+			FROM GY_MEMBER
+			WHERE
+				MEMBER_ID = #{userId}
+				AND LOGIN_YN = 'Y'
+		]]>
+	</select>
+</mapper>

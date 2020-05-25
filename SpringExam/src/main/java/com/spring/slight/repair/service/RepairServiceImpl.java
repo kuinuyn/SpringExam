@@ -24,6 +24,11 @@ public class RepairServiceImpl implements RepairService{
 	}
 	
 	@Override
+	public List<Map<String, Object>> getSystemRepairSearchCom1() throws Exception {
+		return repairDao.getSystemRepairSearchCom1();
+	}	
+	
+	@Override
 	public List<Map<String, Object>> getSystemRepairSearchYear() throws Exception {
 		return repairDao.getSystemRepairSearchYear();
 	}	

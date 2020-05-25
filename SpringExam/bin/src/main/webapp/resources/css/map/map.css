@@ -1,0 +1,393 @@
+@CHARSET "UTF-8";
+
+a {
+	font-family: "Dotum", "Gulim";
+	font-size: 8pt;
+	text-decoration: none;
+	color: #333333;
+}
+a:link {
+	font-family: "Dotum", "Gulim";
+	font-size: 8pt;
+	text-decoration: none;
+	color: #333333;
+}
+a:active {
+	font-family: "Dotum", "Gulim";
+	font-size: 8pt;
+	text-decoration: none;
+	color: #333333;
+}
+a:visited {
+	font-family: "Dotum", "Gulim";
+	font-size: 8pt;
+	text-decoration: none;
+	color: #333333;
+}
+a:hover {
+	font-family: "Dotum", "Gulim";
+	font-size: 8pt;
+	text-decoration:none;
+	color:#cc3300;
+}
+table {
+	font-size: 8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif"; 
+}
+td, th, li, ul, ol, b, p, div, form {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+	color:#333333;
+}
+td#ma1 {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+	color:#333333;
+	line-height:140%;
+}
+td#su1 {
+	font-size:10pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+	color:#cc3366;
+	letter-spacing:-1;
+}
+td#sh1 {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+	color:#cc3366;
+}
+td#me1 {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+}
+select {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+}
+input {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+	border-width:1;
+	border-color:#cccccc;
+	border-style:solid;
+	background-color:#ffffff;
+}
+input#ch1 {
+	font-size:8pt;
+	font-family:"Dotum", "Arial", "Helvetica", "sans-serif";
+	border-width:1;
+	border-color:#fffff7;
+	border-style:solid;
+	background-color:#fffff7;
+}
+body {
+	scrollbar-3dlight-color:ACACAC;
+	scrollbar-arrow-color:DCDCDC;
+	scrollbar-base-color:ffffff;
+	scrollbar-darkshadow-color:FFFFFF;
+	scrollbar-face-color:f4f4f4;
+	scrollbar-highlight-color:FFFFFF;
+	scrollbar-shadow-color:ACACAC;
+}
+/* 100% css */
+{
+ margin: 0;
+ padding: 0;
+ font-style: normal;
+ font-family: Dotum, Gulim, AppleGothic, Sans-serif;
+}
+img, fieldset {
+	border: none;
+}
+hr, legend {
+ display：none;
+}
+li {
+	list-style: none;
+}
+a {
+}
+a:visited {
+}
+a:hover, a:active, a:focus {
+}
+/*
+html:first-child select {
+    padding-right: 6px;
+    height: 20px;
+} /* Opera Fix */
+option, x:-moz-any-link {
+ padding-right: 4px;
+} /* Firefox Fix */
+option, x:-moz-any-link, x:default {
+ padding-right: 0;
+} /* Firefox Fix */
+/* Layout Selector */
+html, body {
+	height: 100%;
+}
+#wrap {
+	height: 100%;
+	width: auto;
+}
+#header {
+	height: 100px;
+	background: #616161;
+	position: relative;
+	z-index: 1;
+	width: auto;
+}
+#container {
+	min-height: 100%;
+	margin: 0px 0 0px;
+	width: auto;
+}
+/* IE Hack */
+*html #container {
+	height: 100%;
+}
+#footer {
+	position:absolute;
+	margin:0 auto;
+	height: 24px;
+	width:100%;
+	border-top:1px solid #616161;
+}
+#footer #todo {
+	position:absolute;
+	right:0;
+	top:0px;
+	margin-right:5px;
+	height:10px;
+	width:119px;
+	text-align:center;
+	padding-top:0px;
+	padding-left:3px;
+}
+.ftf {
+	clear:both;
+	border-top:0px solid #ccc;
+	color:#d5d6d8;
+	text-align:right;
+	white-space:nowrap;
+	padding-top:10px;
+	padding-bottom:0px;
+}
+.contents-box {
+	padding: 0px 0 0px 0;
+}
+.snb {
+	border-top:1px solid #616161;
+	float: left;
+	width: 198px;
+	height: 100%;
+}
+.contents {
+	margin-left: 0px;
+	height: 100%;
+}
+#map {
+	position:absolute;
+	border-top:1px solid #616161;
+	margin: 0px 0 0px 0;
+	padding-bottom:0px;
+	width: 100%;
+	height: 100%;
+}
+.iconbar {
+	position:absolute;
+	margin:0 auto;
+	height: 33px;
+	width:100%;
+	padding-top:6px;
+	border-top:1px solid #616161;
+	background:url(../images/map/nuj_topba.gif);
+}
+.iconbar #to {
+	position:absolute;
+	right:0;
+	top:5px;
+	margin-right:10px;
+	height:17px;
+	width:180px;
+	text-align:center;
+	padding-top:2px;
+	padding-left:3px;
+}
+.clear {
+	clear: both;
+	display: block;
+	float: none;
+	font-size: 0 !important;
+	height: 0;
+	line-height: 0 !important;
+	margin: 0 !important;
+	overflow: hidden;
+	padding: 0 !important;
+	width: 100%;
+}
+
+#footer h1 {
+	position:absolute;
+	left:20px;
+	top:15px;
+}
+#footer h1 a {
+	background:url(../images/copy/nuj_copy01.gif) no-repeat;
+	display:block;
+	height:14px;
+	width:219px;
+	text-indent:-5000px;
+}
+/*todo*/
+#footer #todo {
+	position:absolute;
+	right:0;
+	top:5px;
+	margin-right:10px;
+	height:17px;
+	width:119px;
+	text-align:center;
+	padding-top:0px;
+	padding-left:3px;
+}
+#footer #toto {
+	position:absolute;
+    left:10px;
+	top:5px;
+	margin-right:5px;
+	height:7px;
+	width:219px;
+	text-align:center;
+	padding-top:5px;
+	padding-left:3px;
+}
+
+
+/*table*/
+table.linatable {
+	width:100%;
+	float:left;
+	margin:0 0 0 0;
+	border-top:0px solid #cccccc;
+}
+table.linatable th {
+	padding:8px 0 5px 0;
+	font:12px "돋움";
+	color: #69C;
+	background:#ffffff;
+	border-bottom:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+}
+table.linatable td {
+	padding:2px 4px 2px 4px;
+	text-align:left;
+	font:12px/18px "돋움";
+	background:#ffffff;
+	color:#666666;
+	border-bottom:1px solid #cccccc;
+	border-right:1px solid #cccccccccccc;
+}
+table.linatable .dc {
+	padding:4px 4px 2px 4px;
+	text-align:center;
+	font:12px/18px "돋움";
+	background:#f4f4f4;
+	color:#000000;
+	border-bottom:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+}
+table.linatable .line {
+	padding:4px 4px 2px 4px;
+	text-align:center;
+	font:12px/18px "돋움";
+	background:#cccccc;
+	color:#000000;
+	border-bottom:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+}
+table.linatable .brno {
+	border-right:none;
+}
+table.linatable .brnot {
+	border-right:none;
+	background:#f4f4f4;
+}
+
+body {font-family:applegothic, Dotum, gulim, helvetica, sans-serif;font-size:8pt;line-height:18p;webkit-text-size-adjust:nonex;}
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, form, fieldset, p, button{	margin:0px;	padding:0px;}
+body, input, select, textarea {color:#313131;font-family:dotum, '', gulim, '', helvetica, apple-gothic, sans-serif;font-size:8pt;font-weight:normal;}
+table {border-collapse:collapse;}
+
+.sc2{padding:1.2em 1.2em 0.5em;-webkit-border-radius: 5px; -moz-border-radius: 5px; background: #fff; border: 2px solid #3cb54a;  width:250px;}
+.sc2 h2{ margin-bottom:0.4em; margin-left:1.2em;font-size:18px; color:#093;}
+.sc2 h1{ position:absolute; left:18px; top:16px; height: 16px; } 
+.sc2 p{margin-bottom:1em;font-size:11px;color:#686868;}
+
+
+.sc2 a{color:#1172b6;}
+
+h4 {
+	position:absolute;
+	top:14px;
+	z-index:10000;
+	left:212px;
+}
+
+h4 img {
+	vertical-align:middle; 
+	float:left; 
+	padding-right:2px;
+}
+
+/* image button */
+.ftf a{color:#f1f1f1;}
+.ftf {clear:both;border-top:0px solid #ccc;color:#d5d6d8;text-align:right;white-space:nowrap; padding-top:6px;padding-right:6px; padding-bottom:-2px; background:#bcbcbc; height:22px;}
+.ft4 a{display:inline-block;width:72px;height:21px;line-height:20px;background:#ddd url(./img/but.png) no-repeat 0 ;font-size:13px;letter-spacing:-1px;text-decoration: none;}
+.ft4 a.lk1{width:57px;background-position:0 0px;}
+.ft4 a.lk2{width:72px;background-position:0 -21px;}
+
+/* noline table */
+table.tic {width:100%; border-collapse:collapse; background:#FFF;}
+table.tic td {text-align:left;padding:2px 0 1px 0; background:#FFF; color:#666;}
+table.tic td#nb {padding-right:4px; text-align:left;padding:2px 0 1px 0; color:#313131;font-weight:bold;}
+
+#map_window {
+	/*height:100%;*/ 
+	overflow:hidden;
+}
+#map_window img {
+	overflow:hidden;
+	position:absolute;
+}
+
+.lay_title {position:absolute; height:27px; margin:0; padding:0; display:block; white-space:nowrap;z-index:30000;} 
+
+.lay_title .lay_c {display:inline-block; height:20px; _height:27px; padding:7px 3px 0 8px; letter-spacing:-1px; font-family: "돋움", "Dotum", "Gulim"; font-weight:bold; font-size: 8pt; text-decoration: none; color:blue; vertical-align:top;}
+
+.lay_title .lay_g {display:inline-block; height:20px; _height:27px; padding:7px 3px 0 8px; letter-spacing:-1px; font-family: "돋움", "Dotum", "Gulim"; font-weight:bold; font-size: 8pt; text-decoration: none; color:#ff0000; vertical-align:top;}
+
+.lay_title .lay_b {display:inline-block; height:20px; _height:27px; padding:7px 3px 0 8px; letter-spacing:-1px; font-family: "돋움", "Dotum", "Gulim"; font-weight:bold; font-size: 8pt; text-decoration: none; color:#006400; vertical-align:top;}
+
+.lay_title .lay_r {display:inline-block; width:7px; height:20px; _height:27px; padding:7px 0 0 0; vertical-align:top;}
+
+#admin {
+ width: 100%;
+ height: 120px;
+ background:url(../images/nuj_adminba.gif);
+}
+#tablew{
+ position:relative;
+ width:100%;
+ float:left;
+ margin:0 0 0 0;
+}
+
+/* image button */
+#ftf1 {
+ position:relative;
+ text-align:left;
+ padding-top:4px;
+ padding-bottom:4px;
+ height:26px;
+}

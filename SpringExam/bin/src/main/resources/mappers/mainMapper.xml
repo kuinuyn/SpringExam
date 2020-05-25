@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.mainMapper">
+	
+	<select id="getSummary" parameterType="hashMap" resultType="hashMap" >
+		SELECT COUNT(*) AS CNT
+					   , LIGHT_GUBUN
+					   , PROGRESS_STATUS
+		FROM GY_LIGHT_REPAIR A
+		WHERE
+			TO_CHAR(NOTICE_DATE, 'YYYYMMDD') BETWEEN #{stDate} AND #{endDate}
+		GROUP BY LIGHT_GUBUN, PROGRESS_STATUS, NOTICE_DATE
+		ORDER BY NOTICE_DATE
+	</select>
+	
+	<select id="getLastSummary" parameterType="hashMap" resultType="hashMap" >
+		SELECT COUNT(*) AS CNT
+					   , PROGRESS_STATUS
+					   , TO_CHAR(NOTICE_DATE, 'YYYYMMDD') AS NOTICE_DATE
+		FROM GY_LIGHT_REPAIR A
+		WHERE
+			TO_CHAR(NOTICE_DATE, 'YYYYMM') BETWEEN #{stDate} AND #{endDate}
+		GROUP BY PROGRESS_STATUS, TO_CHAR(NOTICE_DATE, 'YYYYMMDD')
+		ORDER BY NOTICE_DATE
+	</select>
+	
+	<select id="getLightCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM GY_LIGHT A
+			WHERE
+				1=1
+				AND LIGHT_GUBUN IN ('1', '2')
+		]]>
+			<if test="searchLightType != null and searchLightType != '' ">
+				AND A.LIGHT_TYPE = #{searchLightType}	
+			</if>
+	</select>
+</mapper>
