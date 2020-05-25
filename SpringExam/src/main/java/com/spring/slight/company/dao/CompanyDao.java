@@ -34,4 +34,45 @@ private static final String NAMESPACE = "com.spring.mapper.slight.company.compan
 		
 		return cnt;
 	}
+	
+	//보수내역입력 총건수
+	public int getCompanyRepairCnt(CommandMap paramMap) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".getCompanyRepairCnt", paramMap.getMap());
+	}
+	
+	//보수내역입력 조회
+	public List<Map<String, Object>> getCompanyRepairList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getCompanyRepairList", paramMap.getMap());
+		return resultList;
+	}
+	
+	//보수내역입력 상세조회
+	public HashMap<String, Object> getCompanyRepairDetail(CommandMap paramMap) throws Exception {
+		HashMap<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getCompanyRepairDetail", paramMap.getMap());
+		return resultMap;
+	}
+	
+	
+//	public List<Map<String, Object>> getDetRepirList(CommandMap paramMap) throws Exception {
+//		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getDetRepirList", paramMap.getMap());
+//		
+//		return resultMap;
+//	}
+	
+	
+	public int updateCompanyRepair(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateCompanyRepair", paramMap.getMap());
+	}
+	
+	public int updateCompanyRepairPart(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateCompanyRepairPart", paramMap.getMap());
+	}
+	
+	//보수내역입력 엑셀다운로드
+	public List<Map<String, Object>> getCompanyRepairExcelList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getCompanyRepairExcelList", paramMap.getMap());
+		return resultList;
+	}
+	
+	
 }
