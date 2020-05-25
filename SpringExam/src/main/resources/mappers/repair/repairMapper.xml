@@ -88,7 +88,6 @@
 	
 	<select id="getSystemRepairDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-<<<<<<< HEAD
 			SELECT REPAIR_NO
 						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
 						   , LIGHT_NO
@@ -111,27 +110,6 @@
 				WHERE
 					A.REPAIR_NO = #{repairNo}	
 				ORDER BY A.REPAIR_NO
-=======
-				SELECT A.REPAIR_NO AS REPAIR_NO,
-				       F_GY_DATA_CODE_NM('14', A.REPAIR_CD) AS LIGHT_GUBUN ,
-				       A.LIGHT_NO AS LIGHT_NO,
-				       A.NOTICE_NAME AS NOTICE_NAME,
-				       CASE
-					         WHEN A.inform_method = '03' THEN A.PHONE
-					         WHEN A.inform_method = '01' THEN A.MOBILE
-					         WHEN A.inform_method = '02' THEN A.EMAIL
-					         WHEN A.inform_method = '04' THEN ''
-				       END AS CONTACT ,
-				       TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE ,
-				       TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE ,
-				       TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE ,
-				       F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NM ,
-				       A.PROGRESS_STATUS AS PROGRESS_STATUS ,
-				       B.REPAIR_NO AS REPAIR_NO1
-  				FROM GY_LIGHT_REPAIR A
-  				LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B ON A.REPAIR_NO = B.REPAIR_NO
- 				WHERE A.REPAIR_NO = #{repairNo}
->>>>>>> refs/remotes/origin/200512
 			]]>
 	</select>
 	
