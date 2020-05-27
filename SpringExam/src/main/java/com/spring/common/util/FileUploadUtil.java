@@ -11,7 +11,7 @@ import com.spring.common.vo.FilesVO;
 
 public class FileUploadUtil {
 	/** 게시판 - 첨부파일 정보 조회 */
-	public static List<FilesVO> setFileUploadUtil(List<MultipartFile> files, String seq) throws Exception {
+	public static List<FilesVO> setFileUploadUtil(List<MultipartFile> files, String seq, String folderNm) throws Exception {
 		List<FilesVO> boardFileList = new ArrayList<FilesVO>();
 		
 		FilesVO fileVo = new FilesVO();
@@ -21,7 +21,8 @@ public class FileUploadUtil {
 		String fileNameKey = null;
 		String fileSize = null;
 		// 파일이 저장될 Path 설정
-		String filePath = "/upload";
+		//String filePath = "/upload";
+		String filePath = "c:/upload/"+folderNm;
 		
 		if(files != null && files.size() > 0) {
 			File file = new File(filePath);

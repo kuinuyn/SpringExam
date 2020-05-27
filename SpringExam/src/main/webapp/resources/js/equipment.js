@@ -132,7 +132,7 @@ function searchArea(code) {
 				var filePah = "";
 				
 				for(i = 0; i<downLoadFiles.length; i++) {
-					filePah = downLoadFiles[i].file_path+"/"+downLoadFiles[i].file_name_key;
+					filePah = "/display?name="+downLoadFiles[i].file_name_key;
 					$("#detail_slight").children().eq(i).children("img").attr("src", filePah)
 				}
 			}

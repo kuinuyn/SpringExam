@@ -345,7 +345,7 @@
 		if(obj != null) {
 			if(obj.resultCnt > -1) {
 				alert("작업지시가 완료되었습니다.");
-				$('.modal-popup2 .bg').trigger("click");				
+				$('.modal-popup2 .bg').trigger("click");
 				Search(); // goToList();
 			}
 			else {

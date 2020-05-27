@@ -489,7 +489,7 @@
 			, USE_LIGHT = #{use_light}
 			, ADDRESS = #{address}
 			, NEW_ADDRESS = #{new_address}
-			, LAST_UPDATE = TO_CHAR(now(), 'yyyy-mm-dd')
+			, LAST_UPDATE = now()
 		WHERE
 			LIGHT_NO = #{light_no}
 	</update>

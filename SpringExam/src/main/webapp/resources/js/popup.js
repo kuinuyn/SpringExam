@@ -54,18 +54,18 @@ function modal_popup2(el){
     // 팝업창닫기
     temp.find('a.cbtn').click(function(e){
         if(bg){
-            $('.modal-popup2').fadeOut(); //'bg' 클래스가 존재하면 레이어를 사라지게 한다. 
+        	$('.modal-popup2').fadeOut(); //'bg' 클래스가 존재하면 레이어를 사라지게 한다. 
         }else{
             temp.fadeOut();
         }
         
-        $(this).scrollTop(0);
+        $('.pop_detail2').scrollTop(0);
         e.preventDefault();
     });
 
     $('.modal-popup2 .bg').click(function(e){  //배경을 클릭하면 레이어를 사라지게 하는 이벤트 핸들러
         $('.modal-popup2').fadeOut();
-        $(this).scrollTop(0);
+        $('.pop_detail2').scrollTop(0);
         e.preventDefault();
     });
 

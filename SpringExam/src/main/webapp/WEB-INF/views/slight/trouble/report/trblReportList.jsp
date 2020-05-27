@@ -37,6 +37,10 @@
 			drawCodeData(commonCd, "14", "select", "").then(function(resolvedData) {
 				$("#repair_cd").empty();
 				$("#repair_cd").append(resolvedData);
+				
+				$("#repair_cd option[value=6]").remove();
+				$("#repair_cd option[value=7]").remove();
+				$("#repair_cd option[value=8]").remove();
 			})
 		})
 		.then(function (){

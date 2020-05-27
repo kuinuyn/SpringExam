@@ -79,6 +79,7 @@ public class FileDownloadUtil extends AbstractView{
 	/**
 	 * 엑셀 워크북 객체로 생성
 	 */
+	@SuppressWarnings("unchecked")
 	public SXSSFWorkbook makeSimpleExcelWorkbook(List<?> list, String[] headerNm) {
 		SXSSFWorkbook workbook = new SXSSFWorkbook();
 		

@@ -139,43 +139,35 @@
 			var str3 = "";
 			if(filesLen > 0) {
 				for(i = 0; i<filesLen; i++) {
-
-
-					if($("#photo1").val() == files[i].file_name_key)
-					{
-					str1 += "<a href=/board/fileDownload?fileNameKey="+encodeURI( files[i].file_name_key) + "&fileName=" + encodeURI(files[i].file_name) + "&filePath="+encodeURI(files[i].file_path)+">"+ files[i].file_name +"</a>";
-					str1 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+files[i].file_no+", this,1)' />";
+					
+					if($("#photo1").val() == files[i].file_no) {
+						str1 += "<a href=/board/fileDownload?fileNameKey="+encodeURI( files[i].file_name_key) + "&fileName=" + encodeURI(files[i].file_name) + "&filePath="+encodeURI(files[i].file_path)+">"+ files[i].file_name +"</a>";
+						str1 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+files[i].file_no+", this,1)' />";
 					}
 					
-					if($("#photo2").val() == files[i].file_name_key)
-					{
-					str2 += "<a href=/board/fileDownload?fileNameKey="+encodeURI( files[i].file_name_key) + "&fileName=" + encodeURI(files[i].file_name) + "&filePath="+encodeURI(files[i].file_path)+">"+ files[i].file_name +"</a>";
-					str2 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+files[i].file_no+", this,2)' />";
+					if($("#photo2").val() == files[i].file_no) {
+						str2 += "<a href=/board/fileDownload?fileNameKey="+encodeURI( files[i].file_name_key) + "&fileName=" + encodeURI(files[i].file_name) + "&filePath="+encodeURI(files[i].file_path)+">"+ files[i].file_name +"</a>";
+						str2 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+files[i].file_no+", this,2)' />";
 					}
 					
-					if($("#photo3").val() == files[i].file_name_key)
-					{
-					str3 += "<a href=/board/fileDownload?fileNameKey="+encodeURI( files[i].file_name_key) + "&fileName=" + encodeURI(files[i].file_name) + "&filePath="+encodeURI(files[i].file_path)+">"+ files[i].file_name +"</a>";
-					str3 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+files[i].file_no+", this,3)' />";
+					if($("#photo3").val() == files[i].file_no) {
+						str3 += "<a href=/board/fileDownload?fileNameKey="+encodeURI( files[i].file_name_key) + "&fileName=" + encodeURI(files[i].file_name) + "&filePath="+encodeURI(files[i].file_path)+">"+ files[i].file_name +"</a>";
+						str3 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+files[i].file_no+", this,3)' />";
 					}
-					
 					
 				}
 			}
 			
-			if($("#photo1").val() == null || $("#photo1").val() == "")
-			{
-				str1 += "<input type='file' id='files[0]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
+			if($("#photo1").val() == null || $("#photo1").val() == "") {
+				str1 += "<input type='file' id='files[1]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
 			}
 			
-			if($("#photo2").val() == null || $("#photo2").val() == "")
-			{
-				str2 += "<input type='file' id='files[0]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
+			if($("#photo2").val() == null || $("#photo2").val() == "") {
+				str2 += "<input type='file' id='files[2]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
 			}
 			
-			if($("#photo3").val() == null || $("#photo3").val() == "")
-			{
-				str3 += "<input type='file' id='files[0]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
+			if($("#photo3").val() == null || $("#photo3").val() == "") {
+				str3 += "<input type='file' id='files[3]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
 			}		
 			
 			
@@ -201,21 +193,24 @@
 		$("#delete_file").val(deleteFile);
 		$(element).prev().remove();
 		$(element).remove();
-alert(Seq);
+		
 		var fileStr = "";
 		if(Seq == "1") {
-			fileStr = "<div><input type='file' id='files[2]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			fileStr = "<div><input type='file' id='files[1]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
 			$("#file_td1").append(fileStr);
+			$("#photo1").val('');
 		}
 		
 		if(Seq == "2" ) {
-			fileStr = "<div><input type='file' id='files[1]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			fileStr = "<div><input type='file' id='files[2]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
 			$("#file_td2").append(fileStr);
+			$("#photo2").val('');
 		}
 		
 		if(Seq == "3") {
-			fileStr = "<div><input type='file' id='files[0]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			fileStr = "<div><input type='file' id='files[3]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
 			$("#file_td3").append(fileStr);
+			$("#photo3").val('');
 		}
 		
 	}
@@ -236,6 +231,18 @@ alert(Seq);
 		}
 		$("#file_td1").append(fileStr);
 		*/
+		
+		var fileCnt = $("input[name=files]").length;
+		
+		var key = "";
+		for(i = 1; i <= fileCnt; i++) {
+			key = "files["+i+"]";
+			if($(element).attr("id") == key) {
+				alert(key+" : "+i);
+				$("#photo"+i).val(i);
+			}
+		}
+		
 		fileTypeCheck(element);
 	}
 	

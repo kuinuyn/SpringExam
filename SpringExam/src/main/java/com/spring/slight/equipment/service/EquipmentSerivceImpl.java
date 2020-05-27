@@ -206,7 +206,7 @@ public class EquipmentSerivceImpl implements EquipmentService{
 			}
 		}
 		
-		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("light_no"));
+		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("light_no"), "light");
 		
 		for(FilesVO file : files) {
 			fileDao.insertFiles(file);

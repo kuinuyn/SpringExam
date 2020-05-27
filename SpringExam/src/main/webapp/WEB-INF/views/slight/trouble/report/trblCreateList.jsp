@@ -28,6 +28,18 @@
 			$("#light_gubun").append(resolvedData);
 		})
 		.then(function (){
+			drawCodeData(commonCd, "14", "select", "").then(function(resolvedData) {
+				$("#repair_cd").empty();
+				$("#repair_cd").append(resolvedData);
+				
+				$("#repair_cd option[value=1]").remove();
+				$("#repair_cd option[value=2]").remove();
+				$("#repair_cd option[value=3]").remove();
+				$("#repair_cd option[value=4]").remove();
+				$("#repair_cd option[value=5]").remove();
+			})
+		})
+		.then(function (){
 			if(lightNo != null && lightNo != "") {
 				$("#light_no").val(lightNo);
 				$("#light_gubun").val(lightType);
@@ -388,10 +400,6 @@
 							<th>신고종류</th>
 							<td>
 								<select class="sel01" id="repair_cd" name="repair_cd">
-									<option value="">선택</option>
-									<option value="6">신설</option>
-									<option value="7">이설</option>
-									<option value="8">철거</option>
 								</select>
 							</td>
 						</tr>

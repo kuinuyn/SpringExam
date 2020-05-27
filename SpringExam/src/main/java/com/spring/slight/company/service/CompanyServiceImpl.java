@@ -47,11 +47,6 @@ public class CompanyServiceImpl implements CompanyService{
 		ResultUtil result = new ResultUtil();
 		int totalCount = companyDao.getCompanyRepairCnt(paramMap);
 		
-		System.out.println("@@@@sch_repair_cd : "+  (String) paramMap.get("sch_repair_cd"));
-		System.out.println("@@@@sch_where1 : "+  (String) paramMap.get("sch_where1"));
-		System.out.println("@@@@sch_where2 : "+  (String) paramMap.get("sch_where2"));
-		System.out.println("@@@@sch_where3 : "+  (String) paramMap.get("sch_where3"));
-		
 		if(totalCount > 0) {
 			paramMap.put("total_list_count", totalCount);
 			
@@ -75,15 +70,10 @@ public class CompanyServiceImpl implements CompanyService{
 		HashMap<String, Object> resultData = companyDao.getCompanyRepairDetail(paramMap);
 		FilesVO filesVo = new FilesVO();
 		filesVo.setSeq((String) paramMap.get("repairNo"));
-		System.out.println("!!!!! : " +paramMap.get("repairNo"));
 		List<FilesVO> filesList = fileDao.getFilesList(filesVo);
-		//List<Map<String, Object>> detRepirList = companyDao.getDetRepirList(paramMap);
 		if(filesList.size() > 0) {
 			resultData.put("downLoadFiles", filesList);
 		}
-		//if(detRepirList.size() > 0) {
-			//resultData.put("detRepirList", detRepirList);
-		//}
 		
 		return resultData;
 	}
@@ -91,13 +81,9 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
 		
-	
 		int resultCnt = companyDao.updateCompanyRepair(paramMap);
 		
 		String deleteFile = (String) paramMap.get("delete_file");
-		
-		System.out.println("@@@@deleteFile : "+ deleteFile);
-		
 		
 		String[] deleteFileInfo = new String[3];
 		FilesVO filesVo = new FilesVO();
@@ -122,20 +108,53 @@ public class CompanyServiceImpl implements CompanyService{
 			}
 		}
 		
-		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("repairNo"));
+		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("repair_no"), "repair");
+		String photo1 = (String) paramMap.get("photo1");
+		String photo2 = (String) paramMap.get("photo2");
+		String photo3 = (String) paramMap.get("photo3");
 		
-		//FilesVO file1 = files.;
-		
-		
+		int cnt = 0;
 		for(FilesVO file : files) {
-			System.out.println("######## : " + file.getFile_name_key()  );
-			System.out.println("######## : " + file.getFile_path()  );
-			System.out.println("######## : " + file.getFile_name()  );
-			System.out.println("######## : " + file.getFile_no());
+			if(cnt > -1) {
+				if(!"".equals(photo1) && photo1 != null) {
+					file.setFile_no(Integer.parseInt(photo1));
+					photo1 = "";
+				}
+				else if(!"".equals(photo2) && photo2 != null) {
+					file.setFile_no(Integer.parseInt(photo2));
+					photo2 = "";
+				}
+				else if(!"".equals(photo3) && photo3 != null) {
+					file.setFile_no(Integer.parseInt(photo3));
+					photo3 = "";
+				}
+			}
+			else if(cnt > 0) {
+				if(!"".equals(photo2) && photo2 != null) {
+					file.setFile_no(Integer.parseInt(photo2));
+					photo2 = "";
+				}
+				else if(!"".equals(photo3) && photo3 != null) {
+					file.setFile_no(Integer.parseInt(photo3));
+					photo3 = "";
+				}
+			}
+			else if(cnt > 1) {
+				if(!"".equals(photo3) && photo3 != null) {
+					file.setFile_no(Integer.parseInt(photo3));
+					photo3 = "";
+				}
+			}
 			
-			fileDao.insertFiles(file);			
+			if(fileDao.getFileNo(file) > 0) {
+				fileDao.updateFiles(file);
+			}
+			else {
+				fileDao.insertFiles(file);
+			}
+			
+			cnt++;
 		}
-		
 		
 		int resultCnt2 = companyDao.updateCompanyRepairPart(paramMap);
 		return resultCnt;
