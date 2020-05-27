@@ -5,6 +5,8 @@
         <wb-resource deploy-path="/" source-path="/"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
         <property name="context-root" value="exam"/>
         <property name="java-output-path" value="/SpringExam/target/classes"/>
 	</wb-module>
