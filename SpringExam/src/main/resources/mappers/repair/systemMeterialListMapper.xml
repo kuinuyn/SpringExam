@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.repair.systemMeterialListMapper">
+
+
+	<select id="getMeterialSearchYear" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT A.YEAR
+			  FROM GY_CODE A
+		 	 WHERE CODE_TYPE = '24'
+			 GROUP BY A.YEAR
+			 ORDER BY A.YEAR DESC
+		]]>
+	</select>
+	
+ <select id="getSystemMeterialCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+		SELECT COUNT(*)     
+   FROM GY_CODE A 
+  WHERE CODE_TYPE = '24'
+    AND A.YEAR = #{sch_year}
+		]]>
+	</select>
+	
+	<select id="getSystemMeterialList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+		  SELECT A.YEAR
+		       , A.DATA_CODE
+		       , A.DATA_CODE_NAME
+		       , COALESCE(A.COMP_NM,'') AS COMP_NM
+		       , COALESCE(A.STANDARD ,'') AS STANDARD
+		       , COALESCE(A.DANGA ,'') AS DANGA
+		       , COALESCE(A.PERSISTENCE ,'') AS PERSISTENCE
+		       , A.UNIT
+		       , COALESCE(A.REMARKS	,'') AS REMARKS
+		   FROM GY_CODE A 
+		  WHERE CODE_TYPE = '24'
+		    AND A.YEAR = #{sch_year}
+						ORDER BY A.SUNBUN, A.DATA_CODE
+						LIMIT #{limit} OFFSET #{offset}
+			
+		]]>
+	</select>
+	
+	<select id="getSystemMeterialDetail" resultType="hashMap"  parameterType="hashMap">
+		<![CDATA[
+	  	SELECT A.YEAR
+		       , A.DATA_CODE
+		       , A.DATA_CODE_NAME
+		       , COALESCE(A.COMP_NM,'') AS COMP_NM
+		       , COALESCE(A.STANDARD ,'') AS STANDARD
+		       , COALESCE(A.DANGA ,'') AS DANGA
+		       , COALESCE(A.PERSISTENCE ,'') AS PERSISTENCE
+		       , A.UNIT
+		       , COALESCE(A.REMARKS	,'') AS REMARKS
+           FROM GY_CODE A 
+          WHERE CODE_TYPE = '24'
+            AND A.YEAR    = #{sch_year}
+		    AND A.DATA_CODE = #{dataCode}
+			]]>
+	</select>
+	
+	<insert id="insertSystemMeterial" parameterType="hashMap">
+		<selectKey resultType="int" keyProperty="data_code" order="BEFORE">
+			<if test="data_code == null or data_code == '' ">
+				SELECT COALESCE(MAX(DATA_CODE::NUMERIC), 0)+1
+				FROM GY_CODE
+				WHERE CODE_TYPE = '24'
+			</if>
+		</selectKey>
+		
+		INSERT INTO GY_CODE
+		(
+			CODE_TYPE
+			, CODE_TYPE_NAME
+			, YEAR
+			, DATA_CODE
+			, DATA_CODE_NAME
+			, COMP_NM
+			, STANDARD
+			, DANGA
+			, PERSISTENCE
+			, UNIT
+			, REMARKS
+		)
+		VALUES
+		(
+		      '24'
+		    , '자재분류'
+			, #{sch_year}
+			, #{data_code}
+			, #{data_code_name}
+			, #{comp_nm}
+			, #{standard}
+			, #{danga}
+			, #{persistence}
+			, #{unit}
+			, #{remarks}
+		)
+	</insert>
+	
+	<update id="updateSystemMeterial" parameterType="hashMap">
+		UPDATE GY_CODE
+		SET
+			DATA_CODE_NAME = #{data_code_name}
+			, COMP_NM = #{comp_nm}
+			, STANDARD = #{standard}
+			, DANGA = #{danga}
+			, PERSISTENCE = #{persistence}
+			, UNIT = #{unit}
+			, REMARKS = #{remarks}
+		WHERE CODE_TYPE = '24'
+		  AND YEAR = #{year}
+		  AND DATA_CODE = #{data_code}
+	</update>
+	
+	<update id="deleteSystemMeterial" parameterType="hashMap">
+		DELETE FROM GY_CODE
+		WHERE CODE_TYPE = '24' 
+		  AND YEAR = #{year}
+		  AND DATA_CODE = #{data_code} 
+	</update>
+	
+	
+</mapper>
