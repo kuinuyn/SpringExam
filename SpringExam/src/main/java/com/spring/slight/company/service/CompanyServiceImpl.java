@@ -1,5 +1,7 @@
 package com.spring.slight.company.service;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +73,36 @@ public class CompanyServiceImpl implements CompanyService{
 		FilesVO filesVo = new FilesVO();
 		filesVo.setSeq((String) paramMap.get("repairNo"));
 		List<FilesVO> filesList = fileDao.getFilesList(filesVo);
-		if(filesList.size() > 0) {
-			resultData.put("downLoadFiles", filesList);
+		
+		if(resultData != null) {
+			String noticeDate = "";
+			String companyId = "";
+
+			noticeDate = (String) resultData.get("notice_date");
+			companyId = (String) resultData.get("company_id");
+			
+			paramMap.put("noticeDate", noticeDate);
+			paramMap.put("companyId", companyId);
+			List<Map<String, Object>> materiaList = companyDao.getMaterialList(paramMap);
+			List<Map<String, Object>> materiaUsedList = companyDao.getMaterialUsedList(paramMap);
+			
+			if(filesList.size() > 0) {
+				resultData.put("downLoadFiles", filesList);
+			}
+			
+			if(materiaList.size() > 0) {
+				resultData.put("materialList", materiaList);
+			}
+			
+			if(materiaUsedList.size() > 0) {
+				resultData.put("materiaUsedList", materiaUsedList);
+			}
 		}
 		
 		return resultData;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
 		
@@ -157,6 +182,47 @@ public class CompanyServiceImpl implements CompanyService{
 		}
 		
 		int resultCnt2 = companyDao.updateCompanyRepairPart(paramMap);
+		
+		HashMap<String, Object> materialUsedMap = new HashMap<String, Object>();
+		
+		String partCd = (String) paramMap.get("part_cd");
+		String partCnt = (String) paramMap.get("part_cnt");
+		
+		if(partCd != null && !"".equals(partCd)) {
+			String[] partCds = partCd.split(",");
+			String[] partCnts = partCnt.split(",");
+			System.out.println(partCds.length+" -- "+partCnts.length);
+			
+			if(partCds.length > 0) {
+				for(int i=0; i<partCds.length; i++) {
+					
+					paramMap.put("part_cd", partCds[i]);
+					paramMap.put("inout_cnt", Integer.parseInt(partCnts[i]));
+					materialUsedMap = companyDao.getMaterialUsedMap(paramMap);
+					
+					if(Integer.parseInt(partCnts[i]) != 0) {
+						
+						if(materialUsedMap != null) {
+							paramMap.put("seq_no", materialUsedMap.get("seq_no"));
+							paramMap.put("inout_day", materialUsedMap.get("inout_day"));
+							
+							companyDao.updateMaterialUsed(paramMap);
+						}
+						else {
+							companyDao.insertMaterialUsed(paramMap);
+						}
+					}
+					else {
+						paramMap.put("seq_no", materialUsedMap.get("seq_no"));
+						paramMap.put("inout_day", materialUsedMap.get("inout_day"));
+						
+						companyDao.deleteMaterialUsed(paramMap);
+					}
+				}
+				
+			}
+		}
+		
 		return resultCnt;
 	}
 	

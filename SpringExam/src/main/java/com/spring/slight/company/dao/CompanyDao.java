@@ -59,6 +59,20 @@ private static final String NAMESPACE = "com.spring.mapper.slight.company.compan
 //		return resultMap;
 //	}
 	
+	public List<Map<String, Object>> getMaterialList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getMaterialList", paramMap.getMap());
+		return resultMap;
+	}
+	
+	public List<Map<String, Object>> getMaterialUsedList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getMaterialUsedList", paramMap.getMap());
+		return resultMap;
+	}
+	
+	public HashMap<String, Object> getMaterialUsedMap(CommandMap paramMap) throws Exception {
+		HashMap<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getMaterialUsedMap", paramMap.getMap());
+		return resultMap;
+	}
 	
 	public int updateCompanyRepair(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateCompanyRepair", paramMap.getMap());
@@ -66,6 +80,18 @@ private static final String NAMESPACE = "com.spring.mapper.slight.company.compan
 	
 	public int updateCompanyRepairPart(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateCompanyRepairPart", paramMap.getMap());
+	}
+	
+	public int insertMaterialUsed(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".insertMaterialUsed", paramMap.getMap());
+	}
+	
+	public int updateMaterialUsed(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".updateMaterialUsed", paramMap.getMap());
+	}
+	
+	public int deleteMaterialUsed(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".deleteMaterialUsed", paramMap.getMap());
 	}
 	
 	//보수내역입력 엑셀다운로드

@@ -177,6 +177,8 @@ width:190px;color:#258fff;font-size:13px;}
 width:400px;color:#258fff;font-size:15px;}
 .tbox07{border:solid 1px #ddd;  background-color:#fff; text-indent:3px;  height:22px;line-height:22px; text-align:left; 
 width:180px;color:#258fff;font-size:13px;color:#777}
+.tbox10{border:solid 1px #ddd;  background-color:#fff; text-indent:3px;  height:22px;line-height:22px; text-align:right; 
+width:35px;color:#258fff;font-size:13px;color:#777;padding-right:5px;}
 .tbox07_gray{border:solid 1px #ddd;  background-color:#eee; text-indent:3px;  height:22px;line-height:22px; text-align:left; 
 width:180px;color:#258fff;font-size:13px;float:left;color:#777}
 .tbox08_gray{border:solid 1px #ddd;  background-color:#eee; text-indent:3px;  height:22px;line-height:22px; text-align:left; 
