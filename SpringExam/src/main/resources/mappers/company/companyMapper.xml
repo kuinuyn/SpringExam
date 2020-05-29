@@ -134,7 +134,6 @@
 	</select>
 	
 	
-	
 	<select id="getCompanyRepairDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 	  	 SELECT A.REPAIR_NO
@@ -145,6 +144,7 @@
               , B.LOCATION
               , A.COMPANY_ID
               , B.REPAIR_GUBUN
+              , TO_CHAR(B.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
               , CASE WHEN B.REPAIR_GUBUN = '1' THEN '교체(변경)'
                      WHEN B.REPAIR_GUBUN = '2' THEN '이설'
                      WHEN B.REPAIR_GUBUN = '3' THEN '철거'
@@ -239,6 +239,52 @@
 	</select>
 	
 	
+	<select id="getMaterialList" parameterType="hashMap" resultType="hashMap">
+		SELECT DATA_CODE_NAME||'-'||STANDARD AS DATA_CODE_NAME
+						, DATA_CODE
+		FROM GY_CODE
+		WHERE
+			CODE_TYPE = '24' 
+			AND YEAR = TO_CHAR(TO_DATE(#{noticeDate}, 'YYYY'), 'YYYY') 
+			<!-- AND COMP_NM = #{companyId} -->
+			AND COMP_NM = 'upche1'
+		ORDER BY SUNBUN ASC
+	</select>
+	
+	
+	<select id="getMaterialUsedList" parameterType="hashMap" resultType="hashMap">
+		SELECT SEQ_NO
+						, PART_CD
+						, INOUT_CNT
+		FROM GY_LIGHT_PART
+		WHERE 1=1
+			<!-- AND COMP_NM = #{companyId} -->
+			<!-- AND COMPANY_ID = #{companyId} -->
+			AND COMPANY_ID = 'yang'
+			AND REPAIR_NO = #{repairNo}
+			AND INOUT_FLAG = '2'
+		ORDER BY SEQ_NO ASC
+	</select>
+	
+	
+	<select id="getMaterialUsedMap" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*) AS CNT
+						   , INOUT_DAY
+						   , SEQ_NO
+			FROM GY_LIGHT_PART
+			WHERE
+		]]>
+				REPAIR_NO = #{repair_no}
+				AND PART_CD = #{part_cd}
+				AND COMPANY_ID = #{company_id}
+				AND INOUT_FLAG = '2'
+		<![CDATA[
+			GROUP BY SEQ_NO, INOUT_DAY
+		]]>
+	</select>
+	
+	
 	<update id="updateCompanyRepair" parameterType="hashMap">
 		update gy_light_repair 
 		set
@@ -248,6 +294,7 @@
 		WHERE
 			repair_no = #{repair_no}
 	</update>
+	
 	
 	<update id="updateCompanyRepairPart" parameterType="hashMap">
 		update gy_light_repair_part 
@@ -262,4 +309,47 @@
 	</update>
 	
 	
+	<update id="updateMaterialUsed" parameterType="hashMap">
+		UPDATE GY_LIGHT_PART 
+		SET
+			INOUT_CNT = #{inout_cnt}
+			, LAST_UPDATE = now()
+		WHERE
+			SEQ_NO = #{seq_no}
+			AND INOUT_DAY = #{inout_day}
+			AND PART_CD = #{part_cd}
+			AND INOUT_FLAG = '2'
+			AND REPAIR_NO = #{repair_no}
+	</update>
+	
+	
+	<insert id="insertMaterialUsed" parameterType="hashMap">
+		<selectKey resultType="hashMap" keyProperty="seq_no,year,comp_nm" order="BEFORE">
+				SELECT nextval('gy_light_part_seq'::regclass) as "seq_no"
+								, year AS "year"
+								, comp_nm AS "comp_nm"
+				FROM GY_CODE
+				WHERE 1=1
+					   AND CODE_TYPE = '24'
+					   AND DATA_CODE = #{part_cd}
+					   <!-- 
+					   AND COMP_NM = #{company_id} 
+					   -->
+					   AND YEAR = TO_CHAR(TO_DATE(#{repair_date}, 'YYYYMMDD'), 'YYYY')
+		</selectKey>
+	
+		INSERT INTO GY_LIGHT_PART 
+		(SEQ_NO, INOUT_DAY, PART_CD, INOUT_FLAG, INOUT_CNT, LAST_UPDATE, REPAIR_NO, COMPANY_ID, YEAR, COMP_NM)
+		VALUES
+		(#{seq_no}, TO_CHAR(now(), 'YYYYMMDD'), #{part_cd}, '2', #{inout_cnt}, now(), #{repair_no}, #{company_id}, #{year}, #{comp_nm})
+	</insert>
+	
+	<delete id="deleteMaterialUsed" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_PART
+		WHERE
+			SEQ_NO = #{seq_no}
+			AND INOUT_DAY = #{inout_day}
+			AND PART_CD = #{part_cd}
+			AND INOUT_FLAG = '2'
+	</delete>
 </mapper>

@@ -137,24 +137,21 @@
 					str += "	<td><span> "+list[i].repair_date+" </span></td>";
 					str += "	<td style='text-align: center;'><span> "+list[i].progress_name+" </span></td>";							
 					if(list[i].progress_status == "01") {
-//						btnStr = "<span><a onclick=\"modal_popup2('messagePop2');return false;\" class='btn_orange'>작업지시</a></span>";
 						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange'>작업지시</a></span>";
 					}
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
-//						btnStr = "<span><a onclick=\"modal_popup2('messagePop2');return false;\" class='btn_red'>작업지시취소</a></span>";
 						btnStr = "<span><a href='javascript:updateRepairCancel(\""+list[i].repair_no+"\")' class='btn_red'>작업지시취소</a></span>";						
 					}
 					else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
-//						btnStr = "<span><a onclick=\"modal_popup2('messagePop2');return false;\" class='btn_blue'>재작업지시</a></span>";
 						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_blue02'>재작업지시</a></span>";								
 					}
-					str += "	<td style='text-align: center;'> "+btnStr+" </td>";					
+					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					if(list[i].progress_status == "04") {
-						btnStr1 = "<span><a onclick=\"modal_popup2('messagePop2');return false;\" class='btn_gray03'>수리내역</a></span>";						
+						btnStr1 = "<span><a onclick=\"modal_popup4('messagePop4');return false;\" class='btn_gray03'>수리내역</a></span>";						
 					}	
 					str += "	<td style='text-align: center;'> "+btnStr1+" </td>"; //					
 					if(list[i].progress_status == "04") {
-						btnStr2 = "<span><a onclick=\"modal_popup2('messagePop2');return false;\" class='btn_gray03'>사진대지</a></span>";					
+						btnStr2 = "<span><a onclick=\"modal_popup4('messagePop4');return false;\" class='btn_gray03'>사진대지</a></span>";					
 					}
 					str += "	<td style='text-align: center;'> "+btnStr2+" </td>"; //					
 					str += "</tr>";
@@ -214,7 +211,7 @@
 		}
 		
 		modalPopupCallback( function() {
-			modal_popup2('messagePop2');
+			modal_popup4('messagePop4');
 		});
 					
 	}
@@ -599,21 +596,21 @@
 <!-- -->
 
 <!-- 작업지시 -->
-<div class="modal-popup2">
+<div class="modal-popup4">
 	<div class="bg"></div>
-	<div id="messagePop2" class="pop-layer">
+	<div id="messagePop4" class="pop-layer3">
 		<div class="pop-container">
 			<div class="pop-conts">
 				<div class="btn-r">
 					<a href="#" class="cbtn"><i class="fa fa-times " aria-hidden="true"></i><span class="hide">Close</span></a>
 				</div>
-				<div class="pop_detail ">
-					<h3>보수이력관리 작업지시</h3>
-					<form name="frm1" id="frm1" method="post">
-						<input type="hidden" id="saveFlag" name="saveFlag" value="">
-						<input type="hidden" name="repair_no" value="">
-						<input type="hidden" name="light_no" value="">						
-						<div id="board_view">
+				<div class="pop_system ">
+					<div id="board_view3">
+						<h3>보수이력관리 작업지시</h3>
+						<form name="frm1" id="frm1" method="post">
+							<input type="hidden" id="saveFlag" name="saveFlag" value="">
+							<input type="hidden" name="repair_no" value="">
+							<input type="hidden" name="light_no" value="">
 							<!-- 텍스트컬러- 고장신고-blue 고장상태-red -->
 							<table summary="보수이력관리 작업지시" cellpadding="0" cellspacing="0">
 								<colgroup>
@@ -646,56 +643,9 @@
 											<span><a href="javascript:Save()" class="btn_search01">지시 </a></span>											
 										</td>
 									</tr>
-								<!--<tr>
-										<th>상세주소</th>
-										<td colspan="3"><span>보안면유천리916-1</span></td>
-									</tr>
-									<tr>
-										<th>관리번호</th>
-										<td><span>2016.11.02</span></td>
-										<th>고장상태</th>
-										<td><span>작업지시</span></td>
-									</tr>
-									
-									<tr>
-										<th>접수일</th>
-										<td><span>2016.11.02</span></td>
-										<th>처리상황</th>
-										<td><span>작업지시</span></td>
-									</tr>
-									<tr>
-										<th>신고인</th>
-										<td><span>150W</span></td>
-										<th>전화번호</th>
-										<td><span>032</span></td>
-									</tr>
-									<tr>
-										<th>이메일</th>
-										<td><span>abd@</span></td>
-										<th>휴대폰번호</th>
-										<td><span>010-000-0000</span></td>
-									</tr>
-									<tr>
-										<th>고장상태</th>
-										<td><span class="red01">불이 안들어와요</span></td>
-										<th>상태설명</th>
-										<td><span>불이 안들어와요불이 안들어와요</span></td>
-									</tr>
-									<tr>
-										<th>보수처리일</th>
-										<td><span>2016.11.02</span></td>
-										<th>처리결과회신</th>
-										<td><span>SMS</span></td>
-									</tr>-->
 								</tbody>
 							</table>
-						</div>
-					</form>	
-					<div id="btn">
-						<p>
-						<span><a href="#"  class="btn_gray02">닫기</a></span>
-					<!--<span><a href="#"  class="btn_gray02">수정</a></span>-->
-						</p>
+						</form>
 					</div>
 				</div>
 			</div>

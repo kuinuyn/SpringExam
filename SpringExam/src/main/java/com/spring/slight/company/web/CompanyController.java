@@ -110,6 +110,9 @@ public class CompanyController {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
 		try {
+			
+			CustomVO vo = (CustomVO) SecurityContextHolder.getContext().getAuthentication().getDetails();
+			paramMap.put("company_id", vo.getUserId());
 			resultCnt = companyService.updateCompanyRepair(paramMap, files);
 			mv.addObject("resultCnt", resultCnt);
 		} catch (Exception e) {

@@ -2,7 +2,8 @@
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 <script type="text/javascript">
 	var commonCd = ${MAXRESULT};
-
+	var materialList = null;
+	
 	$(function(){
 		var pageNo = "${param.current_page_no}";
 		var repairCd = "${param.repair_cd}";
@@ -60,6 +61,7 @@
 		//$(".ui-datepicker-trigger").css("display", "none");
 		
 		$(".ui-datepicker-trigger").attr("style", "margin-left:4px; vertical-align:middle;");
+		
 	});
 	
 	function Search(currentPageNo) {
@@ -163,6 +165,7 @@
 				if($("#"+key).length > 0) {
 					$("#"+key).val(data[key]);
 				}
+				
 			}
 		}
 		
@@ -233,6 +236,71 @@
 				$("#detail_slight").find("img").eq(i).parent().append("<div><input type='file' id='files["+(i+1)+"]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>");
 			}
 			
+		}
+		
+		var materiaUsedList = null;
+		$("#tdPartCd").empty();
+		
+		if(data['materialList'] != null && data['materialList'] != "") {
+			materialList = data['materialList'];
+			
+			if(data['materiaUsedList'] != null && data['materiaUsedList'] != "") {
+				materiaUsedList = data['materiaUsedList'];
+				var options = "";
+				var partCd = "";
+				var dataCd = "";
+				var dataCdNm = "";
+				var removeIdx = 0;
+				
+				messageTag = "<span class='red01'>※사용부품 삭제 시 0개를 입력하시면 됩니다.</span>";
+				$("#tdPartCd").append(messageTag);
+				for(i=0; i<materiaUsedList.length; i++) {
+					partCd = materiaUsedList[i].part_cd;
+					
+					options = "<option value=''>자재선택</option>";
+					selectTag = "<p><span><select id='part_cd_"+i+"' name='part_cd_"+i+"' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+					for(j=0; j<materialList.length; j++) {
+						dataCd = materialList[j].data_code;
+						dataCdNm = materialList[j].data_code_name;
+						if(dataCd != partCd) {
+							options += "<option value='"+dataCd+"'>"+dataCdNm+"</option>"
+						}
+						else {
+							removeIdx = j;
+							options += "<option value='"+dataCd+"' selected>"+dataCdNm+"</option>"
+						}
+					}
+					selectTag += options+"</select></span>";
+					selectTag += "<span class=''><input type='text' id='part_cnt_"+i+"' name='part_cnt_"+i+"' class='tbox10' placeholder='0' value='"+materiaUsedList[i].inout_cnt+"'>개</span></p>";
+					
+					$("#tdPartCd").append(selectTag);
+					
+					materialList.splice(removeIdx, 1);
+				}
+				
+				if(materiaUsedList.length < 10) {
+					options = "<option value=''>자재선택</option>";
+					selectTag = "<p><span><select id='part_cd_"+materiaUsedList.length+"' name='part_cd_"+materiaUsedList.length+"' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+					for(j=0; j<materialList.length; j++) {
+						options += "<option value='"+materialList[j].data_code+"'>"+materialList[j].data_code_name+"</option>"
+					}
+					selectTag += options+"</select></span>";
+					selectTag += "<span class=''><input type='text' id='part_cnt_"+materiaUsedList.length+"' name='part_cnt_"+materiaUsedList.length+"' class='tbox10' placeholder='0'>개</span></p>";
+				
+					$("#tdPartCd").append(selectTag);
+				}
+			}
+			else if(materiaUsedList == null) {
+				options = "<option value=''>자재선택</option>";
+				selectTag = "<p><span><select id='part_cd_0' name='part_cd_0' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+				for(j=0; j<materialList.length; j++) {
+					options += "<option value='"+materialList[j].data_code+"'>"+materialList[j].data_code_name+"</option>"
+				}
+				selectTag += options+"</select></span>";
+				selectTag += "<span class=''><input type='text' id='part_cnt_0' name='part_cnt_0' class='tbox10' placeholder='0'>개</span></p>";
+			
+				$("#tdPartCd").append(messageTag+selectTag);
+			}
 		}
 		
 		modalPopupCallback( function() {
@@ -346,7 +414,6 @@
 		for(i = 1; i <= fileCnt; i++) {
 			key = "files["+i+"]";
 			if($(element).attr("id") == key) {
-				alert(key+" : "+i);
 				$("#photo"+i).val(i);
 			}
 		}
@@ -382,6 +449,46 @@
 				, cache : false
 				, async : true
 				, type	: "POST"
+				, beforeSubmit : function(data, form, option) {
+					var partCdIdx = "";
+					var removeIdx = new Array();
+					var partCdArr = new Array();
+					var partCntArr = new Array();
+					for(var idx in data) {
+						
+						if(data[idx].name.indexOf("part_cnt_") > -1) {
+							partCdIdx = data[idx].name.substring("part_cnt_".length, data[idx].name.length);
+							
+							if($("#part_cd_"+partCdIdx).val() != null && $("#part_cd_"+partCdIdx).val() != "") {
+								if(data[idx].value == null || data[idx].value == "") {
+									alert("사용부품을 입력하세요.");
+									$("#"+data[idx].name).focus();
+									return false;
+								}
+								else {
+									removeIdx.push(parseInt(idx)-1);
+									removeIdx.push(parseInt(idx));
+									partCdArr.push($("#part_cd_"+partCdIdx).val());
+									partCntArr.push(parseInt(data[idx].value));
+								}
+							}
+							else {
+								data.splice(parseInt(idx-1), 1);
+								data.splice(parseInt(idx-1), 1);
+							}
+						}
+					}
+					
+					var idx = 0;
+					for(var i=0; i<removeIdx.length; i++) {
+						idx = parseInt(removeIdx[i])-i;
+						
+						data.splice(idx, 1);
+					}
+					
+					data.push({"name" : "part_cd", "value" : partCdArr});
+					data.push({"name" : "part_cnt", "value" : partCntArr});
+				}
 				, success : function(obj) {
 					updateCompanyRepairCallback(obj);
 				}
@@ -404,6 +511,94 @@
 		}
 	}
 
+	function focusPartCd(ele){
+	    $(ele).data('val', $(ele).val());
+	    $(ele).data('text', $(ele).children("option:selected").text());
+	};
+
+	function changePartCd(ele){
+		var current = $(ele).val();
+		var idx = $("#tdPartCd").find("p").size();
+		var eleSelect = null;
+		
+		if(idx > 0 && idx < 10) {
+			var eleId = $(ele).attr("id");
+			var element = "part_cd_"+idx;
+			
+			for(var i=0; i<materialList.length; i++) {
+				if(materialList[i].data_code == current) {
+					materialList.splice(i, 1);
+					break;
+				}
+			}
+			
+			if(idx < 2 || eleId == "part_cd_"+(idx-1)) {
+				var selectTag = "<p><span><select id='"+element+"' name='"+element+"' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+				var options = "<option value=''>자재선택</option>";
+				var dataCd = "";
+				var dataCdNm = "";
+				for(i=0; i<materialList.length; i++) {
+					dataCd = materialList[i].data_code;
+					dataCdNm = materialList[i].data_code_name;
+					options += "<option value='"+dataCd+"'>"+dataCdNm+"</option>"
+				}
+				selectTag += options+"</select></span>";
+				selectTag += "<span class=''><input type='text' id='part_cnt_"+idx+"' name='part_cnt_"+idx+"' class='tbox10' placeholder='0'>개</span></p>";
+				$("#tdPartCd").append(selectTag);
+				
+				eleSelect = $("#tdPartCd").find("select");
+				for(i=0; i<idx; i++) {
+					if($("#tdPartCd").find("select").eq(i).attr("id") != eleId) {
+						eleSelect.eq(i).children("option[value="+current+"]").remove();
+					}
+				}
+			}
+			else {
+				var prevVal = $(ele).data('val');
+				var prevText = $(ele).data('text');
+				var jsonAdd = null;
+				eleSelect = $("#tdPartCd").find("select");
+				$(ele).parent().next().find("input[type=text]").val('')
+				
+				for(i=0; i<idx; i++) {
+					if(prevVal != "" && prevVal != null) {
+						if($("#tdPartCd").find("select").eq(i).attr("id") != eleId) {
+							if(eleSelect.eq(i).children("option[value="+prevVal+"]").size() < 1) {
+								eleSelect.eq(i).append("<option value='"+prevVal+"'>"+prevText+"</option> ");
+							}
+								
+							if(current != null && current != "") {
+								eleSelect.eq(i).children("option[value="+current+"]").remove();
+							}
+						}
+						else {
+							jsonAdd = {"data_code" : prevVal, "data_code_name" : prevText};
+						}
+					}
+					else {
+						if($("#tdPartCd").find("select").eq(i).attr("id") != eleId) {
+							eleSelect.eq(i).children("option[value="+current+"]").remove();
+						}
+					}
+				}
+				
+				var cnt = 0;
+				if(jsonAdd != null) {
+					for(i=0; i<materialList.length; i++) {
+						if(materialList[i].data_code == jsonAdd.data_code) {
+							cnt++;
+						}
+					}
+
+					if(cnt < 1) {
+						materialList.push(jsonAdd);
+					}
+				}
+				
+			}
+			
+		}
+	};
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -638,12 +833,14 @@
 									</tr>
 									<tr>
 										<th>사용부품</th>
-										<td>
-											<!-- 
-											<span id="det_repair_part"> </span>
-											-->
-											<select id="part_cd" name="part_cd" class="sel04">
-											</select>
+										<td id="tdPartCd">
+											<p>
+												<span>
+													<select id="part_cd_0" name="part_cd_0" class="sel04" onchange="changePartCd(this)" onfocus="focusPartCd(this)">
+													</select>
+												</span>
+												<span class=""><input type="text" id="part_cnt_0" name="part_cnt_0" class="tbox10" placeholder="0">개</span>
+											</p>
 										</td>
 									</tr>
 									<tr>
