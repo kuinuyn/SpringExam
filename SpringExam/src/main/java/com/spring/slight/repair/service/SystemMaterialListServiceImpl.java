@@ -10,24 +10,24 @@ import org.springframework.stereotype.Service;
 import com.spring.common.CommandMap;
 import com.spring.common.util.PagingUtil;
 import com.spring.common.util.ResultUtil;
-import com.spring.slight.repair.dao.SystemMeterialListDao;
+import com.spring.slight.repair.dao.SystemMaterialListDao;
 
-@Service("SystemMeterialListService")
-public class SystemMeterialListServiceImpl implements SystemMeterialListService{
+@Service("SystemMaterialListService")
+public class SystemMaterialListServiceImpl implements SystemMaterialListService{
 	
 	@Autowired
-	private SystemMeterialListDao systemMeterialList;
+	private SystemMaterialListDao systemMaterialList;
 	
 	@Override
-	public List<Map<String, Object>> getMeterialSearchYear() throws Exception {
-		return systemMeterialList.getMeterialSearchYear();
+	public List<Map<String, Object>> getMaterialSearchYear() throws Exception {
+		return systemMaterialList.getMaterialSearchYear();
 	}
 	
 
 	@Override
-	public ResultUtil getSystemMeterialList(CommandMap paramMap) throws Exception {
+	public ResultUtil getSystemMaterialList(CommandMap paramMap) throws Exception {
 		ResultUtil result = new ResultUtil();
-		int totalCount = systemMeterialList.getSystemMeterialCnt(paramMap);
+		int totalCount = systemMaterialList.getSystemMaterialCnt(paramMap);
 		
 		
 		if(totalCount > 0) {
@@ -36,7 +36,7 @@ public class SystemMeterialListServiceImpl implements SystemMeterialListService{
 			paramMap = PagingUtil.setPageUtil(paramMap);
 		}
 		
-		List<Map<String, Object>> list = systemMeterialList.getSystemMeterialList(paramMap);
+		List<Map<String, Object>> list = systemMaterialList.getSystemMaterialList(paramMap);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("list", list);
 		resultMap.put("totalCount", totalCount);
@@ -49,24 +49,24 @@ public class SystemMeterialListServiceImpl implements SystemMeterialListService{
 	
 
 	@Override
-	public HashMap<String, Object> getSystemMeterialDetail(CommandMap paramMap) throws Exception {
+	public HashMap<String, Object> getSystemMaterialDetail(CommandMap paramMap) throws Exception {
 		
-		HashMap<String, Object> resultData = systemMeterialList.getSystemMeterialDetail(paramMap);
+		HashMap<String, Object> resultData = systemMaterialList.getSystemMaterialDetail(paramMap);
 		
 		return resultData;
 	}
 
 	@Override
-	public int updateSystemMeterial(CommandMap paramMap) throws Exception {
+	public int updateSystemMaterial(CommandMap paramMap) throws Exception {
 		int cnt = 0;
 		String saveFlag = (String) paramMap.get("flag");		
 			
 			if("I".equals(saveFlag)) {
-				cnt = systemMeterialList.insertSystemMeterial(paramMap);
+				cnt = systemMaterialList.insertSystemMaterial(paramMap);
 			} else if("U".equals(saveFlag)){
-				cnt = systemMeterialList.updateSystemMeterial(paramMap);
+				cnt = systemMaterialList.updateSystemMaterial(paramMap);
 			} else if ("D".equals(saveFlag)){
-				cnt = systemMeterialList.deleteSystemMeterial(paramMap);
+				cnt = systemMaterialList.deleteSystemMaterial(paramMap);
 			}
 			
 		return cnt;

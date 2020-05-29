@@ -34,7 +34,7 @@ $("#sch_year").html(option);
 		
 		$.ajax({
 			type : "POST"			
-			, url : "/repair/getSystemMeterialList"
+			, url : "/repair/getSystemMaterialList"
 			, data : $("#slightForm").serialize()
 			, dataType : "JSON"
 			, success : function(obj) {
@@ -65,13 +65,13 @@ $("#sch_year").html(option);
 			if(listLen > 0) {
 				for(i=0; i<listLen; i++) {
 					str += "<tr>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].data_code+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].data_code_name+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].comp_nm+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].standard+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].danga+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].persistence+" </a></span></td>";
-					str += "	<td><span> <a href='javascript:getMeterialDetail(\""+list[i].data_code+"\")'>"+list[i].remarks+" </a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].data_code+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].data_code_name+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].comp_nm+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].standard+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].danga+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].persistence+" </a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].remarks+" </a></span></td>";
 					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					str += "</a></tr>";
 				}
@@ -88,11 +88,11 @@ $("#sch_year").html(option);
 		}
 	}
 	
-	function getMeterialDetail(dataCode) {
+	function getMaterialDetail(dataCode) {
 		$("#dataCode").val(dataCode);
 		$.ajax({
 			type : "POST"			
-			, url : "/repair/getSystemMeterialDetail"
+			, url : "/repair/getSystemMaterialDetail"
 			, data : {"dataCode":dataCode
 				     ,"sch_year":$("#sch_year").val()}
 			, dataType : "JSON"
@@ -232,11 +232,11 @@ function doUpdate() {
 		if(yn){
 			$("#slightForm").ajaxForm({
 					type : "POST"			 
-					, url : "/repair/updateSystemMeterial"
+					, url : "/repair/updateSystemMaterial"
 					, data : json
 					, dataType : "JSON"
 				, success : function(obj) {
-					updateSystemMeterialCallback(obj);
+					updateSystemMaterialCallback(obj);
 				}
 				, error 	: function(xhr, status, error) {}
 			}).submit();
@@ -244,7 +244,7 @@ function doUpdate() {
 		
 	};
 	
-	function updateSystemMeterialCallback(obj) {
+	function updateSystemMaterialCallback(obj) {
 		if(obj != null) {
 			
 			if($("#flag").val() == "I")
@@ -350,7 +350,7 @@ function popupClose() {
 						<li><a href="#" >신설현황</a></li>
 						<li><a href="#">이설현황</a></li>
 						<li><a href="#" >철거현황</a></li>
-						<li><a href="/repair/systemMeterialList">자재관리</a></li>
+						<li><a href="/repair/systemMaterialList">자재관리</a></li>
 						<li><a href="#" >자재입/출고관리</a></li>
 					</ul>
 				</li>

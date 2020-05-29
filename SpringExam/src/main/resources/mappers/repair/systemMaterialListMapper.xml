@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.spring.mapper.slight.repair.systemMeterialListMapper">
+<mapper namespace="com.spring.mapper.slight.repair.systemMaterialListMapper">
 
 
-	<select id="getMeterialSearchYear" resultType="hashMap" parameterType="hashMap">
+	<select id="getMaterialSearchYear" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 			SELECT A.YEAR
 			  FROM GY_CODE A
@@ -14,7 +14,7 @@
 		]]>
 	</select>
 	
- <select id="getSystemMeterialCnt" resultType="int" parameterType="hashMap">
+ <select id="getSystemMaterialCnt" resultType="int" parameterType="hashMap">
 		<![CDATA[
 		SELECT COUNT(*)     
    FROM GY_CODE A 
@@ -23,7 +23,7 @@
 		]]>
 	</select>
 	
-	<select id="getSystemMeterialList" resultType="hashMap" parameterType="hashMap">
+	<select id="getSystemMaterialList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 		  SELECT A.YEAR
 		       , A.DATA_CODE
@@ -43,7 +43,7 @@
 		]]>
 	</select>
 	
-	<select id="getSystemMeterialDetail" resultType="hashMap"  parameterType="hashMap">
+	<select id="getSystemMaterialDetail" resultType="hashMap"  parameterType="hashMap">
 		<![CDATA[
 	  	SELECT A.YEAR
 		       , A.DATA_CODE
@@ -61,7 +61,7 @@
 			]]>
 	</select>
 	
-	<insert id="insertSystemMeterial" parameterType="hashMap">
+	<insert id="insertSystemMaterial" parameterType="hashMap">
 		<selectKey resultType="int" keyProperty="data_code" order="BEFORE">
 			<if test="data_code == null or data_code == '' ">
 				SELECT COALESCE(MAX(DATA_CODE::NUMERIC), 0)+1
@@ -100,7 +100,7 @@
 		)
 	</insert>
 	
-	<update id="updateSystemMeterial" parameterType="hashMap">
+	<update id="updateSystemMaterial" parameterType="hashMap">
 		UPDATE GY_CODE
 		SET
 			DATA_CODE_NAME = #{data_code_name}
@@ -115,7 +115,7 @@
 		  AND DATA_CODE = #{data_code}
 	</update>
 	
-	<update id="deleteSystemMeterial" parameterType="hashMap">
+	<update id="deleteSystemMaterial" parameterType="hashMap">
 		DELETE FROM GY_CODE
 		WHERE CODE_TYPE = '24' 
 		  AND YEAR = #{year}

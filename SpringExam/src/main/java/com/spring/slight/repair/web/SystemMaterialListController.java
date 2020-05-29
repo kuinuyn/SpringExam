@@ -23,44 +23,44 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.security.vo.CustomVO;
-import com.spring.slight.repair.service.SystemMeterialListService;
+import com.spring.slight.repair.service.SystemMaterialListService;
 import com.spring.common.CommandMap;
 import com.spring.common.util.FileDownloadUtil;
 import com.spring.common.util.ResultUtil;
 
 @Controller
 @RequestMapping(value = "/repair")
-public class SystemMeterialListController {
+public class SystemMaterialListController {
 
-	@Resource(name="SystemMeterialListService")
-	private SystemMeterialListService systemMeterialService;
+	@Resource(name="SystemMaterialListService")
+	private SystemMaterialListService systemMaterialService;
 
 	
 	/** 보수내역입력 페이지 이동 */
-	@RequestMapping( value = "/systemMeterialList")
-	public String systemMeterialList(HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping( value = "/systemMaterialList")
+	public String systemMaterialList(HttpServletRequest request, HttpServletResponse response, Model model) {
 	
 		/*
 		try {
-			model.addAttribute("searchYearList", systemMeterialService.getMeterialSearchYear());
+			model.addAttribute("searchYearList", systemMaterialService.getMaterialSearchYear());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		*/
 		
 		
-		return "slight/repair/systemMeterialList";
+		return "slight/repair/systemMaterialList";
 	}
 	
 	
 	//보수내역입력 조회
-	@RequestMapping(value="/getSystemMeterialList")
+	@RequestMapping(value="/getSystemMaterialList")
 	@ResponseBody
-	public ResultUtil getSystemMeterialList(HttpServletRequest request, CommandMap paramMap) {
+	public ResultUtil getSystemMaterialList(HttpServletRequest request, CommandMap paramMap) {
 		ResultUtil result = new ResultUtil();
 		
 				try {
-			result = systemMeterialService.getSystemMeterialList(paramMap);
+			result = systemMaterialService.getSystemMaterialList(paramMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,14 +69,14 @@ public class SystemMeterialListController {
 	}
 	
 	//상세내역조회
-	@RequestMapping(value="/getSystemMeterialDetail")
-	public ModelAndView getSystemMeterialDetail(HttpServletRequest reuqest, CommandMap paramMap) {
+	@RequestMapping(value="/getSystemMaterialDetail")
+	public ModelAndView getSystemMaterialDetail(HttpServletRequest reuqest, CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
 			
-			resultMap = systemMeterialService.getSystemMeterialDetail(paramMap);
+			resultMap = systemMaterialService.getSystemMaterialDetail(paramMap);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,13 +89,13 @@ public class SystemMeterialListController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/updateSystemMeterial")
-	public ModelAndView updateSystemMeterial( HttpServletRequest reuqest, CommandMap paramMap) {
+	@RequestMapping(value="/updateSystemMaterial")
+	public ModelAndView updateSystemMaterial( HttpServletRequest reuqest, CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
 		System.out.println("start");
 		try {
-			resultCnt = systemMeterialService.updateSystemMeterial(paramMap);
+			resultCnt = systemMaterialService.updateSystemMaterial(paramMap);
 			mv.addObject("resultCnt", resultCnt);
 		} catch (Exception e) {
 			mv.addObject("resultCnt", -1);
