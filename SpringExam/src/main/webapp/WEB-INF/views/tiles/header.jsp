@@ -247,7 +247,7 @@ function chkSession() {
 					<li><a href="#" >신설현황</a></li>
 					<li><a href="#">이설현황</a></li>
 					<li><a href="#" >철거현황</a></li>
-					<li><a href="#">자재관리</a></li>
+					<li><a href="/repair/systemMaterialList">자재관리</a></li>
 					<li><a href="#" >자재입/출고관리</a></li>
 				</ul>
 	
