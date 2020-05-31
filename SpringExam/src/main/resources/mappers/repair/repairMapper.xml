@@ -88,10 +88,10 @@
 	
 	<select id="getSystemRepairDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-			SELECT REPAIR_NO
-						   , F_GY_DATA_CODE_NM('14', REPAIR_CD) AS LIGHT_GUBUN
-						   , LIGHT_NO
-						   , NOTICE_NAME
+			SELECT A.REPAIR_NO
+						   , F_GY_DATA_CODE_NM('14', A.REPAIR_CD) AS LIGHT_GUBUN
+						   , A.LIGHT_NO
+						   , A.NOTICE_NAME
 						   , CASE WHEN inform_method = '03'
 						   				THEN PHONE
 						   				WHEN inform_method = '01'
@@ -101,12 +101,15 @@
 						   				WHEN inform_method = '04'
 						   				THEN ''
 						   	END AS CONTACT
-						   , TO_CHAR(NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
-						   , TO_CHAR(MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
-						   , TO_CHAR(TO_DATE(REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
+						   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+						   , TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
+						   , TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
 						   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
 						   , PROGRESS_STATUS
-				FROM GY_LIGHT_REPAIR A
+						   , B.COMPANY_ID
+				FROM GY_LIGHT_REPAIR A 
+				LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B 
+	          	ON A.REPAIR_NO = B.REPAIR_NO
 				WHERE
 					A.REPAIR_NO = #{repairNo}	
 				ORDER BY A.REPAIR_NO
@@ -147,7 +150,8 @@
 			                  FROM GY_MEMBER
 			                 WHERE MEMBER_ID = B.COMPANY_ID) AS "시공업체" ,
 			               B.REPAIR_DESC AS "수리내역"                 
-	          FROM GY_LIGHT_REPAIR A LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B ON A.REPAIR_NO = B.REPAIR_NO
+	          FROM GY_LIGHT_REPAIR A LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B 
+	          ON A.REPAIR_NO = B.REPAIR_NO
 	          WHERE A.PROGRESS_STATUS = '04'
 			]]>
 			<if test="repair_cd != null and repair_cd != '' ">
@@ -228,6 +232,32 @@
 		]]>
 	</select>
 	
+	<select id="getMaterialList" parameterType="hashMap" resultType="hashMap">
+		SELECT DATA_CODE_NAME||'-'||STANDARD AS DATA_CODE_NAME
+						, DATA_CODE
+		FROM GY_CODE
+		WHERE
+			CODE_TYPE = '24' 
+			AND YEAR = TO_CHAR(TO_DATE(#{noticeDate}, 'YYYY'), 'YYYY') 
+			<!-- AND COMP_NM = #{companyId} -->
+			AND COMP_NM = 'upche1'
+		ORDER BY SUNBUN ASC
+	</select>
+	
+	<select id="getMaterialUsedList" parameterType="hashMap" resultType="hashMap">
+		SELECT SEQ_NO
+						, PART_CD
+						, INOUT_CNT
+		FROM GY_LIGHT_PART
+		WHERE 1=1
+			<!-- AND COMP_NM = #{companyId} -->
+			<!-- AND COMPANY_ID = #{companyId} -->
+			AND COMPANY_ID = 'yang'
+			AND REPAIR_NO = #{repairNo}
+			AND INOUT_FLAG = '2'
+		ORDER BY SEQ_NO ASC
+	</select>
+	
 	<update id="updateRepair" parameterType="hashMap">
         UPDATE GY_LIGHT_REPAIR 
         SET
@@ -251,7 +281,7 @@
 		INSERT INTO GY_LIGHT_REPAIR_PART(
 			REPAIR_NO, LIGHT_NO, COMPANY_ID, LAST_UPDATE
 		) VALUES (
-			#{repair_no}, #{light_no}, #{searchCom1}, NOW()
+			#{repair_no}, #{lightNo}, #{searchCom1}, NOW()
 		)		
 	</insert>
 	
@@ -262,4 +292,9 @@
 		  WHERE REPAIR_NO = #{repairNo}				
 	</update>
 	
+	<delete id="deleteRepairCancel" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_REPAIR_PART
+		WHERE
+			REPAIR_NO = #{repairNo}
+	</delete>
 </mapper>

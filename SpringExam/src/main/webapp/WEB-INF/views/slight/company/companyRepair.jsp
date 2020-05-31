@@ -299,6 +299,7 @@
 				selectTag += options+"</select></span>";
 				selectTag += "<span class=''><input type='text' id='part_cnt_0' name='part_cnt_0' class='tbox10' placeholder='0'>개</span></p>";
 			
+				alert(messageTag);
 				$("#tdPartCd").append(messageTag+selectTag);
 			}
 		}

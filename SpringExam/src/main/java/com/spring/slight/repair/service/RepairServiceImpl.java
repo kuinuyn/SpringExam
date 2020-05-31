@@ -9,14 +9,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.common.CommandMap;
+import com.spring.common.dao.FileDao;
 import com.spring.common.util.PagingUtil;
 import com.spring.common.util.ResultUtil;
+import com.spring.common.vo.FilesVO;
 import com.spring.slight.repair.dao.RepairDao;
 
 @Service("RepairService")
 public class RepairServiceImpl implements RepairService{
 	@Autowired
 	private RepairDao repairDao;
+	
+	@Autowired
+	private FileDao fileDao;
 	
 	@Override
 	public List<Map<String, Object>> getSystemRepairSearchCom() throws Exception {
@@ -53,7 +58,38 @@ public class RepairServiceImpl implements RepairService{
 
 	@Override
 	public Map<String, Object> getSystemRepairDetail(CommandMap paramMap) throws Exception {
-		return repairDao.getSystemRepairDetail(paramMap);
+		Map<String, Object> resultData = repairDao.getSystemRepairDetail(paramMap);
+		
+		FilesVO filesVo = new FilesVO();
+		filesVo.setSeq((String) paramMap.get("repairNo"));
+		List<FilesVO> filesList = fileDao.getFilesList(filesVo);
+		
+		if(resultData != null) {
+			String noticeDate = "";
+			String companyId = "";
+
+			noticeDate = (String) resultData.get("notice_date");
+			companyId = (String) resultData.get("company_id");
+			
+			paramMap.put("noticeDate", noticeDate);
+			paramMap.put("companyId", companyId);
+			List<Map<String, Object>> materiaList = repairDao.getMaterialList(paramMap);
+			List<Map<String, Object>> materiaUsedList = repairDao.getMaterialUsedList(paramMap);
+			
+			if(filesList.size() > 0) {
+				resultData.put("downLoadFiles", filesList);
+			}
+			
+			if(materiaList.size() > 0) {
+				resultData.put("materialList", materiaList);
+			}
+			
+			if(materiaUsedList.size() > 0) {
+				resultData.put("materiaUsedList", materiaUsedList);
+			}
+		}
+		
+		return resultData;
 	}
 
 	@Override
@@ -83,6 +119,10 @@ public class RepairServiceImpl implements RepairService{
 	@Override
 	public int updateRepairCancel(CommandMap paramMap) throws Exception {
 		int resultCnt = repairDao.updateRepairCancel(paramMap);
+		
+		if(resultCnt > 0) {
+			repairDao.deleteRepairCancel(paramMap);
+		}
 		
 		return resultCnt;
 	}

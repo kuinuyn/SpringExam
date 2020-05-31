@@ -44,6 +44,16 @@ public class RepairDao {
 		return resultList;
 	}
 	
+	public List<Map<String, Object>> getMaterialList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getMaterialList", paramMap.getMap());
+		return resultMap;
+	}
+	
+	public List<Map<String, Object>> getMaterialUsedList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getMaterialUsedList", paramMap.getMap());
+		return resultMap;
+	}
+	
 	public int updateRepair(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateRepair", paramMap.getMap());
 	}
@@ -62,5 +72,9 @@ public class RepairDao {
 		
 	public int updateRepairCancel(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateRepairCancel", paramMap.getMap());
-	}	
+	}
+	
+	public int deleteRepairCancel(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".deleteRepairCancel", paramMap.getMap());
+	}
 }
