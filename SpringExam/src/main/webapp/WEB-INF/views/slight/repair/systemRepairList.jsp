@@ -509,7 +509,16 @@
 					if(obj != null) {
 						if(obj.resultCnt > -1) {
 							alert("작업지시가 완료되었습니다.");
-							$('.modal-popup2 .bg').trigger("click");
+							
+							var temp = $('#messagePop4');
+							var bg = temp.prev().hasClass('bg');    //dimmed 레이어를 감지하기 위한 boolean 변수
+							
+							if(bg){
+								$('.modal-popup4').fadeOut(); //'bg' 클래스가 존재하면 레이어를 사라지게 한다. 
+							}else{
+								temp.fadeOut();
+							}
+							
 							Search(); // goToList();
 						}
 						else {

@@ -213,6 +213,8 @@
 			$("#address").val('');
 			$("#address").attr("readonly", false);
 			$("#address").css('background-color', '');
+			
+			$(".lightimg").children("img").attr("src", "/resources/css/images/noimg.gif");
 		}
 	}
 	
@@ -235,6 +237,27 @@
 		}else{
 			temp.fadeOut();
 		}
+		
+		showImg(light_no);
+	}
+	
+	function showImg(light_no) {
+		$.ajax({
+			type : "POST"			
+			, url : "/filesList"
+			, data : {"seq" : light_no}
+			, dataType : "JSON"
+			, success : function(obj) {
+				/* getInsertTrobleCallback(obj); */
+				if(obj.resultData != null) {
+					var filePah = "/display?name="+obj.resultData[0].file_name_key;
+					$(".lightimg").children("img").attr("src", filePah);
+				}
+			}
+			, error : function(xhr, status, error) {
+				
+			}
+		});
 	}
 	
 	function searchMap() {
