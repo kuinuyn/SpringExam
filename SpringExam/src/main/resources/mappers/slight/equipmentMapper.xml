@@ -423,10 +423,12 @@
 			SELECT
 				A.REPAIR_NO AS "접수번호"
 				, A.LIGHT_NO AS "관리번호"
-				, F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS "등구분"
-				, F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS "처리현황"
-				, F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NAME
 				, F_GY_DATA_CODE_NM('06', A.DONG) AS "행정동"
+				, F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS "등구분"		
+				, COALESCE(CASE WHEN A.REPAIR_GUBUN = '1' THEN '교환' 
+				       WHEN A.REPAIR_GUBUN = '2' THEN '이설' 
+				       WHEN A.REPAIR_GUBUN = '3' THEN '철거' 
+				       WHEN A.REPAIR_GUBUN = '4' THEN '보수' END ,'') AS "작업구분"	
 				, COALESCE(B.REPAIR_DESC, '') AS "작업비고"
 				, COALESCE(TO_CHAR(LAST_UPDATE, 'YYYY-MM-DD'), '') AS "최종등록일"
 			FROM GY_LIGHT_REPAIR  A
@@ -443,22 +445,66 @@
 					</when>
 				</choose>
 		<![CDATA[		
-			ORDER BY A.REPAIR_NO DESC
+			ORDER BY A.DONG, A.REPAIR_NO DESC
 		]]>
 	</select>
 	
 	<select id="getMaterialUseList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-			
-		]]>
-		<![CDATA[
-			
+			 SELECT A.INOUT_DAY AS "날짜"
+     	,COALESCE((SELECT DATA_CODE_NAME FROM GY_CODE B WHERE CODE_TYPE='24' AND A.PART_CD=B.DATA_CODE AND B.YEAR=A.YEAR) ,'') AS "품명"
+		,COALESCE((SELECT STANDARD FROM GY_CODE B WHERE CODE_TYPE='24' AND A.PART_CD=B.DATA_CODE AND B.YEAR=A.YEAR) ,'') AS "규격"
+		,COALESCE((SELECT UNIT FROM GY_CODE B WHERE CODE_TYPE='24' AND A.PART_CD=B.DATA_CODE AND B.YEAR=A.YEAR) ,'') AS "단위"
+             ,CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG IN('1','4') THEN INOUT_CNT 
+                   WHEN COMPANY_ID != 'admin' AND INOUT_FLAG NOT IN('3','5') THEN INOUT_CNT ELSE 0 END AS "입고"
+             ,CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG NOT IN ('1','4') THEN INOUT_CNT 
+                   WHEN COMPANY_ID != 'admin' AND INOUT_FLAG IN('3','5') THEN INOUT_CNT ELSE 0 END AS "출고"
+        ,CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG IN('1','4') THEN INOUT_CNT WHEN COMPANY_ID != 'admin' AND INOUT_FLAG NOT IN('3','5') THEN INOUT_CNT ELSE 0 END 
+         - CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG NOT IN ('1','4') THEN INOUT_CNT WHEN COMPANY_ID != 'admin' AND INOUT_FLAG IN('3','5') THEN INOUT_CNT ELSE 0 END AS "잔고" 
+		,COALESCE((SELECT COM_NAME FROM GY_MEMBER WHERE MEMBER_ID=COMPANY_ID) ,'') AS "시공업체"
+        , COALESCE(CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '1' THEN '[외부(구매)입고]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '2' THEN '[외부(판매)출고]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '3' THEN '[업체출고]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '4' THEN '[업체반납]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '5' THEN '[보수처리]'
+               WHEN COMPANY_ID != 'admin' AND INOUT_FLAG = '3' THEN '[구청입고]'
+               WHEN COMPANY_ID != 'admin' AND INOUT_FLAG = '4' THEN '[구청반납]'
+               WHEN COMPANY_ID != 'admin' AND INOUT_FLAG = '5' THEN '[보수처리]' ELSE '' END||' '||A.BIGO ,'') AS "비고"
+		 FROM GY_LIGHT_PART A 
+		 WHERE YEAR LIKE  #{st_yy}  AND COMP_NM LIKE '%'||#{company_id}
+		   AND PART_CD LIKE '%'||#{material_cd}
+           AND INOUT_DAY  BETWEEN   replace(#{sDate2},'-','') AND replace(#{eDate2},'-','')
+			ORDER BY INOUT_DAY, PART_CD, LAST_UPDATE
 		]]>
 	</select>
 	
 	<select id="getMaterialList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-			
+			 SELECT A.INOUT_DAY AS "날짜"
+     	,COALESCE((SELECT DATA_CODE_NAME FROM GY_CODE B WHERE CODE_TYPE='24' AND A.PART_CD=B.DATA_CODE AND B.YEAR=A.YEAR) ,'') AS "품명"
+		,COALESCE((SELECT STANDARD FROM GY_CODE B WHERE CODE_TYPE='24' AND A.PART_CD=B.DATA_CODE AND B.YEAR=A.YEAR) ,'') AS "규격"
+             ,CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG IN('1','4') THEN INOUT_CNT 
+                   WHEN COMPANY_ID != 'admin' AND INOUT_FLAG NOT IN('3','5') THEN INOUT_CNT ELSE 0 END AS "입고"
+             ,CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG NOT IN ('1','4') THEN INOUT_CNT 
+                   WHEN COMPANY_ID != 'admin' AND INOUT_FLAG IN('3','5') THEN INOUT_CNT ELSE 0 END AS "출고"
+        ,CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG IN('1','4') THEN INOUT_CNT WHEN COMPANY_ID != 'admin' AND INOUT_FLAG NOT IN('3','5') THEN INOUT_CNT ELSE 0 END 
+         - CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG NOT IN ('1','4') THEN INOUT_CNT WHEN COMPANY_ID != 'admin' AND INOUT_FLAG IN('3','5') THEN INOUT_CNT ELSE 0 END AS "잔고" 
+		,COALESCE((SELECT MEMBER_NAME FROM GY_MEMBER WHERE MEMBER_ID=COMPANY_ID) ,'') AS "시공업체"
+		,A.REPAIR_NO AS "접수번호"
+        , COALESCE(CASE WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '1' THEN '[외부(구매)입고]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '2' THEN '[외부(판매)출고]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '3' THEN '[업체출고]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '4' THEN '[업체반납]'
+               WHEN COMPANY_ID = 'admin' AND INOUT_FLAG = '5' THEN '[보수처리]'
+               WHEN COMPANY_ID != 'admin' AND INOUT_FLAG = '3' THEN '[구청입고]'
+               WHEN COMPANY_ID != 'admin' AND INOUT_FLAG = '4' THEN '[구청반납]'
+               WHEN COMPANY_ID != 'admin' AND INOUT_FLAG = '5' THEN '[보수처리]' ELSE '' END||' '||A.BIGO ,'') AS "비고"
+		 FROM GY_LIGHT_PART A 
+		 WHERE YEAR LIKE  #{st_yy}  AND COMP_NM LIKE '%'||#{company_id}
+		   AND PART_CD LIKE '%'||#{material_cd}
+		   AND INOUT_FLAG = '5'
+           AND INOUT_DAY  BETWEEN   replace(#{sDate2},'-','') AND replace(#{eDate2},'-','')
+			ORDER BY INOUT_DAY, PART_CD, LAST_UPDATE
 		]]>
 	</select>
 	
