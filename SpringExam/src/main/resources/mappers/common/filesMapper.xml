@@ -96,7 +96,9 @@
 					   , UPD_USER_ID = 'NONMEMBER'
 					   , UPD_DATE = NOW()
 		WHERE SEQ = #{seq}
-			   AND FILE_NO = ${file_no}
+				<if test="file_no != null and file_no != '' ">
+					AND FILE_NO = #{file_no}
+				</if>
 	</update>
 	
 	<update id="deleteFile" parameterType="com.spring.common.vo.FilesVO">

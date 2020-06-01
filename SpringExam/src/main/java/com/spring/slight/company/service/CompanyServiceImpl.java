@@ -115,7 +115,7 @@ public class CompanyServiceImpl implements CompanyService{
 				String[] deleteFilesInfo = deleteFile.split("\\|");
 				for(int i=0; i < deleteFilesInfo.length; i++) {
 					deleteFileInfo = deleteFilesInfo[i].split("\\!");
-					filesVo.setSeq(deleteFileInfo[0]);
+					filesVo.setSeq(deleteFileInfo[0].trim());
 					filesVo.setFile_no(Integer.parseInt(deleteFileInfo[1]));
 					
 					fileDao.deleteFiles(filesVo);
@@ -135,35 +135,38 @@ public class CompanyServiceImpl implements CompanyService{
 		String photo1 = (String) paramMap.get("photo1");
 		String photo2 = (String) paramMap.get("photo2");
 		String photo3 = (String) paramMap.get("photo3");
+		int file_no_1 = paramMap.get("file_no_1") == null ? 0 : Integer.parseInt(String.valueOf(paramMap.get("file_no_1")));
+		int file_no_2 = paramMap.get("file_no_2") == null ? 0 : Integer.parseInt(String.valueOf(paramMap.get("file_no_2")));
+		int file_no_3 = paramMap.get("file_no_3") == null ? 0 : Integer.parseInt(String.valueOf(paramMap.get("file_no_3")));
 		
 		int cnt = 0;
 		for(FilesVO file : files) {
 			if(cnt > -1) {
-				if(!"".equals(photo1) && photo1 != null) {
+				if(!"".equals(photo1) && photo1 != null && file_no_1 == 0) {
 					file.setFile_no(Integer.parseInt(photo1));
 					photo1 = "";
 				}
-				else if(!"".equals(photo2) && photo2 != null) {
+				else if(!"".equals(photo2) && photo2 != null && file_no_2 == 0) {
 					file.setFile_no(Integer.parseInt(photo2));
 					photo2 = "";
 				}
-				else if(!"".equals(photo3) && photo3 != null) {
+				else if(!"".equals(photo3) && photo3 != null && file_no_3 == 0) {
 					file.setFile_no(Integer.parseInt(photo3));
 					photo3 = "";
 				}
 			}
 			else if(cnt > 0) {
-				if(!"".equals(photo2) && photo2 != null) {
+				if(!"".equals(photo2) && photo2 != null && file_no_2 == 0) {
 					file.setFile_no(Integer.parseInt(photo2));
 					photo2 = "";
 				}
-				else if(!"".equals(photo3) && photo3 != null) {
+				else if(!"".equals(photo3) && photo3 != null && file_no_3 == 0) {
 					file.setFile_no(Integer.parseInt(photo3));
 					photo3 = "";
 				}
 			}
 			else if(cnt > 1) {
-				if(!"".equals(photo3) && photo3 != null) {
+				if(!"".equals(photo3) && photo3 != null && file_no_3 == 0) {
 					file.setFile_no(Integer.parseInt(photo3));
 					photo3 = "";
 				}

@@ -1,5 +1,6 @@
 package com.spring.slight.repair.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,11 @@ public class RepairDao {
 		return resultMap;
 	}
 	
+	public HashMap<String, Object> getMaterialUsedMap(CommandMap paramMap) throws Exception {
+		HashMap<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getMaterialUsedMap", paramMap.getMap());
+		return resultMap;
+	}
+	
 	public int updateRepair(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateRepair", paramMap.getMap());
 	}
@@ -76,5 +82,29 @@ public class RepairDao {
 	
 	public int deleteRepairCancel(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".deleteRepairCancel", paramMap.getMap());
+	}
+	
+	public int updateRepairDetail(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateRepairDetail", paramMap.getMap());
+	}
+	
+	public int updateRepairDetailPart(CommandMap paramMap) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateRepairDetailPart", paramMap.getMap());
+	}
+	
+	public int insertMaterialUsed(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".insertMaterialUsed", paramMap.getMap());
+	}
+	
+	public int updateMaterialUsed(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".updateMaterialUsed", paramMap.getMap());
+	}
+	
+	public int deleteRepairMaterialCancel(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".deleteRepairMaterialCancel", paramMap.getMap());
+	}
+	
+	public int deleteMaterialUsed(CommandMap paramMap) throws Exception {
+		return sqlSession.insert(NAMESPACE+".deleteMaterialUsed", paramMap.getMap());
 	}
 }

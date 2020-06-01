@@ -16,4 +16,5 @@ public interface RepairService {
 	public List<Map<String, Object>> getSystemRepairExcelList(CommandMap paramMap) throws Exception;
 	public int updateRepair(CommandMap paramMap) throws Exception;
 	public int updateRepairCancel(CommandMap paramMap) throws Exception;
+	public int updateRepairDetail(CommandMap paramMap, List<MultipartFile> files) throws Exception;
 }

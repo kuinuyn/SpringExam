@@ -92,6 +92,23 @@
 						   , F_GY_DATA_CODE_NM('14', A.REPAIR_CD) AS LIGHT_GUBUN
 						   , A.LIGHT_NO
 						   , A.NOTICE_NAME
+						   , A.REPAIR_DATE 
+						   , B.REPAIR_DESC
+						   , A.LIGHT_NO
+						   , A.LOCATION
+						   , B.COMPANY_ID AS COMPANY_ID
+						   , COALESCE(A.REPAIR_GUBUN, '') AS REPAIR_GUBUN
+						   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+						   , A.REPAIR_BIGO
+						   , F_GY_DATA_CODE_NM('24',A.REPAIR_GUBUN ) AS REPAIR_GUBUN_NM
+						   , TO_CHAR( B.LAST_UPDATE ,'YYYY.MM.DD HH24:MI:SS') AS LAST_UPDATE
+						   , B.PHOTO1
+						   , B.PHOTO2
+						   , B.PHOTO3
+						   , B.ETC_PHOTO1
+						   , B.ETC_PHOTO2
+						   , A.INFORM_METHOD
+						   , F_GY_DATA_CODE_NM('02',A.INFORM_METHOD ) AS INFORM_NM
 						   , CASE WHEN inform_method = '03'
 						   				THEN PHONE
 						   				WHEN inform_method = '01'
@@ -101,12 +118,20 @@
 						   				WHEN inform_method = '04'
 						   				THEN ''
 						   	END AS CONTACT
-						   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
 						   , TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
 						   , TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD') AS REPAIR_DATE
 						   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
-						   , PROGRESS_STATUS
-						   , B.COMPANY_ID
+						   , A.PROGRESS_STATUS
+						   , F_GY_DATA_CODE_NM('03',A.PROGRESS_STATUS ) AS PROGRESS_STATUS_NM
+						   , A.REMARK_ETC
+						   , A.DONG
+						   , (SELECT COM_NAME FROM GY_MEMBER WHERE MEMBER_ID = B.COMPANY_ID) AS COM_NAME  
+						   , F_GY_DATA_CODE_NM('10', (select lamp2_cd from gy_light where light_no = a.light_no)) as lamp2_cd_nm 
+						   , F_GY_DATA_CODE_NM('11', (select lamp3_cd from gy_light where light_no = a.light_no)) as lamp3_cd_nm   
+						   , F_GY_DATA_CODE_NM('08', (select stand_cd from gy_light where light_no = a.light_no)) as stand_cd_nm  
+						   , F_GY_DATA_CODE_NM('13', (select onoff_cd from gy_light where light_no = a.light_no)) as onoff_cd_nm 
+						   , COALESCE((SELECT ETC FROM GY_LIGHT WHERE LIGHT_NO = A.LIGHT_NO),'') AS ETC 
+						   , COALESCE((SELECT LAMP1_CD_ETC FROM GY_LIGHT WHERE LIGHT_NO = A.LIGHT_NO),'') AS LAMP1_CD_ETC
 				FROM GY_LIGHT_REPAIR A 
 				LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B 
 	          	ON A.REPAIR_NO = B.REPAIR_NO
@@ -239,8 +264,7 @@
 		WHERE
 			CODE_TYPE = '24' 
 			AND YEAR = TO_CHAR(TO_DATE(#{noticeDate}, 'YYYY'), 'YYYY') 
-			<!-- AND COMP_NM = #{companyId} -->
-			AND COMP_NM = 'upche1'
+			AND COMP_NM = #{company_id}
 		ORDER BY SUNBUN ASC
 	</select>
 	
@@ -250,12 +274,28 @@
 						, INOUT_CNT
 		FROM GY_LIGHT_PART
 		WHERE 1=1
-			<!-- AND COMP_NM = #{companyId} -->
-			<!-- AND COMPANY_ID = #{companyId} -->
-			AND COMPANY_ID = 'yang'
+			<!-- AND COMP_NM = #{company_id} -->
+			AND COMPANY_ID = #{company_id}
 			AND REPAIR_NO = #{repairNo}
 			AND INOUT_FLAG = '2'
 		ORDER BY SEQ_NO ASC
+	</select>
+	
+	<select id="getMaterialUsedMap" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*) AS CNT
+						   , INOUT_DAY
+						   , SEQ_NO
+			FROM GY_LIGHT_PART
+			WHERE
+		]]>
+				REPAIR_NO = #{repair_no}
+				AND PART_CD = #{part_cd}
+				AND COMPANY_ID = #{company_id}
+				AND INOUT_FLAG = '2'
+		<![CDATA[
+			GROUP BY SEQ_NO, INOUT_DAY
+		]]>
 	</select>
 	
 	<update id="updateRepair" parameterType="hashMap">
@@ -288,7 +328,7 @@
 	<update id="updateRepairCancel" parameterType="hashMap">
 		UPDATE GY_LIGHT_REPAIR SET
 	        PROGRESS_STATUS = '01'
-		   ,REMARK_ETC = ''
+		   , REMARK_ETC = ''
 		  WHERE REPAIR_NO = #{repairNo}				
 	</update>
 	
@@ -296,5 +336,76 @@
 		DELETE FROM GY_LIGHT_REPAIR_PART
 		WHERE
 			REPAIR_NO = #{repairNo}
+	</delete>
+	
+	<delete id="deleteRepairMaterialCancel" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_PART
+		WHERE
+			REPAIR_NO = #{repairNo}
+			AND INOUT_FLAG = '2'
+	</delete>
+	
+	<update id="updateRepairDetail" parameterType="hashMap">
+		update gy_light_repair 
+		set
+			progress_status = #{progress_status}
+			, repair_gubun = #{repair_gubun}
+			, repair_bigo = #{repair_bigo}	
+		WHERE
+			repair_no = #{repair_no}
+	</update>
+	
+	<update id="updateRepairDetailPart" parameterType="hashMap">
+		update gy_light_repair_part 
+		set
+			repair_desc = #{repair_desc}
+			, photo1 = #{photo1}
+			, photo2 = #{photo2}
+			, photo3 = #{photo3}
+			, last_update = now()
+		WHERE
+			repair_no = #{repair_no}
+	</update>
+	
+	<update id="updateMaterialUsed" parameterType="hashMap">
+		UPDATE GY_LIGHT_PART 
+		SET
+			INOUT_CNT = #{inout_cnt}
+			, LAST_UPDATE = now()
+		WHERE
+			SEQ_NO = #{seq_no}
+			AND INOUT_DAY = #{inout_day}
+			AND PART_CD = #{part_cd}
+			AND INOUT_FLAG = '2'
+			AND REPAIR_NO = #{repair_no}
+	</update>
+	
+	
+	<insert id="insertMaterialUsed" parameterType="hashMap">
+		<selectKey resultType="hashMap" keyProperty="seq_no,year,comp_nm" order="BEFORE">
+				SELECT nextval('gy_light_part_seq'::regclass) as "seq_no"
+								, year AS "year"
+								, comp_nm AS "comp_nm"
+				FROM GY_CODE
+				WHERE 1=1
+					   AND CODE_TYPE = '24'
+					   AND DATA_CODE = #{part_cd}
+					   AND COMP_NM = #{company_id} 
+					   AND YEAR = TO_CHAR(TO_DATE(#{repair_date}, 'YYYYMMDD'), 'YYYY')
+		</selectKey>
+	
+		INSERT INTO GY_LIGHT_PART 
+		(SEQ_NO, INOUT_DAY, PART_CD, INOUT_FLAG, INOUT_CNT, LAST_UPDATE, REPAIR_NO, COMPANY_ID, YEAR, COMP_NM)
+		VALUES
+		(#{seq_no}, TO_CHAR(now(), 'YYYYMMDD'), #{part_cd}, '2', #{inout_cnt}, now(), #{repair_no}, #{company_id}, #{year}, #{comp_nm})
+	</insert>
+	
+	<delete id="deleteMaterialUsed" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_PART
+		WHERE
+			SEQ_NO = #{seq_no}
+			AND INOUT_DAY = #{inout_day}
+			AND PART_CD = #{part_cd}
+			AND INOUT_FLAG = '2'
 	</delete>
 </mapper>

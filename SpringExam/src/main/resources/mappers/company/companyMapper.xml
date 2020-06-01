@@ -143,14 +143,9 @@
               , A.LIGHT_NO
               , B.LOCATION
               , A.COMPANY_ID
-              , B.REPAIR_GUBUN
+              , COALESCE(B.REPAIR_GUBUN, '') AS REPAIR_GUBUN
               , TO_CHAR(B.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
-              , CASE WHEN B.REPAIR_GUBUN = '1' THEN '교체(변경)'
-                     WHEN B.REPAIR_GUBUN = '2' THEN '이설'
-                     WHEN B.REPAIR_GUBUN = '3' THEN '철거'
-                     WHEN B.REPAIR_GUBUN = '4' THEN '보수'
-                     WHEN B.REPAIR_GUBUN = '5' THEN '신설'
-                     END AS REPAIR_GUBUN_NM
+              , F_GY_DATA_CODE_NM('24',B.REPAIR_GUBUN ) AS REPAIR_GUBUN_NM
               , B.REPAIR_BIGO
               , TO_CHAR( A.LAST_UPDATE ,'YYYY.MM.DD HH24:MI:SS') AS LAST_UPDATE
               , A.PHOTO1
