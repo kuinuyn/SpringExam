@@ -259,9 +259,9 @@ function chkSession() {
 				
 				<!-- 이용안내 -->
 				<ul class="smenu07 " >
-					<li><a href="#">서비스 안내</a></li>
-					<li><a href="#">자료실</a></li>
-					<li><a href="#" >공지사항</a></li>
+					<li><a href="/info/infoServicesList">서비스 소개</a></li>
+					<li><a href="/info/infoReportList">이용안내</a></li>
+					<li><a href="/" >공지사항</a></li>
 				</ul>
 			</sec:authorize>
 				
@@ -274,9 +274,9 @@ function chkSession() {
 				
 				<!-- 이용안내 -->
 				<ul class="smenu05" >
-					<li><a href="#">서비스 안내</a></li>
-					<li><a href="#">자료실</a></li>
-					<li><a href="#" >공지사항</a></li>
+					<li><a href="/info/infoServicesList">서비스 소개</a></li>
+					<li><a href="/info/infoReportList">이용안내</a></li>
+					<li><a href="/" >공지사항</a></li>
 				</ul>
 				
 			</sec:authorize>
@@ -284,9 +284,9 @@ function chkSession() {
 			<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS')">
 				<!-- 이용안내 -->
 				<ul class="smenu04 " >
-					<li><a href="#">서비스 안내</a></li>
-					<li><a href="#">자료실</a></li>
-					<li><a href="#" >공지사항</a></li>
+					<li><a href="/info/infoServicesList">서비스 소개</a></li>
+					<li><a href="/info/infoReportList">이용안내</a></li>
+					<li><a href="/" >공지사항</a></li>
 				</ul>
 			</sec:authorize>
 		</div>

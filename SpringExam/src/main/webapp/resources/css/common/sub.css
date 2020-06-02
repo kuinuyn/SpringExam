@@ -412,6 +412,45 @@ background-color: #2571c2;border:solid 1px #2571c2;font-weight:bold;cursor: poin
 span a.btn_refresh{float:left;margin-left:6px;width:32px;height:32px;text-indent:-10000px;
 background:url('../images/sub/icon_refresh.gif') no-repeat center;;cursor: pointer}
 
+/*guide*/
+#intro_img{background:url(../images/sub/guide/service_intro.jpg) no-repeat center ; height:270px;
+	width:100%;margin:0 auto;text-align:center;overflow:hidden;}
+#intro_img p{padding-top:128px;font-size:21px;;color:#fff;text-align:center;width:1160px;margin:0 auto;}
+#intro_txt{text-align:center;width:1160px;margin:0 auto;margin-top:30px;}
+#intro_txt p{color:#666;font-size:15px;line-height:28px;letter-spacing:-0.5px;padding-bottom:40px;}
+#intro_menubox{background-color:#e8eef0 ; width:100%;margin:0 auto;text-align:center;overflow:hidden;}
+#intro_menubox h4{margin:0 auto;text-align:center;overflow:hidden;padding:40px 0 25px 0;font-size:22px;}
+#intro_menuicon{width:902px;margin:0 auto;margin-bottom:30px;overflow:hidden;}
+#intro_menuicon li{float:left;}
+#intro_menuicon li.micon01{background:url('../images/sub/guide/micon01.png') no-repeat ;width:116px; height:150px;}
+#intro_menuicon li.micon02{background:url('../images/sub/guide/micon02.png') no-repeat ;width:116px; height:150px;margin-left:80px;}
+#intro_menuicon li.micon03{background:url('../images/sub/guide/micon03.png') no-repeat ;width:116px; height:150px;margin-left:80px;}
+#intro_menuicon li.micon04{background:url('../images/sub/guide/micon04.png') no-repeat ;width:116px; height:150px;margin-left:80px;}
+#intro_menuicon li.micon05{background:url('../images/sub/guide/micon05.png') no-repeat ;width:116px; height:150px;margin-left:80px;}
+#intro_menuicon li p{padding-top:125px;color:#383e50;font-size:14px;}
+#intro_effect{text-align:center;width:1160px;margin:0 auto;margin-top:30px;}
+#intro_effect h4{width:1160px;margin:0 auto;text-align:center;overflow:hidden;padding:45px 0 30px 0;font-size:22px;}
+#intro_effect li{float:left;text-align:left;margin-bottom:100px;}
+#intro_effect li.ef01{background:url('../images/sub/guide/ef01.png') no-repeat ;width:276px; height:143px;}
+#intro_effect li.ef02{background:url('../images/sub/guide/ef02.png') no-repeat ;width:276px; height:143px;margin-left:15px}
+#intro_effect li.ef03{background:url('../images/sub/guide/ef03.png') no-repeat ;width:276px; height:143px;margin-left:15px}
+#intro_effect li.ef04{background:url('../images/sub/guide/ef04.png') no-repeat ;width:276px; height:143px;margin-left:15px}
+#intro_effect li p{padding:72px 0 0 25px;; font-size:15px;color:#777}
+
+#s_guide_title{width:100%;margin:0 auto;text-align:center;overflow:hidden;}
+#s_guide_title p{padding:40px 0;text-align:center;}
+#s_guide_title p a{font-size:22px;padding:0 40px;color:#666}
+#s_guide_title p a:hover{font-size:22px;padding:0 40px;color:#555;font-weight:bold;}
+#s_guide_title p a.tit_on{font-size:22px;padding:0 40px;color:#258fff;text-decoration: underline;font-weight:bold;}
+#s_guidebox{background-color:#f8fbff ; width:100%;margin:0 auto;text-align:center;overflow:hidden;border:solid 1px #ddd;}
+#s_guidebox p{padding:80px 0 0px 0;font-size:16px;color:#555;width:100%;margin:0 auto;text-align:center;overflow:hidden;height:auto;}
+#s_guidebox p span{padding:10px;}
+#s_guidebox p.guide01_01{background:url('../images/sub/guide/guide01_1.gif') no-repeat ;width:857px; height:400px;margin-top:20px;}
+#s_guidebox p.guide01_02{background:url('../images/sub/guide/guide01_2.gif') no-repeat ;width:857px; height:510px;margin-top:20px;}
+#s_guidebox p.guide01_03{background:url('../images/sub/guide/guide01_3.gif') no-repeat ;width:857px; height:480px;margin-top:20px;}
+#s_guidebox p.guide02_01{background:url('../images/sub/guide/guide02_1.png') no-repeat ;width:872px; height:380px;margin-top:20px;}
+#s_guidebox p.guide02_02{background:url('../images/sub/guide/guide02_2.gif') no-repeat ;width:857px; height:550px;margin-top:20px;}
+
 
 /*login*/
 #loginbox{ width:800px;margin:0 auto;background-color:#f8f8f8;border-top:solid 2px #555;
