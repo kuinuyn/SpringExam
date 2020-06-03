@@ -60,6 +60,16 @@ public class RepairDao {
 		return resultMap;
 	}
 	
+	public Map<String, Object> getSystemRepairSaveFlag(CommandMap paramMap) throws Exception {
+		Map<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getSystemRepairSaveFlag", paramMap.getMap());
+		return resultMap;
+	}
+	
+	public Map<String, Object> getRepairStatus(CommandMap paramMap) throws Exception {
+		Map<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getRepairStatus", paramMap.getMap());
+		return resultMap;
+	}
+	
 	public int updateRepair(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateRepair", paramMap.getMap());
 	}

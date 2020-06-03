@@ -114,8 +114,8 @@
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="#">보안등관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
@@ -123,7 +123,7 @@
 						<li><a href="/equipment/securityLightList">보안등관리</a></li>
 						<li><a href="/equipment/streetLightList">가로등관리</a></li>
 						<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
-						<li><a href="#">GIS관리</a></li>
+						<li><a href="/equipment/gisLightList">GIS관리</a></li>
 						<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
 						<li><a href="/system/systemMemberList">사용자관리</a></li>
 					</ul>

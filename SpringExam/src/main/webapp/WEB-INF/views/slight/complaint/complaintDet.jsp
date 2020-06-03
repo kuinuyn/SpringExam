@@ -106,6 +106,11 @@
 			}
 		}
 		
+		if($("#progress_status").val().trim() != "01") {
+			alert("민원처리중 수정이 불가능합니다.");
+			return;
+		}
+		
 		var yn = confirm("민원결과를 수정 하시겠습니까?");
 		if(yn){
 			$.ajax({
@@ -129,6 +134,10 @@
 				alert("신고를 성공하였습니다.");
 				goToList();
 			}
+			else if(obj.resultCnt == -2) {
+				alert("민원처리중 수정이 불가능합니다.");
+				goToList();
+			}
 			else {
 				alert("신고를 실패하였습니다.");	
 				return;
@@ -137,6 +146,11 @@
 	}
 	
 	function Delete() {
+		if($("#progress_status").val().trim() != "01") {
+			alert("민원처리중 삭제가 불가능합니다.");
+			return;
+		}
+		
 		if(confirm("삭제하시겠습니까?")) {
 			$.ajax({
 				type : "POST"			
@@ -146,6 +160,10 @@
 				, success : function(obj) {
 					if(obj.resultCnt > -1) {
 						alert("삭제 되었습니다.");
+						goToList();
+					}
+					else if(obj.resultCnt == -2) {
+						alert("처리가 완료되어 삭제가 불가능합니다.");
 						goToList();
 					}
 				}
@@ -176,11 +194,11 @@
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
-				<li><a href="/complaint/complaintList">민원처리결과조회  </a>
+				<li><a href="/complaint/complaintList">민원처리결과조회</a>
 				</li>
 			</ul>
 		</div>
@@ -193,6 +211,7 @@
 			<input type="hidden" name="repair_no" id="repair_no" value="${resultMap.repair_no }">
 			<input type="hidden" name="light_no" id="light_no" value="${resultMap.light_no }">
 			<input type="hidden" name="repair_cd" id="repair_cd" value="${resultMap.repair_cd }">
+			<input type="hidden" name="progress_status" id="progress_status" value="${resultMap.progress_status }">
 			<div id="board_view2">
 				<table summary="고장신고목록" cellpadding="0" cellspacing="0">
 					<colgroup>

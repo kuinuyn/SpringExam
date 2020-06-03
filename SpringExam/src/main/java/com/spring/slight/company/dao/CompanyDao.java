@@ -29,12 +29,6 @@ private static final String NAMESPACE = "com.spring.mapper.slight.company.compan
 		return resultMap;
 	}
 	
-	public int updateCompanyInfo(CommandMap paramMap) throws Exception {
-		int cnt = sqlSession.update(NAMESPACE+".updateCompanyInfo", paramMap.getMap());
-		
-		return cnt;
-	}
-	
 	//보수내역입력 총건수
 	public int getCompanyRepairCnt(CommandMap paramMap) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+".getCompanyRepairCnt", paramMap.getMap());
@@ -74,6 +68,17 @@ private static final String NAMESPACE = "com.spring.mapper.slight.company.compan
 		return resultMap;
 	}
 	
+	public Map<String, Object> getRepairStatus(CommandMap paramMap) throws Exception {
+		HashMap<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getRepairStatus", paramMap.getMap());
+		return resultMap;
+	}
+	
+	//보수내역입력 엑셀다운로드
+	public List<Map<String, Object>> getCompanyRepairExcelList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getCompanyRepairExcelList", paramMap.getMap());
+		return resultList;
+	}
+	
 	public int updateCompanyRepair(CommandMap paramMap) throws Exception {
 		return sqlSession.update(NAMESPACE+".updateCompanyRepair", paramMap.getMap());
 	}
@@ -94,11 +99,10 @@ private static final String NAMESPACE = "com.spring.mapper.slight.company.compan
 		return sqlSession.insert(NAMESPACE+".deleteMaterialUsed", paramMap.getMap());
 	}
 	
-	//보수내역입력 엑셀다운로드
-	public List<Map<String, Object>> getCompanyRepairExcelList(CommandMap paramMap) throws Exception {
-		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getCompanyRepairExcelList", paramMap.getMap());
-		return resultList;
+	public int updateCompanyInfo(CommandMap paramMap) throws Exception {
+		int cnt = sqlSession.update(NAMESPACE+".updateCompanyInfo", paramMap.getMap());
+		
+		return cnt;
 	}
-	
 	
 }

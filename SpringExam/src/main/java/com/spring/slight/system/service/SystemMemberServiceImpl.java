@@ -73,7 +73,14 @@ public class SystemMemberServiceImpl implements SystemMemberService{
 		}
 		
 		if("I".equals(saveFlag)) {
-			String chkIdFlag = (String) chkMemberId(paramMap).get("chkFlag");
+			String chkIdFlag = "";
+			if(chkMemberId(paramMap) != null) {
+				chkIdFlag = (String) chkMemberId(paramMap).get("chkFlag");
+			}
+			else {
+				chkIdFlag = "N";
+			}
+			
 			if("N".equals(chkIdFlag)) {
 				return -1;
 			}

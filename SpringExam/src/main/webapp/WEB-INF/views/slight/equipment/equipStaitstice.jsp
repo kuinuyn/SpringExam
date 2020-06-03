@@ -453,8 +453,8 @@
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="#">통계관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
@@ -505,8 +505,8 @@
 				<ul id="ulGubun2" style="display: none;">
 					<li class="title">기간</li>
 					<li class="pdl30">
-						<input type="text" id="sDate" name="sDate" class="tbox02"> ~
-						<input type="text" id="eDate" name="eDate" class="tbox02">
+						<input type="text" id="sDate" name="sDate" class="tbox02" readonly="readonly"> ~
+						<input type="text" id="eDate" name="eDate" class="tbox02" readonly="readonly">
 					</li>
 					<li class="pdl10">
 						<select class="sel01" id="light_gubun" name="light_gubun">
@@ -733,8 +733,8 @@
 										<th>기간</th>
 										<td colspan="3">
 											<span class="">
-												<input type="text" class="tbox13" id="sDate2" name="sDate2" > ~
-												<input type="text" class="tbox13" id="eDate2" name="eDate2" >
+												<input type="text" class="tbox13" id="sDate2" name="sDate2" readonly="readonly"> ~
+												<input type="text" class="tbox13" id="eDate2" name="eDate2" readonly="readonly">
 											</span>
 										</td>
 									</tr>
@@ -754,8 +754,8 @@
 												</select>
 											</span>
 											<span class="">
-												<input type="text" class="tbox13" id="sDate3" name="sDate3" > ~
-												<input type="text" class="tbox13" id="eDate3" name="eDate3" >
+												<input type="text" class="tbox13" id="sDate3" name="sDate3" readonly="readonly" > ~
+												<input type="text" class="tbox13" id="eDate3" name="eDate3" readonly="readonly" >
 											</span>
 											<span class="" style="display: none;">
 												<select class="sel03" id="company_id2" name="company_id2">

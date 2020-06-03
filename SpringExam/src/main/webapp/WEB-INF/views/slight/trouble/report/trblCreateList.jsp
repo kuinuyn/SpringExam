@@ -384,8 +384,8 @@
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="#">기타사항  <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>

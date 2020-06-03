@@ -14,11 +14,43 @@
 		drawCodeData(commonCd, "14", "select", "ALL", "", repairCd).then(function(resolvedData) {
 			$("#sch_repair_cd").empty();
 			$("#sch_repair_cd").append(resolvedData);
+			
+			var idx = $("#sch_repair_cd").children("option").size()-1;
+			var optText = "";
+			while(idx > 0) {
+				optText = $("#sch_repair_cd").children("option").eq(idx).text();
+				
+				if(optText == "신설") {
+					$("#sch_repair_cd").children("option").eq(idx).remove();
+				}
+				else if(optText == "이설") {
+					$("#sch_repair_cd").children("option").eq(idx).remove();
+				}
+				else if(optText == "철거") {
+					$("#sch_repair_cd").children("option").eq(idx).remove();
+				}
+				idx--;
+			}
 		})
 		.then(function() {
 			drawCodeData(commonCd, "03", "select", "", "", repairCd).then(function(resolvedData) {
 				$("#progress_status").empty();
 				$("#progress_status").append(resolvedData);
+				
+				var idx = $("#progress_status").children("option").size()-1;
+				var optVal = "";
+				while(idx >= 0) {
+					optVal = $("#progress_status").children("option").eq(idx).val();
+					
+					if(optVal < "03") {
+						$("#progress_status").children("option").eq(idx).remove();
+					}
+					else if(optVal == "") {
+						$("#progress_status").children("option").eq(idx).remove();
+					}
+					
+					idx--;
+				}
 			})
 		})
 		.then(function() {
@@ -108,13 +140,13 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].notice_date+" </a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].repair_date+" </a></span></td>";
 					if(list[i].progress_status == "01") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange'>신고접수</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange02'>신고접수</a></span>";
 					}
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_red'>작업지시취소</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_red02'>작업지시취소</a></span>";
 					}
 					else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_blue'>재작업지시</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_blue04'>재작업지시</a></span>";
 					}
 					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					str += "</a></tr>";
@@ -156,7 +188,7 @@
 			var key, element, repairRst = "";
 			var repairList = {};
 			for(key in data) {
-				//alert("key : "+key +"      data : "+ data);
+				//console.log("key : "+key +"      data : "+ data);
 				element = "det_"+key;
 				if($("#"+element).length > 0) {
 					$("#"+element).text(data[key]);
@@ -227,15 +259,20 @@
 				$("#detail_slight").find("img").eq(2).parent().find("div").empty();
 			}
 			
-			$("#detail_slight").find("img").eq(0).parent().append(str1);
-			$("#detail_slight").find("img").eq(1).parent().append(str2);
-			$("#detail_slight").find("img").eq(2).parent().append(str3);
+			if(data["progress_status"] != "04") {
+				$("#detail_slight").find("img").eq(0).parent().append(str1);
+				$("#detail_slight").find("img").eq(1).parent().append(str2);
+				$("#detail_slight").find("img").eq(2).parent().append(str3);
+			}
 		}
 		else {
 			for(i = 0; i<$("#detail_slight").find("img").size(); i++) {
 				$("#detail_slight").find("img").eq(i).parent().find("div").empty();
 				$("#detail_slight").find("img").eq(i).attr("src", "/resources/css/images/sub/slight_noimg.gif");
-				$("#detail_slight").find("img").eq(i).parent().append("<div><input type='file' id='files["+(i+1)+"]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>");
+				
+				if(data["progress_status"] != "04") {
+					$("#detail_slight").find("img").eq(i).parent().append("<div><input type='file' id='files["+(i+1)+"]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>");
+				}
 			}
 		}
 		
@@ -301,6 +338,23 @@
 				selectTag += "<span class=''><input type='text' id='part_cnt_0' name='part_cnt_0' class='tbox10' placeholder='0'>개</span></p>";
 			
 				$("#tdPartCd").append(messageTag+selectTag);
+			}
+			
+			if(data["progress_status"] == "04") {
+				$("input[name^=part_cnt_]").removeClass("tbox10");
+				$("input[name^=part_cnt_]").addClass("tbox10_gray");
+				$("input[name^=part_cnt_]").attr("readonly", true);
+				
+				for(i=0; i<$("#detail_slight").find("select").size(); i++) {
+					$("#detail_slight").find("select").eq(i).attr("disabled", true);
+				}
+				
+				$("#repair_desc").attr("readonly", true);
+			}
+			else {
+				for(i=0; i<$("#detail_slight").find("select").size(); i++) {
+					$("#detail_slight").find("select").eq(i).attr("disabled", false);
+				}
 			}
 		}
 		
@@ -440,11 +494,29 @@
 	function Save() {
 		if($("#progress_status").val() == "" || $("#progress_status").val() == null) {
 			alert("진행상황을 선택하세요.");
+			$("#progress_status").focus();
 			return;
+		}
+		else {
+			if($("#progress_status").val() == "01") {
+				alert("작업지시 후 입력할 수 있습니다.");
+				return;
+			}
+			else if($("#progress_status").val() == "04") {
+				alert("재작업지시 후 입력할 수 있습니다.");
+				return;
+			}
 		}
 		
 		if($("#repair_gubun").val() == "" || $("#repair_gubun").val() == null) {
 			alert("작업구분을 선택하세요.");
+			$("#repair_gubun").focus();
+			return;
+		}
+		
+		if($("#progress_status").val() == "04") {
+			alert("보수완료 후 수정이 불가능합니다.");
+			$("#progress_status").focus();
 			return;
 		}
 		
@@ -473,10 +545,12 @@
 									return false;
 								}
 								else {
-									removeIdx.push(parseInt(idx)-1);
-									removeIdx.push(parseInt(idx));
-									partCdArr.push($("#part_cd_"+partCdIdx).val());
-									partCntArr.push(parseInt(data[idx].value));
+									if(data[parseInt(idx-1)].name == ("part_cd_"+partCdIdx)) {
+										removeIdx.push(parseInt(idx)-1);
+										removeIdx.push(parseInt(idx));
+										partCdArr.push($("#part_cd_"+partCdIdx).val());
+										partCntArr.push(parseInt(data[idx].value));
+									}
 								}
 							}
 							else {
@@ -495,6 +569,7 @@
 					
 					data.push({"name" : "part_cd", "value" : partCdArr});
 					data.push({"name" : "part_cnt", "value" : partCntArr});
+					
 				}
 				, success : function(obj) {
 					updateCompanyRepairCallback(obj);
@@ -620,10 +695,10 @@
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
 						<li><a href="/company/companyRepair" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
-				<li><a href="#">정보변경 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
+				<li><a href="#">보수내역관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
 						<li><a href="/company/companyRepair">보수내역관리</a></li>
 						<li><a href="/company/companyInfo">정보변경</a></li>
@@ -645,9 +720,9 @@
 				<ul>
 					<li class="title">접수일</li>
 					<li>
-						<input type="text" id="sDate" name="sDate" class="tbox02">
+						<input type="text" id="sDate" name="sDate" class="tbox02" readonly="readonly">
 						~ 
-						<input type="text" id="eDate" name="eDate" class="tbox02">
+						<input type="text" id="eDate" name="eDate" class="tbox02" readonly="readonly">
 					</li>
 					<li class="pdl10">
 						<select class="sel01" id="sch_repair_cd" name="sch_repair_cd">
@@ -777,15 +852,15 @@
 									</tr>
 									<tr>
 										<th>접 수 일</th>
-										<td><span id="det_repair_date"></span></td>
+										<td><span id="det_notice_date"></span></td>
 										<th>작업지시일</th>
-										<td><span id="det_modify_date"></span></td>
+										<td><span id="det_repair_date"></span></td>
 									</tr>
 									<tr>
 										<th>보 수 일</th>
-										<td><span id="det_last_update"></span></td>
+										<td><span id="det_repair_date_2"></span></td>
 										<th>처리상황</th>
-										<td><span id="det_remark"></span></td>
+										<td><span id="det_progress_status_nm"></span></td>
 									</tr>
 									<tr>
 										<th>신 고 인</th>

@@ -8,12 +8,12 @@
 			REPAIR_NO, REPAIR_CD, PASSWORD, LIGHT_NO, NOTICE_DATE,
 			NOTICE_NAME, LOCATION, NEW_ADDRESS, TROUBLE_CD, TROUBLE_DETAIL, 
 			PHONE, MOBILE, EMAIL, INFORM_METHOD, PROGRESS_STATUS, SATI_RATING,
-			MODIFY_DATE, REMARK, DONG, LIGHT_GUBUN, REPAIR_PHOTO, REPAIR_DATE
+			MODIFY_DATE, REMARK, DONG, LIGHT_GUBUN, REPAIR_PHOTO
 		) VALUES(
 			#{repair_no}||nextval('public.gy_light_repair_seq_no'::regclass), #{repair_cd}, #{password}, #{light_no}, #{notice_date},
 			#{notice_name}, #{location}, #{new_address}, #{trouble_cd}, #{trouble_detail},
 			#{phone}, #{mobile}, #{email}, #{inform_method}, #{progress_status}, #{sati_rating},
-			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}, #{repair_date}
+			#{modify_date}, #{remark}, #{dong}, #{light_gubun}, #{repair_photo}
 		)
 	</insert>
 </mapper>

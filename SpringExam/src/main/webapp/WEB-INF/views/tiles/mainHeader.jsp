@@ -101,6 +101,10 @@ $(document).ready(function() {
 		$('.smenu04').removeClass('on');
 		$('.smenu06').removeClass('on'); 
 		$('.smenu07').removeClass('on'); 
+		
+		<sec:authorize access="hasAnyRole('ROLE_USER')">
+			$('.smenu05').css("margin-left", "500px");
+		</sec:authorize>
 	});
 	$('#main_menu6').mouseover(function() {
 		$('#main_menu6').addClass('menu_on');
@@ -279,8 +283,8 @@ function loginPopup() {
 				
 				<!-- 이용안내 -->
 				<ul class="smenu07 " >
-					<li><a href="#">서비스 안내</a></li>
-					<li><a href="#">자료실</a></li>
+					<li><a href="/info/infoServicesList">서비스 소개</a></li>
+					<li><a href="/info/infoReportList">이용안내</a></li>
 					<li><a href="#" >공지사항</a></li>
 				</ul>
 			</sec:authorize>
@@ -294,8 +298,8 @@ function loginPopup() {
 				
 				<!-- 이용안내 -->
 				<ul class="smenu05" >
-					<li><a href="#">서비스 안내</a></li>
-					<li><a href="#">자료실</a></li>
+					<li><a href="/info/infoServicesList">서비스 소개</a></li>
+					<li><a href="/info/infoReportList">이용안내</a></li>
 					<li><a href="#" >공지사항</a></li>
 				</ul>
 				
@@ -304,8 +308,8 @@ function loginPopup() {
 			<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS')">
 				<!-- 이용안내 -->
 				<ul class="smenu04 " >
-					<li><a href="#">서비스 안내</a></li>
-					<li><a href="#">자료실</a></li>
+					<li><a href="/info/infoServicesList">서비스 소개</a></li>
+					<li><a href="/info/infoReportList">이용안내</a></li>
 					<li><a href="#" >공지사항</a></li>
 				</ul>
 			</sec:authorize>

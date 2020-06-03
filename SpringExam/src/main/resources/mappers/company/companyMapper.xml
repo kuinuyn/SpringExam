@@ -50,7 +50,7 @@
 			FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
 			WHERE A.REPAIR_NO = B.REPAIR_NO 
 			AND B.COMPANY_ID = #{member_id}
-			AND TO_CHAR(b.last_update, 'yyyy-mm-dd') between #{sDate} and #{eDate}    
+			AND TO_CHAR(A.NOTICE_DATE, 'yyyy-mm-dd') between #{sDate} and #{eDate}    
 		]]>
 			<if test="sch_repair_cd != null and sch_repair_cd != '' ">
 				AND A.REPAIR_CD = #{sch_repair_cd}	
@@ -76,12 +76,10 @@
 		<![CDATA[
 			  SELECT A.REPAIR_NO
 			        , A.REPAIR_NO AS REPAIR_NO2
-			        --, SUBSTR(A.REPAIR_NO,1,6)||'-'||SUBSTR(A.REPAIR_NO,9,2) AS REPAIR_NO2
 			        , A.REPAIR_CD
 			        , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS REPAIR_NAME 
 			        , A.PASSWORD
 			        , A.LIGHT_NO
-			        , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
 			        , A.NOTICE_NAME
 			        , A.LOCATION
 			        , A.TROUBLE_CD
@@ -98,16 +96,16 @@
 			        , A.INFORM_METHOD
 			        , A.PROGRESS_STATUS
 			        , A.SATI_RATING
-			        , TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
 			        , A.DONG
 			        , A.REMARK
 			        , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS ) AS PROGRESS_NAME
 			        , A.LIGHT_GUBUN
-			        , SUBSTR(B.REPAIR_DATE,1,4)||'.'||SUBSTR(B.REPAIR_DATE,5,2)||'.'||SUBSTR(B.REPAIR_DATE,7,2)  AS REPAIR_DATE
+			        , COALESCE(TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD'), '') AS NOTICE_DATE
+			        , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE
 					FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
 					WHERE A.REPAIR_NO = B.REPAIR_NO 
 					AND B.COMPANY_ID = #{member_id}
-					AND TO_CHAR(B.LAST_UPDATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
+					AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
 			]]>
 					<if test="sch_repair_cd != null and sch_repair_cd != '' ">
 						AND A.REPAIR_CD = #{sch_repair_cd}	
@@ -137,7 +135,6 @@
 	<select id="getCompanyRepairDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 	  	 SELECT A.REPAIR_NO
-	  	      , A.REPAIR_DATE 
               , A.REPAIR_PARTS
               , A.REPAIR_DESC
               , A.LIGHT_NO
@@ -145,9 +142,10 @@
               , A.COMPANY_ID
               , COALESCE(B.REPAIR_GUBUN, '') AS REPAIR_GUBUN
               , TO_CHAR(B.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
+              , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYY-MM-DD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE
               , F_GY_DATA_CODE_NM('24',B.REPAIR_GUBUN ) AS REPAIR_GUBUN_NM
               , B.REPAIR_BIGO
-              , TO_CHAR( A.LAST_UPDATE ,'YYYY.MM.DD HH24:MI:SS') AS LAST_UPDATE
+              , COALESCE(TO_CHAR( TO_DATE(A.REPAIR_DATE, 'YYYYMMDD') ,'YYYY.MM.DD'), '') AS REPAIR_DATE_2
               , A.PHOTO1
               , A.PHOTO2
               , A.PHOTO3
@@ -162,7 +160,6 @@
               , F_GY_DATA_CODE_NM('03',B.PROGRESS_STATUS ) AS PROGRESS_STATUS_NM
               , B.NOTICE_NAME
               , B.LIGHT_GUBUN
-              , TO_CHAR( B.MODIFY_DATE ,'YYYY.MM.DD HH24:MI:SS') AS MODIFY_DATE
               , B.REPAIR_CD
               , F_GY_DATA_CODE_NM('14',B.REPAIR_CD ) AS REPAIR_NM
               , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
@@ -199,12 +196,12 @@
 							   				THEN ''
 							   				END AS "전화번호"
 			        , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS "접수일"
-			        , SUBSTR(B.REPAIR_DATE,1,4)||'.'||SUBSTR(B.REPAIR_DATE,5,2)||'.'||SUBSTR(B.REPAIR_DATE,7,2)  AS "보수일"
+			        , TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD') AS "보수일"
 			        , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS "처리상황"
 					FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
 					WHERE A.REPAIR_NO = B.REPAIR_NO 
 					AND B.COMPANY_ID = #{member_id}
-					AND TO_CHAR(B.LAST_UPDATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
+					AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
 			]]>
 					<if test="repair_cd != null and repair_cd != '' ">
 						AND A.REPAIR_CD = #{repair_cd}	
@@ -254,8 +251,6 @@
 		FROM GY_LIGHT_PART
 		WHERE 1=1
 			<!-- AND COMP_NM = #{companyId} -->
-			<!-- AND COMPANY_ID = #{companyId} -->
-			AND COMPANY_ID = 'yang'
 			AND REPAIR_NO = #{repairNo}
 			AND INOUT_FLAG = '2'
 		ORDER BY SEQ_NO ASC
@@ -272,7 +267,6 @@
 		]]>
 				REPAIR_NO = #{repair_no}
 				AND PART_CD = #{part_cd}
-				AND COMPANY_ID = #{company_id}
 				AND INOUT_FLAG = '2'
 		<![CDATA[
 			GROUP BY SEQ_NO, INOUT_DAY
@@ -280,12 +274,24 @@
 	</select>
 	
 	
+	<select id="getRepairStatus" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT PROGRESS_STATUS
+				FROM GY_LIGHT_REPAIR A
+				WHERE
+					A.REPAIR_NO = #{repair_no}	
+				ORDER BY A.LIGHT_NO
+			]]>
+	</select>
+	
+	
 	<update id="updateCompanyRepair" parameterType="hashMap">
 		update gy_light_repair 
 		set
 			progress_status = #{progress_status}
-			<!-- , repair_gubun = #{repair_gubun} -->
+			, repair_gubun = #{repair_gubun}
 			, repair_bigo = #{repair_bigo}	
+			, repair_date = to_char(now(), 'yyyy-mm-dd')
 		WHERE
 			repair_no = #{repair_no}
 	</update>
@@ -299,6 +305,7 @@
 			, photo2 = #{photo2}
 			, photo3 = #{photo3}
 			, last_update = now()
+			, repair_date = to_char(now(), 'yyyymmdd')
 		WHERE
 			repair_no = #{repair_no}
 	</update>

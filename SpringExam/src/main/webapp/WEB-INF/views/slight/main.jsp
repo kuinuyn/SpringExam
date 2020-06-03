@@ -321,7 +321,7 @@
 				<li><a href="javascript:goGisMap()" class="qmenu02"><p>지도보기</p></a></li>
 			</ul>
 			<ul>
-				<li><a href="#" class="qmenu03"><p>통계안내</p></a></li>
+				<li><a href="/equipment/equipStaitstice" class="qmenu03"><p>통계안내</p></a></li>
 				<li><a href="/repair/systemRepairList" class="qmenu04"><p>보수이력</p></a></li>
 			</ul>
 		</div>

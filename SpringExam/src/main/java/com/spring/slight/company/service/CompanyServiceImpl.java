@@ -104,6 +104,12 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
 		
+		String progressStatus = (String) companyDao.getRepairStatus(paramMap).get("progress_status");
+		
+		if("04".equals(progressStatus)) {
+			return -2;
+		}
+		
 		int resultCnt = companyDao.updateCompanyRepair(paramMap);
 		
 		String deleteFile = (String) paramMap.get("delete_file");

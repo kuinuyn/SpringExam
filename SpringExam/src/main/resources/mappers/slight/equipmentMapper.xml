@@ -111,7 +111,54 @@
 	</select>
 	
 	<select id="getEquipmentDet" parameterType="hashMap" resultType="hashMap">
-		SELECT A.*
+		SELECT light_no
+					   , light_type
+					   , light_gubun
+					   , old_light_no
+					   , doyep_no
+					   , mgmt_no
+					   , TO_CHAR(TO_DATE(set_ymd, 'YYYYMMDD'), 'YYYY-MM-DD') AS set_ymd
+					   , hj_dong_cd
+					   , bj_dong_cd
+					   , gs_no
+					   , stand_cd
+					   , lamp1_cd
+					   , lamp2_cd
+					   , lamp3_cd
+					   , kepco_type
+					   , kepco_cust_no
+					   , kepco_cd
+					   , onoff_cd
+					   , work_cd
+					   , address
+					   , new_address
+					   , repair_dt
+					   , finish
+					   , repair_name
+					   , repair_cd
+					   , repair_parts
+					   , etc
+					   , photo_file1
+					   , photo_file2
+					   , photo_file3
+					   , photo_file4
+					   , bdj
+					   , elec_no
+					   , pole_no
+					   , mgmt_no_etc
+					   , stand_cd_etc
+					   , lamp1_cd_etc
+					   , kepco_cd_etc
+					   , onoff_cd_etc
+					   , auto_jum_type1_cd
+					   , lamp1_gubun
+					   , twin_light
+					   , cn_light_no
+					   , lamp1_cd2
+					   , lamp2_cd2
+					   , lamp3_cd2
+					   , use_light
+					   , TO_CHAR(TO_DATE(A.SET_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') AS SET_YMD
 					   , CASE WHEN twin_light = 'Y' THEN '예' ELSE '아니오' END AS twin_light_nm
 					   , F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS LIGHT_GUBUN_NM
 					   , F_GY_DATA_CODE_NM('06', HJ_DONG_CD) AS HJ_DONG_NM
@@ -485,7 +532,7 @@
 			, KEPCO_CUST_NO = #{kepco_cust_no}
 			, KEPCO_CD = #{kepco_cd}
 			, WORK_CD = #{work_cd}
-			, SET_YMD = #{set_ymd}
+			, SET_YMD = TO_CHAR(TO_DATE(#{set_ymd}, 'YYYY-MM-DD'),'YYYYMMDD')
 			, USE_LIGHT = #{use_light}
 			, ADDRESS = #{address}
 			, NEW_ADDRESS = #{new_address}

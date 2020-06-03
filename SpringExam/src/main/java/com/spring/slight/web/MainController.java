@@ -41,7 +41,14 @@ public class MainController {
 	
 	@RequestMapping("/login")
 	public String login(ModelMap model) throws Exception {
-		mainService.getLastSummary();
+		Map<String, Object> lastSummaryMap = new HashMap<String, Object>();
+		try {
+			lastSummaryMap = mainService.getLastSummary();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("lastSummaryMap", lastSummaryMap);
 		model.addAttribute("loginChk", false);
 		return "slight/main";
 	}

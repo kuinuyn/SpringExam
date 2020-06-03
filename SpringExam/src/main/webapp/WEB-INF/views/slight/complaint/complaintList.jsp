@@ -299,8 +299,8 @@
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="/complaint/complaintList">민원처리결과조회  </a>
@@ -349,9 +349,9 @@
 				<ul>
 					<li class="title">등록일</li>
 					<li>
-						<input type="text" id="sDate" name="sDate" class="tbox02">
+						<input type="text" id="sDate" name="sDate" class="tbox02" readonly="readonly">
 						~ 
-						<input type="text" id="eDate" name="eDate" class="tbox02">
+						<input type="text" id="eDate" name="eDate" class="tbox02" readonly="readonly">
 					</li>
 					<li class="pdl10">
 						<select class="sel01" id="light_gubun" name="light_gubun">
@@ -473,11 +473,11 @@
 									<th>고장상태</th>
 									<td><span class="red01"  id="det_trouble_nm"></span></td>
 									<th>상태설명</th>
-									<td><span id="det_trouble_desc"></span></td>
+									<td><span id="det_trouble_detail"></span></td>
 								</tr>
 								<tr>
 									<th>보수처리일</th>
-									<td><span id="det_repair_date">2016.11.02</span></td>
+									<td><span id="det_repair_date"></span></td>
 									<th>처리결과회신</th>
 									<td><span id="det_inform_method_nm"></span></td>
 								</tr>

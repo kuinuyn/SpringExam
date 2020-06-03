@@ -102,13 +102,25 @@ public class RepairServiceImpl implements RepairService{
 	public int updateRepair(CommandMap paramMap) throws Exception {
 		int resultCnt = repairDao.updateRepair(paramMap);
 		int cnt = 0;
-		String saveFlag = (String) paramMap.get("saveFlag");
+		String saveFlag = "";
+		if(repairDao.getSystemRepairSaveFlag(paramMap) == null) {
+			saveFlag = "I";
+		}
+		else {
+			saveFlag = (String) repairDao.getSystemRepairSaveFlag(paramMap).get("saveflag");
+		}
+		
 		
 		if(resultCnt > 0) {
 			if("I".equals(saveFlag)) {
 				cnt = repairDao.insertRepairPart(paramMap);			
 			} else if("U".equals(saveFlag)){
-				cnt = repairDao.updateRepairPart(paramMap);			
+				paramMap.put("repairNo", paramMap.get("repair_no"));
+				cnt = repairDao.updateRepairPart(paramMap);	
+				repairDao.deleteRepairMaterialCancel(paramMap);
+				FilesVO filesVo = new FilesVO();
+				filesVo.setSeq((String) paramMap.get("repair_no"));
+				fileDao.deleteFiles(filesVo);
 			} else {
 				cnt = repairDao.insertRepairPart(paramMap);			
 			}
@@ -134,6 +146,12 @@ public class RepairServiceImpl implements RepairService{
 
 	@Override
 	public int updateRepairDetail(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
+		String progressStatus = (String) repairDao.getRepairStatus(paramMap).get("progress_status");
+		
+		if("04".equals(progressStatus)) {
+			return -2;
+		}
+		
 		int resultCnt = repairDao.updateRepairDetail(paramMap);
 		
 		String deleteFile = (String) paramMap.get("delete_file");
@@ -223,7 +241,6 @@ public class RepairServiceImpl implements RepairService{
 		if(partCd != null && !"".equals(partCd)) {
 			String[] partCds = partCd.split(",");
 			String[] partCnts = partCnt.split(",");
-			System.out.println(partCds.length+" -- "+partCnts.length);
 			
 			if(partCds.length > 0) {
 				for(int i=0; i<partCds.length; i++) {

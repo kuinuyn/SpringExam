@@ -5,6 +5,19 @@
 
 	$(function(){
 		var searchAreaStr = "";
+		
+		var today = new Date();
+		var eDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+		
+		$("#set_ymd").datepicker({
+			showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시 
+			, maxDate : eDate
+			, dateFormat: 'yy-mm-dd'
+			, buttonImage : "/resources/css/images/icon/calendar.gif"
+		});
+		$('#set_ymd').datepicker('setDate', eDate);
+		$(".ui-datepicker-trigger").attr("style", "margin-left:4px; vertical-align:middle;");
+		
 		//drawCodeData(리스트, 코드타입, 태그이름, 모드, 현재선택코드)
 		drawCodeData(commonCd, "05", "select", "").then(function(resolvedData) {
 			$("#light_gubun").empty();
@@ -284,8 +297,8 @@
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="#">가로등관리<img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
@@ -293,7 +306,7 @@
 						<li><a href="/equipment/securityLightList">보안등관리</a></li>
 						<li><a href="/equipment/streetLightList">가로등관리</a></li>
 						<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
-						<li><a href="#">GIS관리</a></li>
+						<li><a href="/equipment/gisLightList">GIS관리</a></li>
 						<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
 						<li><a href="/system/systemMemberList">사용자관리</a></li>
 					</ul>
@@ -449,7 +462,7 @@
 							</td>
 							<th>설치일자</th>
 							<td>
-								<input id="set_ymd" name="set_ymd" value="" class="tbox03"/>
+								<input id="set_ymd" name="set_ymd" value="" class="tbox03_gray" readonly="readonly"/>
 							</td>
 						</tr>
 						<tr>

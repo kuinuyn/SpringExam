@@ -27,13 +27,11 @@ public class TroubleReportServiceImpl implements TroubleReportService{
 		else if("03".equals(inform_method)) {
 			paramMap.put("phone", paramMap.get("phone").toString());
 		}
-		String repair_date = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 		String location = (String) paramMap.get("address");
 		
 		paramMap.put("repair_no", repair_no);
 		paramMap.put("progress_status", "01");
 		paramMap.put("sati_rating", "00");
-		paramMap.put("repair_date", repair_date);
 		paramMap.put("notice_date", cal.getTime());
 		paramMap.put("modify_date", cal.getTime());
 		paramMap.put("location", location);

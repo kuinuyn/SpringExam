@@ -33,7 +33,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 		
 		List<Map<String, Object>> list = complaintDao.getComplaintList(paramMap);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		List<Map<String, Object>> resultStatusList = complaintDao.getComplaintStatisCnt(paramMap);
+		List<Map<String, Object>> resultStatusList = complaintDao.getComplaintStatusCnt(paramMap);
 		resultMap.put("list", list);
 		resultMap.put("totalCount", totalCount);
 		String progressStatus = "";
@@ -89,12 +89,34 @@ public class ComplaintServiceImpl implements ComplaintService{
 
 	@Override
 	public int updateComplaint(CommandMap paramMap) throws Exception {
-		return complaintDao.updateComplaint(paramMap);
+		int resultCnt = 0;
+		
+		String progressStatus = (String) complaintDao.getComplaintStatus(paramMap).get("progress_status");
+		
+		if(!"01".equals(progressStatus)) {
+			resultCnt = -2;
+		}
+		else {
+			resultCnt = complaintDao.updateComplaint(paramMap);
+		}
+		
+		return resultCnt;
 	}
 
 	@Override
 	public int deleteComplaint(CommandMap paramMap) throws Exception {
-		return complaintDao.deleteComplaint(paramMap);
+		int resultCnt = 0;
+		
+		String progressStatus = (String) complaintDao.getComplaintStatus(paramMap).get("progress_status");
+		
+		if(!"01".equals(progressStatus)) {
+			resultCnt = -2;
+		}
+		else {
+			resultCnt = complaintDao.deleteComplaint(paramMap);
+		}
+		
+		return resultCnt;
 	}
 	
 }

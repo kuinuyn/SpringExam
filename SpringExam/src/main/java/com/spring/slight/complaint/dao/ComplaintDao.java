@@ -31,12 +31,17 @@ public class ComplaintDao {
 		return resultMap;
 	}
 	
+	public Map<String, Object> getComplaintStatus(CommandMap paramMap) throws Exception {
+		Map<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getComplaintStatus", paramMap.getMap());
+		return resultMap;
+	}
+	
 	public String getComplaintRoleChk(CommandMap paramMap) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+".getComplaintRoleChk", paramMap.getMap());
 	}
 	
-	public List<Map<String, Object>> getComplaintStatisCnt(CommandMap paramMap) throws Exception {
-		return sqlSession.selectList(NAMESPACE+".getComplaintStatisCnt", paramMap.getMap());
+	public List<Map<String, Object>> getComplaintStatusCnt(CommandMap paramMap) throws Exception {
+		return sqlSession.selectList(NAMESPACE+".getComplaintStatusCnt", paramMap.getMap());
 	}
 	
 	public int updateComplaint(CommandMap paramMap) throws Exception {

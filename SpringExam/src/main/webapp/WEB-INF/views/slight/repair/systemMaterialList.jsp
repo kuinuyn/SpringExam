@@ -340,16 +340,16 @@ function popupClose() {
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
+						<li><a href="/company/companyRepair" >보수내역관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="#">보수이력관리</a>
 					<ul>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >신설현황</a></li>
-						<li><a href="#">이설현황</a></li>
-						<li><a href="#" >철거현황</a></li>
+						<li><a href="/repair/systemRepairList2" >신설현황</a></li>
+						<li><a href="/repair/systemRepairList3">이설현황</a></li>
+						<li><a href="/repair/systemRepairList4" >철거현황</a></li>
 						<li><a href="/repair/systemMaterialList">자재관리</a></li>
 						<li><a href="#" >자재입/출고관리</a></li>
 					</ul>
