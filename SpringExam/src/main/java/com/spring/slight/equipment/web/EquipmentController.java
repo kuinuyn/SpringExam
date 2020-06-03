@@ -266,15 +266,14 @@ public class EquipmentController {
 		
 		if("LIGHT".equals(excelGubun)) {
 			headerNm = new String[] {"순번", "등종류", "관리번호", "행정동", "주소", "새주소", "지지방식", "광원종류", "광원용량", "등상태", "한전고객번호", "인입주", "X좌표", "Y좌표", "등기구형태", "점멸기", "설치년도", "변대주"};
+		}else if("USE".equals(excelGubun)) {
+			headerNm = new String[] {"순번",  "날짜", "품명", "규격", "단위", "입고", "출고", "잔고", "시공업체", "비고"};
 		}
 		else if("REPAIR".equals(excelGubun)) {
-			headerNm = new String[] {"순번", "접수번호", "관리번호", "행정동", "등구분", "처리현황", "작업비고", "최종등록일"};
-		}
-		else if("USE".equals(excelGubun)) {
-			headerNm = new String[] {"순번", "연번", "날짜", "품명", "규격", "입고", "출고", "잔고", "시공업체", "접수번호", "비고"};
-		}
+			headerNm = new String[] {"순번", "접수번호", "관리번호", "행정동", "등구분", "작업구분", "작업비고", "최종등록일"};
+		}		
 		else {
-			headerNm = new String[] {"순번", "날짜", "품명", "규격", "단위", "입고", "출고", "잔고", "시공업체", "비고"};
+			headerNm = new String[] {"순번", "날짜", "품명", "규격", "입고", "출고", "잔고", "시공업체", "접수번호", "비고"};
 		}
 		
 		return headerNm;
