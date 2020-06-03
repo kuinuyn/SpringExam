@@ -581,10 +581,6 @@
 				alert("작업지시 후 입력할 수 있습니다.");
 				return;
 			}
-			else if($("#progress_status").val() == "04") {
-				alert("재작업지시 후 입력할 수 있습니다.");
-				return;
-			}
 		}
 		
 		if($("#repair_gubun").val() == "" || $("#repair_gubun").val() == null) {
@@ -660,7 +656,7 @@
 				Search(); // goToList();
 			}
 			else if(obj.resultCnt == -1) { 
-				alert("오류가 발생했습니다.");	
+				alert("수정을 실패하였습니다.");
 				return;
 			}
 			else if(obj.resultCnt == -2) { 
