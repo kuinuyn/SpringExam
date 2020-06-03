@@ -5,23 +5,7 @@
 
 	$(function(){
 		
-		var  thisDate = new Date();
-		var thisYear = thisDate.getFullYear(); 
-var option = "";
-
-for( i=thisYear; i>2009; i--) {	
-	
-		option += "<option value='"+i+"'>"+i+"년</option>";
-
-}
-
-$("#sch_year").html(option);
-
-		
-		
 		Search();
-				
-		
 	});
 	
 	function Search(currentPageNo) {
@@ -65,13 +49,12 @@ $("#sch_year").html(option);
 			if(listLen > 0) {
 				for(i=0; i<listLen; i++) {
 					str += "<tr>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].data_code+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].data_code_name+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].comp_nm+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].standard+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].danga+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].persistence+" </a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\")'>"+list[i].remarks+" </a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].data_code+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].data_code_name+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].company_id+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].standard+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].danga+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].remarks+" </a></span></td>";
 					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					str += "</a></tr>";
 				}
@@ -88,13 +71,12 @@ $("#sch_year").html(option);
 		}
 	}
 	
-	function getMaterialDetail(dataCode) {
+	function getMaterialDetail(dataCode, company_id) {
 		$("#dataCode").val(dataCode);
 		$.ajax({
 			type : "POST"			
 			, url : "/repair/getSystemMaterialDetail"
-			, data : {"dataCode":dataCode
-				     ,"sch_year":$("#sch_year").val()}
+			, data : {"dataCode":dataCode, "sch_year":$("#sch_year").val(), "company_id":company_id}
 			, dataType : "JSON"
 			, success : function(obj) {
 				getSearchDetailCallback(obj);
@@ -120,7 +102,7 @@ $("#sch_year").html(option);
 				for(var key in data){
 					//alert("obj1[i].name : "+obj1[i].name + "    key : "+key);
 					if(key == obj1[i].name) {
-						if(key == "comp_nm")
+						if(key == "company_id")
 						{
 							comp_nm_temp = data[key];
 						}
@@ -138,11 +120,8 @@ $("#sch_year").html(option);
 			$("#delete").show();
 
 			$("#flag").val("U");
-
 			
-			
-			searchCompany($("#sch_year").val(), $("#comp_nm"), comp_nm_temp);
-			
+			searchCompany($("#sch_year").val(), $("#company_id"), comp_nm_temp);
 			
 		}
 		
@@ -167,7 +146,7 @@ $("#sch_year").html(option);
 		
 		$("#flag").val("I");
 		
-		searchCompany($("#sch_year").val(), $("#comp_nm"), "");
+		searchCompany($("#sch_year").val(), $("#company_id"), "");
 		
 		
 		modalPopupCallback( function() {
@@ -369,9 +348,12 @@ function popupClose() {
 				<ul>
 					<li class="title">관리년도</li>
 					<li>
-					<select id="sch_year" name="sch_year" class="sel01" onchange='javascript:Search("1")'  >									
-								</select>
-								</li>
+					<select id="sch_year" name="sch_year" class="sel01" onchange='javascript:Search("1")'  >
+						<c:forEach items="${searchYearList}" var="year">
+							<option value="${year }">${year }년</option>
+						</c:forEach>
+					</select>
+					</li>
 					
 					<li><a href="javascript:Search()"  class="btn_search01">검 색</a></li>
 				</ul>
@@ -385,15 +367,14 @@ function popupClose() {
 		</div>
 		<div id="board_list">
 			<table summary="자재목록" cellpadding="0" cellspacing="0">
-				<caption>자재번호,자재명,업체명,자재규격,자재단가,내구연한,비고</caption>
+				<caption>자재번호,자재명,업체명,자재규격,자재단가,비고</caption>
 				<colgroup>
-					<col width="13%">
-					<col width="17%">
-					<col width="17%">
-					<col width="13%">
-					<col width="13%">
-					<col width="13%">
 					<col width="14%">
+					<col width="20%">
+					<col width="20%">
+					<col width="16%">
+					<col width="14%">
+					<col width="16%">
 				</colgroup>
 				<thead>
 					<tr>
@@ -402,7 +383,6 @@ function popupClose() {
 						<th>업체명</th>
 						<th>자재규격</th>
 						<th>자재단가</th>
-						<th>내구연한</th>
 						<th>비고</th>
 					</tr>
 				</thead>
@@ -458,7 +438,7 @@ function popupClose() {
 								<tr>
 									<th>업체명</th>
 									<td colspan="3"><span class="">
-												<select class="sel03" id="comp_nm" name="comp_nm" >
+												<select class="sel03" id="company_id" name="company_id" >
 													<option value="">업체명</option>
 												</select>
 											</span> </td>
@@ -472,11 +452,6 @@ function popupClose() {
 								<tr>
 									<th>자재단가</th>
 									<td colspan="3"><input id="danga" name="danga" value="" class="tbox07"/> </td>
-								</tr>
-								
-								<tr>
-									<th>내구연한</th>
-									<td colspan="3"><input id="persistence" name="persistence" value="" class="tbox07"/> </td>
 								</tr>
 								
 								<tr>

@@ -1,5 +1,8 @@
 package com.spring.slight.repair.web;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,14 +43,20 @@ public class SystemMaterialListController {
 	@RequestMapping( value = "/systemMaterialList")
 	public String systemMaterialList(HttpServletRequest request, HttpServletResponse response, Model model) {
 	
-		/*
-		try {
-			model.addAttribute("searchYearList", systemMaterialService.getMaterialSearchYear());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
+		List<String> searchYearList = new ArrayList<String>();
+		Calendar cal = Calendar.getInstance();
+		String year = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		year = sdf.format(cal.getTime());
+		searchYearList.add(year);
 		
+		for(int i=0; i<9; i++) {
+			cal.add(Calendar.YEAR, -1);
+			year = sdf.format(cal.getTime());
+			searchYearList.add(year);
+		}
+		
+		model.addAttribute("searchYearList", searchYearList);
 		
 		return "slight/repair/systemMaterialList";
 	}
@@ -93,7 +102,6 @@ public class SystemMaterialListController {
 	public ModelAndView updateSystemMaterial( HttpServletRequest reuqest, CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
-		System.out.println("start");
 		try {
 			resultCnt = systemMaterialService.updateSystemMaterial(paramMap);
 			mv.addObject("resultCnt", resultCnt);
@@ -102,7 +110,6 @@ public class SystemMaterialListController {
 			e.printStackTrace();
 		}
 
-		System.out.println("end");	
 		mv.setViewName("jsonView");
 		return mv;
 	}

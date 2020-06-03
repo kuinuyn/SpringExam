@@ -86,9 +86,9 @@
 			        , A.TROUBLE_CD_ETC
 			        , A.TROUBLE_DETAIL
 			        , CASE WHEN INFORM_METHOD = '01'
-							   				THEN PHONE
-							   				WHEN INFORM_METHOD = '02'
 							   				THEN MOBILE
+							   				WHEN INFORM_METHOD = '02'
+							   				THEN PHONE
 							   				WHEN INFORM_METHOD = '04'
 							   				THEN ''
 							   				END AS PHONE
@@ -143,7 +143,6 @@
               , COALESCE(B.REPAIR_GUBUN, '') AS REPAIR_GUBUN
               , TO_CHAR(B.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
               , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYY-MM-DD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE
-              , F_GY_DATA_CODE_NM('24',B.REPAIR_GUBUN ) AS REPAIR_GUBUN_NM
               , B.REPAIR_BIGO
               , COALESCE(TO_CHAR( TO_DATE(A.REPAIR_DATE, 'YYYYMMDD') ,'YYYY.MM.DD'), '') AS REPAIR_DATE_2
               , A.PHOTO1
@@ -189,9 +188,11 @@
 			        , A.LIGHT_NO AS "관리번호"
 			        , A.NOTICE_NAME AS "신고인"
 			        , CASE WHEN INFORM_METHOD = '01'
-							   				THEN PHONE
-							   				WHEN INFORM_METHOD = '02'
 							   				THEN MOBILE
+							   				WHEN INFORM_METHOD = '02'
+							   				THEN EMAIL
+							   				WHEN INFORM_METHOD = '03'
+							   				THEN PHONE
 							   				WHEN INFORM_METHOD = '04'
 							   				THEN ''
 							   				END AS "전화번호"
@@ -234,12 +235,11 @@
 	<select id="getMaterialList" parameterType="hashMap" resultType="hashMap">
 		SELECT DATA_CODE_NAME||'-'||STANDARD AS DATA_CODE_NAME
 						, DATA_CODE
-		FROM GY_CODE
+		FROM GY_MATERIAL
 		WHERE
-			CODE_TYPE = '24' 
+			1=1
 			AND YEAR = TO_CHAR(TO_DATE(#{noticeDate}, 'YYYY'), 'YYYY') 
-			<!-- AND COMP_NM = #{companyId} -->
-			AND COMP_NM = 'upche1'
+			AND COMPANY_ID = #{companyId}
 		ORDER BY SUNBUN ASC
 	</select>
 	
@@ -250,7 +250,7 @@
 						, INOUT_CNT
 		FROM GY_LIGHT_PART
 		WHERE 1=1
-			<!-- AND COMP_NM = #{companyId} -->
+			AND COMPANY_ID = #{companyId}
 			AND REPAIR_NO = #{repairNo}
 			AND INOUT_FLAG = '2'
 		ORDER BY SEQ_NO ASC
@@ -326,24 +326,20 @@
 	
 	
 	<insert id="insertMaterialUsed" parameterType="hashMap">
-		<selectKey resultType="hashMap" keyProperty="seq_no,year,comp_nm" order="BEFORE">
+		<selectKey resultType="hashMap" keyProperty="seq_no,year" order="BEFORE">
 				SELECT nextval('gy_light_part_seq'::regclass) as "seq_no"
 								, year AS "year"
-								, comp_nm AS "comp_nm"
-				FROM GY_CODE
+				FROM GY_MATERIAL
 				WHERE 1=1
-					   AND CODE_TYPE = '24'
 					   AND DATA_CODE = #{part_cd}
-					   <!-- 
-					   AND COMP_NM = #{company_id} 
-					   -->
+					   AND COMPANY_ID = #{company_id} 
 					   AND YEAR = TO_CHAR(TO_DATE(#{repair_date}, 'YYYYMMDD'), 'YYYY')
 		</selectKey>
 	
 		INSERT INTO GY_LIGHT_PART 
 		(SEQ_NO, INOUT_DAY, PART_CD, INOUT_FLAG, INOUT_CNT, LAST_UPDATE, REPAIR_NO, COMPANY_ID, YEAR, COMP_NM)
 		VALUES
-		(#{seq_no}, TO_CHAR(now(), 'YYYYMMDD'), #{part_cd}, '2', #{inout_cnt}, now(), #{repair_no}, #{company_id}, #{year}, #{comp_nm})
+		(#{seq_no}, TO_CHAR(now(), 'YYYYMMDD'), #{part_cd}, '2', #{inout_cnt}, now(), #{repair_no}, #{company_id}, #{year}, #{company_id})
 	</insert>
 	
 	<delete id="deleteMaterialUsed" parameterType="hashMap">
