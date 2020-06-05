@@ -100,6 +100,7 @@
 			}
 		}
 		else if(inform_method == "02"){
+			var email = $("#email").val();
 			if(!checkEmail(email)) {
 				alert("E-MAIL 회신 요청 시 메일주소를 정확히 입력하세요.");
 				return;
@@ -252,25 +253,11 @@
 						<tr>
 							<th>핸드폰</th>
 							<td>
-								<c:choose>
-									<c:when test="${resultMap.inform_method eq '01'}">
-										<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.contact }">
-									</c:when>
-									<c:otherwise>
-										<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="">
-									</c:otherwise>
-								</c:choose>
+								<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.mobile }">
 							</td>
 							<th>전화번호</th>
 							<td>
-								<c:choose>
-									<c:when test="${resultMap.inform_method eq '03'}">
-										<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.contact }">
-									</c:when>
-									<c:otherwise>
-										<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="">
-									</c:otherwise>
-								</c:choose>
+								<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.phone }">
 							</td>
 						</tr>
 						<tr>

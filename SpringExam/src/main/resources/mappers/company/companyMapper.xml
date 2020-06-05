@@ -87,10 +87,9 @@
 			        , A.TROUBLE_DETAIL
 			        , CASE WHEN INFORM_METHOD = '01'
 							   				THEN MOBILE
-							   				WHEN INFORM_METHOD = '02'
+							   				WHEN INFORM_METHOD = '03'
 							   				THEN PHONE
-							   				WHEN INFORM_METHOD = '04'
-							   				THEN ''
+							   				ELSE COALESCE(COALESCE(MOBILE, PHONE), '')
 							   				END AS PHONE
 			        , A.EMAIL
 			        , A.INFORM_METHOD
@@ -189,14 +188,12 @@
 			        , A.NOTICE_NAME AS "신고인"
 			        , CASE WHEN INFORM_METHOD = '01'
 							   				THEN MOBILE
-							   				WHEN INFORM_METHOD = '02'
-							   				THEN EMAIL
 							   				WHEN INFORM_METHOD = '03'
 							   				THEN PHONE
-							   				WHEN INFORM_METHOD = '04'
-							   				THEN ''
+							   				ELSE COALESCE(COALESCE(MOBILE, PHONE), '')
 							   				END AS "전화번호"
 			        , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS "접수일"
+			        , EMAIL AS "이메일"
 			        , TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD') AS "보수일"
 			        , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS "처리상황"
 					FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
@@ -277,6 +274,13 @@
 	<select id="getRepairStatus" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 			SELECT PROGRESS_STATUS
+							, INFORM_METHOD
+							, MOBILE
+							, F_GY_DATA_CODE_NM('03',A.PROGRESS_STATUS ) AS PROGRESS_STATUS_NM
+							, EMAIL
+							, NOTICE_NAME
+							, F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS LIGHT_GUBUN
+							, REPAIR_NO
 				FROM GY_LIGHT_REPAIR A
 				WHERE
 					A.REPAIR_NO = #{repair_no}	

@@ -136,7 +136,7 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].repair_name+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].light_no+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].notice_name+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].phone+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+formatContactNumber(list[i].phone)+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].notice_date+" </a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].repair_date+" </a></span></td>";
 					if(list[i].progress_status == "01") {
@@ -191,7 +191,12 @@
 				//console.log("key : "+key +"      data : "+ data);
 				element = "det_"+key;
 				if($("#"+element).length > 0) {
-					$("#"+element).text(data[key]);
+					if(key == "phone" || key == "mobile") {
+						$("#"+element).text(formatContactNumber(data[key]));
+					}
+					else {
+						$("#"+element).text(data[key]);
+					}
 				}
 				
 				if($("#"+key).length > 0) {

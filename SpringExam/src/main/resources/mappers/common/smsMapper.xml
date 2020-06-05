@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.common.smsMapper">
+	
+	<insert id="insertSmsSend" parameterType="hashMap">
+		<selectKey resultType="int" keyProperty="msg_id" order="AFTER">
+			SELECT sdk_sms_seq.currval
+			FROM DUAL
+		</selectKey>
+		
+		INSERT INTO SDK_SMS_SEND (
+			MSG_ID, USER_ID, SCHEDULE_TYPE, SEND_DATE, DEST_TYPE
+			, DEST_COUNT, DEST_INFO, SEND_STATUS, SEND_COUNT, SEND_RESULT
+			, SMS_MSG, CALLBACK, RESERVED1
+		) VALUES (
+			sdk_sms_seq.nextval, '4u80189529', 0, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'), 0
+			, 1, REPLACE(substrb(TRIM(#{notice_name}), 1,10), '^','')||'^'||TRIM(#{mobile}), 0,0,0
+			, #{msg}, #{jisaNum}, #{groupDomain}
+		)
+	</insert>
+	
+</mapper>

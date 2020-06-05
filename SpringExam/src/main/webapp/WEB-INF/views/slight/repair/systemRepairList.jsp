@@ -180,7 +180,7 @@
 					str += "	<td><span> <a href='javascript:goGisMap(\""+list[i].light_no+"\")'>"+list[i].light_no+"</a></span></td>";
 					//str += "	<td><span> <a href='javascript:modal_popup3(\"messagePop3\")'>"+list[i].light_no+"</a></span></td>";
 					str += "	<td><span> "+list[i].notice_name+" </span></td>";
-					str += "	<td><span> "+list[i].contact+" </span></td>";
+					str += "	<td><span> "+formatContactNumber(list[i].contact)+" </span></td>";
 					str += "	<td><span> "+list[i].notice_date+" </span></td>";
 					str += "	<td><span> "+list[i].repair_date+" </span></td>";
 					str += "	<td><span> "+list[i].repair_date_2+" </span></td>";
@@ -281,7 +281,12 @@
 				//alert("key : "+key +"      data : "+ data);
 				element = "det_"+key;
 				if($("#"+element).length > 0) {
-					$("#"+element).text(data[key]);
+					if(key == "phone" || key == "mobile") {
+						$("#"+element).text(formatContactNumber(data[key]));
+					}
+					else {
+						$("#"+element).text(data[key]);
+					}
 				}
 				
 				if($("#"+key).length > 0) {

@@ -22,24 +22,34 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	<!-- 
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
+	
+	<bean id="sqlSessionFactorySms" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceSms" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:mappers/**/*.xml" />
+	</bean>
+	
+	<bean id="sqlSessionSms" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactorySms" />
+	</bean>
+	
+	<bean id="transactionManagerSms" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceSms" />
 	</bean>
 	
 	<aop:config proxy-target-class="true">
-		<aop:pointcut expression="execution(public * com.spring.*..service.*Service.*(..))" id="serviceOperation" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" id="transactionAdvisor" />
+		<aop:pointcut expression="execution(public * com.spring.*..service.*Service.*(..))" id="serviceOperationSms" />
+		<aop:advisor advice-ref="txAdviceSms" pointcut-ref="serviceOperationSms" id="transactionAdvisorSms" />
 	</aop:config>
 	
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<tx:advice id="txAdviceSms" transaction-manager="transactionManagerSms">
 		<tx:attributes>
 			<tx:method name="insert*" rollback-for="Exception"/>
 			<tx:method name="update*" rollback-for="Exception"/>
 			<tx:method name="delete*" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>  
-	 -->
+	 
 	<bean id="sqlSessionFactoryGumi" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSourceGumi" />
 		<property name="configLocation" value="classpath:mybatis-config.xml" />

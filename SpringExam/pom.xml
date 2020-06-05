@@ -46,6 +46,11 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-context-support</artifactId>
+	        <version>${org.springframework-version}</version>
+	    </dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
@@ -274,8 +279,29 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
-		</dependency>        
+		</dependency>      
+		
+		<!-- Mail Sender -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.5.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3</version>
+		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>Spring Plugins</id>
+			<url>https://repo.spring.io/plugins-release/</url>
+		</repository>
+	</repositories>
+	
     <build>
         <plugins>
             <plugin>

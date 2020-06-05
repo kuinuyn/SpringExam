@@ -3,18 +3,25 @@ package com.spring.slight.company.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.common.CommandMap;
 import com.spring.common.dao.FileDao;
+import com.spring.common.dao.SmsSendDao;
 import com.spring.common.util.FileUploadUtil;
+import com.spring.common.util.MailSendUtil;
 import com.spring.common.util.PagingUtil;
+import com.spring.common.util.PropertiesUtils;
 import com.spring.common.util.ResultUtil;
+import com.spring.common.util.SmsMsgUtil;
 import com.spring.common.vo.FilesVO;
 import com.spring.slight.company.dao.CompanyDao;
+import com.spring.slight.system.dao.SystemMemberDao;
 
 @Service("CompanyService")
 public class CompanyServiceImpl implements CompanyService{
@@ -24,6 +31,15 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Autowired
 	private FileDao fileDao;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
+	@Autowired
+	private SystemMemberDao systemMemberDao;
+	
+	@Autowired
+	private SmsSendDao smsSendDao;
 	
 	@Override
 	public List<Map<String, Object>> getCompanyInfoSearchYear() throws Exception {
@@ -227,6 +243,36 @@ public class CompanyServiceImpl implements CompanyService{
 					}
 				}
 				
+			}
+		}
+		
+		Map<String, Object> resultStatus = companyDao.getRepairStatus(paramMap);
+		progressStatus = (String) resultStatus.get("progress_status");
+		
+		if("04".equals(progressStatus)) {
+			CommandMap smsMsg = new CommandMap();
+			PropertiesUtils propertiesUtils = new PropertiesUtils();
+			propertiesUtils.loadProp("/properties/app_config.properties");
+			Properties properties = propertiesUtils.getProperties();
+			smsMsg.put("memberId", properties.getProperty("domin.id"));
+			Map<String, Object> companyInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
+			
+			String method = (String) resultStatus.get("inform_method");
+			if("02".equals(method)) {
+				paramMap.put("email", paramMap.get("email"));
+				paramMap.put("revEmail", companyInfo.get("email"));
+				MailSendUtil.mailSend(javaMailSender, paramMap);
+			}
+			else if("01".equals(method)) {
+				
+				smsMsg.putAll(resultStatus);
+				smsMsg.put("notice_name", resultStatus.get("notice_name"));
+				smsMsg.put("mobile", resultStatus.get("mobile"));
+				smsMsg.put("jisaNum", companyInfo.get("phone"));
+				smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
+				smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
+				
+				smsSendDao.insertSmsSend(smsMsg);
 			}
 		}
 		

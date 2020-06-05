@@ -395,7 +395,7 @@
 	
 	<select id="getCompanyId" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-			SELECT A.MEMBER_ID AS DATA_CODE, A.MEMBER_NAME AS DATA_CODE_NAME
+			SELECT A.MEMBER_ID AS DATA_CODE, A.COM_NAME AS DATA_CODE_NAME
 				FROM GY_MEMBER A
 				WHERE
 					A.GRADE = '03'

@@ -15,7 +15,7 @@
 	
 	<!-- Properties 설정 -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations" value="classpath:/properties/dbSource.properties" />
+		<property name="locations" value="classpath:/properties/app_config.properties" />
 		<property name="fileEncoding" value="UTF-8" />
 	</bean>
 	
@@ -32,6 +32,13 @@
 		<property name="url" value="${gumi.jdbc.url}" />
 		<property name="username" value="${gumi.jdbc.username}" />
 		<property name="password" value="${gumi.jdbc.password}" />
+	</bean>
+	
+	<bean id="dataSourceSms" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${sms.jdbc.driverClassName}" />
+		<property name="url" value="${sms.jdbc.url}" />
+		<property name="username" value="${sms.jdbc.username}" />
+		<property name="password" value="${sms.jdbc.password}" />
 	</bean>
 	
 	<context:component-scan base-package="com.spring.*.service, com.spring.*.dao, com.spring.slight.*" use-default-filters="false">

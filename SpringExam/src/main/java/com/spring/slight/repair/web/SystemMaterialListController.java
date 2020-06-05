@@ -5,30 +5,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.security.vo.CustomVO;
 import com.spring.slight.repair.service.SystemMaterialListService;
 import com.spring.common.CommandMap;
-import com.spring.common.util.FileDownloadUtil;
 import com.spring.common.util.ResultUtil;
 
 @Controller
@@ -68,7 +58,7 @@ public class SystemMaterialListController {
 	public ResultUtil getSystemMaterialList(HttpServletRequest request, CommandMap paramMap) {
 		ResultUtil result = new ResultUtil();
 		
-				try {
+		try {
 			result = systemMaterialService.getSystemMaterialList(paramMap);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,14 +103,4 @@ public class SystemMaterialListController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
-	
-	
-	
-	
-	
-	
-			
-	
-	
-	
 }

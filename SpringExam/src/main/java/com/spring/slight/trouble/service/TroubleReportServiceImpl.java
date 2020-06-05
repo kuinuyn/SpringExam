@@ -2,17 +2,29 @@ package com.spring.slight.trouble.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.common.CommandMap;
+import com.spring.common.dao.SmsSendDao;
+import com.spring.common.util.PropertiesUtils;
+import com.spring.common.util.SmsMsgUtil;
+import com.spring.slight.system.dao.SystemMemberDao;
 import com.spring.slight.trouble.dao.TroubleReportDao;
 
 @Service("TroubleReportService")
 public class TroubleReportServiceImpl implements TroubleReportService{
 	@Autowired
 	private TroubleReportDao troubleReportDao;
+	
+	@Autowired
+	private SmsSendDao smsSendDao;
+	
+	@Autowired
+	private SystemMemberDao systemMemberDao;
 	
 	@Override
 	public int insertTrobleReport(CommandMap paramMap) throws Exception {
@@ -36,7 +48,26 @@ public class TroubleReportServiceImpl implements TroubleReportService{
 		paramMap.put("modify_date", cal.getTime());
 		paramMap.put("location", location);
 		
-		return troubleReportDao.insertTrobleReport(paramMap);
+		int resultCnt = troubleReportDao.insertTrobleReport(paramMap);
+		
+		if(resultCnt > 0 && "01".equals(inform_method)) {
+			CommandMap smsMsg = new CommandMap();
+			
+			PropertiesUtils propertiesUtils = new PropertiesUtils();
+			propertiesUtils.loadProp("/properties/app_config.properties");
+			Properties properties = propertiesUtils.getProperties();
+			smsMsg.put("memberId", properties.getProperty("domin.id"));
+			Map<String, Object> companyInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
+			
+			smsMsg.put("notice_name", paramMap.get("notice_name"));
+			smsMsg.put("mobile", paramMap.get("mobile"));
+			smsMsg.put("jisaNum", companyInfo.get("phone"));
+			smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
+			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(paramMap));
+			smsSendDao.insertSmsSend(smsMsg);
+		}
+		
+		return resultCnt;
 	}
 	
 }

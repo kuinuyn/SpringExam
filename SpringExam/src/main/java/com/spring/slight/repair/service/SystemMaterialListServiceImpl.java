@@ -4,10 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.spring.common.CommandMap;
+import com.spring.common.util.MailSendUtil;
 import com.spring.common.util.PagingUtil;
 import com.spring.common.util.ResultUtil;
 import com.spring.slight.repair.dao.SystemMaterialListDao;
@@ -17,6 +23,9 @@ public class SystemMaterialListServiceImpl implements SystemMaterialListService{
 	
 	@Autowired
 	private SystemMaterialListDao systemMaterialList;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 	
 	@Override
 	public List<Map<String, Object>> getMaterialSearchYear() throws Exception {
@@ -44,6 +53,7 @@ public class SystemMaterialListServiceImpl implements SystemMaterialListService{
 		
 		result.setData(resultMap);
 		result.setState("SUCCESS");
+		
 		return result;
 	}
 	
@@ -59,7 +69,7 @@ public class SystemMaterialListServiceImpl implements SystemMaterialListService{
 	@Override
 	public int updateSystemMaterial(CommandMap paramMap) throws Exception {
 		int cnt = 0;
-		String saveFlag = (String) paramMap.get("flag");		
+		String saveFlag = (String) paramMap.get("flag");
 			
 			if("I".equals(saveFlag)) {
 				cnt = systemMaterialList.insertSystemMaterial(paramMap);

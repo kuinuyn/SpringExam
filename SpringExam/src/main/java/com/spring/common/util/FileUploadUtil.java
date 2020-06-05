@@ -3,6 +3,7 @@ package com.spring.common.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -16,13 +17,16 @@ public class FileUploadUtil {
 		
 		FilesVO fileVo = new FilesVO();
 		
+		PropertiesUtils propertiesUtils = new PropertiesUtils();
+		propertiesUtils.loadProp("/properties/app_config.properties");
+		Properties properties = propertiesUtils.getProperties();
+		
 		String fileName = null;
 		String fileExt = null;
 		String fileNameKey = null;
 		String fileSize = null;
 		// 파일이 저장될 Path 설정
-		//String filePath = "/upload";
-		String filePath = "c:/upload/"+folderNm;
+		String filePath = properties.getProperty("file.upload.path")+folderNm;
 		
 		if(files != null && files.size() > 0) {
 			File file = new File(filePath);

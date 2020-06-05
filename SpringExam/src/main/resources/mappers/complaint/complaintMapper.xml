@@ -49,8 +49,7 @@
 							   				THEN PHONE
 							   				WHEN A.inform_method = '01'
 							   				THEN MOBILE
-							   				WHEN A.inform_method = '04'
-							   				THEN ''
+							   				ELSE COALESCE(COALESCE(MOBILE, PHONE), '')
 							   	END AS CONTACT
 							   , A.EMAIL
 							   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
@@ -117,13 +116,15 @@
 						   , A.LIGHT_NO
 						   , A.NOTICE_NAME
 						   , A.PASSWORD
-						   , CASE WHEN inform_method = '03'
+						   , A.PHONE
+						   , A.MOBILE
+						   , COALESCE(CASE WHEN inform_method = '03'
 						   				THEN PHONE
 						   				WHEN inform_method = '01'
 						   				THEN MOBILE
-						   				WHEN inform_method = '04'
-						   				THEN ''
-						   	END AS CONTACT
+						   				ELSE 
+						   					COALESCE(COALESCE(MOBILE, PHONE), '')
+						   	END, '') AS CONTACT
 						   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
 						   , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE
 						   , F_GY_DATA_CODE_NM('01', A.TROUBLE_CD) AS TROUBLE_NM
