@@ -400,7 +400,7 @@
 	<!-- //local_nav -->
 
 	<div id="sub">
-		<div id="sub_title"><h3>고장신고</h3></div>
+		<div id="sub_title"><h3>기타신고</h3></div>
 		<form id="troubleForm" name="troubleForm">
 			<input type="hidden" name="dong" id="dong">
 			<div id="board_view2">

@@ -913,7 +913,7 @@
 	</div>
 	
 	<div id="sub">
-		<div id="sub_title"><h3>보수이력관리</h3></div>
+		<div id="sub_title"><h3>철거이력관리</h3></div>
 		<!-- 검색박스 -->
 		<form id="slightForm" name="slightForm" method="post" action="">
 			<input type="hidden" id="excelHeader" name="excelHeader" value="" />

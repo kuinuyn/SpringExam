@@ -342,15 +342,14 @@
 						   , A.LIGHT_NO
 						   , A.LOCATION
 						   , A.NOTICE_NAME
-						   , CASE WHEN A.inform_method = '03'
+						   , COALESCE(CASE WHEN A.inform_method = '03'
 						   				THEN A.PHONE
 						   				WHEN A.inform_method = '01'
 						   				THEN A.MOBILE
 						   				WHEN A.inform_method = '02'
 						   				THEN A.EMAIL
-						   				WHEN A.inform_method = '04'
-						   				THEN ''
-						   	END AS CONTACT
+						   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+						   	END, '') AS CONTACT
 						   , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS PROGRESS_STATUS
 						   , COALESCE(C.MEMBER_NAME, '') AS MEMBER_NAME
 				FROM GY_LIGHT_REPAIR A

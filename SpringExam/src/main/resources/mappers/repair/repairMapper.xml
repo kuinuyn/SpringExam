@@ -27,15 +27,14 @@
 							   , F_GY_DATA_CODE_NM('14', A.REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', A.LIGHT_GUBUN) AS LIGHT_GUBUN
 							   , A.LIGHT_NO
 							   , A.NOTICE_NAME
-							   , CASE WHEN A.inform_method = '03'
+							   , COALESCE(CASE WHEN A.inform_method = '03'
 							   				THEN PHONE
 							   				WHEN A.inform_method = '01'
 							   				THEN MOBILE
 							   				WHEN A.inform_method = '02'
 							   				THEN EMAIL
-							   				WHEN A.inform_method = '04'
-							   				THEN ''
-							   	END AS CONTACT
+							   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+							   	END, '') AS CONTACT
 							   , COALESCE(TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD'), '') AS NOTICE_DATE
 							   , COALESCE(TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE
 							   , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE_2
@@ -112,12 +111,12 @@
 						   , MOBILE
 						   , PHONE
 						   , EMAIL
-						   , CASE WHEN inform_method = '03'
+						   , COALESCE(CASE WHEN inform_method = '03'
 						   				THEN PHONE
 						   				WHEN inform_method = '01'
 						   				THEN MOBILE
-						   				ELSE COALESCE(COALESCE(MOBILE, PHONE), '')
-						   	END AS CONTACT
+						   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+						   	END, '') AS CONTACT
 						   , TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
 						   , COALESCE(TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY-MM-DD'), 'YYYY.MM.DD'),'') AS REPAIR_DATE
 						   , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD'),'') AS REPAIR_DATE_2
@@ -154,12 +153,12 @@
 			               COALESCE((SELECT NEW_ADDRESS
 			                          FROM GY_LIGHT
 			                         WHERE LIGHT_NO = A.LIGHT_NO), '') AS "도로명주소" ,               
-			               CASE
+			               COALESCE(CASE
 			                 WHEN inform_method = '03' THEN PHONE
 			                 WHEN inform_method = '01' THEN MOBILE
 			                 WHEN inform_method = '02' THEN EMAIL
-			                 ELSE ''
-			               END AS "전화번호" ,               
+			                 ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+			               END, '') AS "전화번호" ,               
 					       TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS "접수일" ,
 			       		   TO_CHAR(A.REPAIR_DATE, 'YYYY.MM.DD') AS "지시일" ,
 					       TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYY-MM-DD'), 'YYYY.MM.DD') AS "보수일" ,
@@ -195,15 +194,14 @@
 							   , F_GY_DATA_CODE_NM('14', A.REPAIR_CD) AS "민원종류"
 							   , A.LIGHT_NO AS "관리번호"
 							   , A.NOTICE_NAME AS "신고인"
-							   , CASE WHEN A.inform_method = '03'
+							   , COALESCE(CASE WHEN A.inform_method = '03'
 							   				THEN PHONE
 							   				WHEN A.inform_method = '01'
 							   				THEN MOBILE
 							   				WHEN A.inform_method = '02'
 							   				THEN EMAIL
-							   				WHEN A.inform_method = '04'
-							   				THEN ''
-							   	END AS "전화번호"
+							   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+							   	END, '') AS "전화번호"
 							   , COALESCE(TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD'), '') AS "접수일"
 							   , COALESCE(TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY-MM-DD'), 'YYYY.MM.DD'), '') AS "지시일"
 							   , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD'), '') AS "보수일"

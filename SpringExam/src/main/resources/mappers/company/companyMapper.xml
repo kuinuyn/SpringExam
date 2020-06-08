@@ -85,12 +85,12 @@
 			        , A.TROUBLE_CD
 			        , A.TROUBLE_CD_ETC
 			        , A.TROUBLE_DETAIL
-			        , CASE WHEN INFORM_METHOD = '01'
+			        , COALESCE(CASE WHEN INFORM_METHOD = '01'
 							   				THEN MOBILE
 							   				WHEN INFORM_METHOD = '03'
 							   				THEN PHONE
-							   				ELSE COALESCE(COALESCE(MOBILE, PHONE), '')
-							   				END AS PHONE
+							   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+							   				END, '') AS PHONE
 			        , A.EMAIL
 			        , A.INFORM_METHOD
 			        , A.PROGRESS_STATUS
@@ -186,12 +186,12 @@
 			        , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS "민원종류"
 			        , A.LIGHT_NO AS "관리번호"
 			        , A.NOTICE_NAME AS "신고인"
-			        , CASE WHEN INFORM_METHOD = '01'
+			        , COALESCE(CASE WHEN INFORM_METHOD = '01'
 							   				THEN MOBILE
 							   				WHEN INFORM_METHOD = '03'
 							   				THEN PHONE
-							   				ELSE COALESCE(COALESCE(MOBILE, PHONE), '')
-							   				END AS "전화번호"
+							   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+							   				END, '') AS "전화번호"
 			        , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS "접수일"
 			        , EMAIL AS "이메일"
 			        , TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD') AS "보수일"
