@@ -193,7 +193,7 @@
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
 						btnClass = "btn_red02";
 						btnText = "작업지시취소";
-						btnFn = "updateRepairCancel(\""+list[i].repair_no+"\")";
+						btnFn = "updateRepairCancel(\""+list[i].repair_no+"\", \""+list[i].company_id+"\")";
 					}
 					else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
 						btnClass = "btn_blue04";
@@ -671,7 +671,7 @@
 		}
 	}
 
-	function updateRepairCancel(repairNo){
+	function updateRepairCancel(repairNo, companyId){
 
 		var yn = confirm("작업지시 취소를 하시겠습니까?");
 		if(yn) {
@@ -679,7 +679,7 @@
 			$.ajax({
 				type : "POST"			
 				, url : "/repair/updateRepairCancel"
-				, data : {"repairNo":repairNo}
+				, data : {"repairNo":repairNo, "companyId":companyId}
 				, dataType : "JSON"
 				, success : function(obj) {
 					updateRepairCancelCallback(obj);

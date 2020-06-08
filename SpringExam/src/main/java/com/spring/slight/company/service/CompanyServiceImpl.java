@@ -259,7 +259,7 @@ public class CompanyServiceImpl implements CompanyService{
 			
 			String method = (String) resultStatus.get("inform_method");
 			if("02".equals(method)) {
-				paramMap.put("email", paramMap.get("email"));
+				paramMap.put("email", resultStatus.get("email"));
 				paramMap.put("revEmail", companyInfo.get("email"));
 				MailSendUtil.mailSend(javaMailSender, paramMap);
 			}

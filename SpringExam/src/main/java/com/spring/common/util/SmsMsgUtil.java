@@ -17,14 +17,19 @@ public class SmsMsgUtil {
 		String progressStatus = (String) paramMap.get("progress_status");
 		
 		if("01".equals(progressStatus)) {
-			if("1".equals(paramMap.get("ligth_gubun"))) {
-				suffix = "보안등".concat("] 민원신고가 접수되었습니다.");
-			}
-			else if("2".equals(paramMap.get("ligth_gubun"))) {
-				suffix = "가로등".concat("] 민원신고가 접수되었습니다.");
+			if(paramMap.get("cancelYn") != null && "".equals(paramMap.get("cancelYn"))) {
+				if("1".equals(paramMap.get("ligth_gubun"))) {
+					suffix = "보안등".concat("] 민원신고가 접수되었습니다.");
+				}
+				else if("2".equals(paramMap.get("ligth_gubun"))) {
+					suffix = "가로등".concat("] 민원신고가 접수되었습니다.");
+				}
+				else {
+					suffix = "분전함".concat("] 민원신고가 접수되었습니다.");
+				}
 			}
 			else {
-				suffix = "분전함".concat("] 민원신고가 접수되었습니다.");
+				suffix = "] 작업지시 취소 - 민원인 : "+paramMap.get("notice_name")+", 연락처 : "+paramMap.get("mobile")+", 접수번호 : "+paramMap.get("repair_no").toString().trim();
 			}
 		}
 		else if("02".equals(progressStatus)) {
@@ -35,7 +40,6 @@ public class SmsMsgUtil {
 		}
 		
 		smsMsg = prefix.concat(suffix);
-		System.out.println("### smsMsg : "+smsMsg);
 		
 		return smsMsg;
 	}

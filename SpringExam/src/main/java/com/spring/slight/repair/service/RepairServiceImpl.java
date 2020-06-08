@@ -152,11 +152,11 @@ public class RepairServiceImpl implements RepairService{
 			Map<String, Object> revInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
 			
 			paramMap.putAll(resultStatus);
+			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(paramMap));
 			smsMsg.put("notice_name", resultStatus.get("notice_name"));
 			smsMsg.put("mobile", revInfo.get("mobile"));
 			smsMsg.put("jisaNum", companyInfo.get("phone"));
 			smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
-			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(paramMap));
 			smsSendDao.insertSmsSend(smsMsg);
 		}
 		
@@ -173,6 +173,28 @@ public class RepairServiceImpl implements RepairService{
 			FilesVO filesVo = new FilesVO();
 			filesVo.setSeq((String) paramMap.get("repairNo"));
 			fileDao.deleteFiles(filesVo);
+			
+			paramMap.put("repair_no", paramMap.get("repairNo"));
+			Map<String, Object> resultStatus = repairDao.getRepairStatus(paramMap);
+			PropertiesUtils propertiesUtils = new PropertiesUtils();
+			propertiesUtils.loadProp("/properties/app_config.properties");
+			Properties properties = propertiesUtils.getProperties();
+			CommandMap smsMsg = new CommandMap();
+			
+			smsMsg.put("memberId", properties.getProperty("domin.id"));
+			Map<String, Object> companyInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
+			smsMsg.put("memberId", paramMap.get("companyId"));
+			Map<String, Object> revInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
+			
+			smsMsg.putAll(resultStatus);
+			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
+			smsMsg.put("notice_name", resultStatus.get("notice_name"));
+			smsMsg.put("mobile", revInfo.get("mobile"));
+			smsMsg.put("jisaNum", companyInfo.get("phone"));
+			smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
+			smsMsg.put("cancelYn", "Y");
+			
+			smsSendDao.insertSmsSend(smsMsg);
 		}
 		
 		return resultCnt;
@@ -320,15 +342,17 @@ public class RepairServiceImpl implements RepairService{
 			
 			String method = (String) resultStatus.get("inform_method");
 			if("02".equals(method)) {
+				paramMap.put("email", resultStatus.get("email"));
+				paramMap.put("revEmail", companyInfo.get("email"));
 				MailSendUtil.mailSend(javaMailSender, paramMap);
 			}
 			else if("01".equals(method)) {
 				smsMsg.putAll(resultStatus);
+				smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
 				smsMsg.put("notice_name", resultStatus.get("notice_name"));
 				smsMsg.put("mobile", resultStatus.get("mobile"));
 				smsMsg.put("jisaNum", companyInfo.get("phone"));
 				smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
-				smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
 				
 				smsSendDao.insertSmsSend(smsMsg);
 			}

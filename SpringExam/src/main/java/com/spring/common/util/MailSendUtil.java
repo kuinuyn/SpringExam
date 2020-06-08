@@ -11,23 +11,25 @@ import org.springframework.mail.javamail.JavaMailSender;
 import com.spring.common.CommandMap;
 
 public class MailSendUtil{
+	private static PropertiesUtils propertiesUtils = new PropertiesUtils();
+	
 	public static void mailSend(JavaMailSender mailSender, CommandMap paramMap) throws Exception {
 		MimeMessage mailMsg = mailSender.createMimeMessage();
+		propertiesUtils.loadProp("/properties/app_config.properties");
+		Properties properties = propertiesUtils.getProperties();
 		
-		mailMsg.setSubject("불편신고 처리가 완료되었습니다.");
+		mailMsg.setSubject("민원신고 처리가 완료되었습니다.");
 		mailMsg.setContent(setMailInfo(paramMap), "text/html; charset=utf-8");
-		mailMsg.setRecipient(RecipientType.TO, new InternetAddress("kuinuyn@nate.com"));
-		mailMsg.setFrom(new InternetAddress("hanill@hanill.com","테스트","UTF-8"));
+		mailMsg.setRecipient(RecipientType.TO, new InternetAddress((String) paramMap.get("email")));
+		mailMsg.setFrom(new InternetAddress((String) paramMap.get("revEmail"),properties.getProperty("domin.name"),"UTF-8"));
 		
 		mailSender.send(mailMsg);
 	}
 	
 	public final static String setMailInfo(CommandMap paramMap) throws Exception{
-		PropertiesUtils propertiesUtils = new PropertiesUtils();
+		StringBuffer mailContent = new StringBuffer();
 		propertiesUtils.loadProp("/properties/app_config.properties");
 		Properties properties = propertiesUtils.getProperties();
-		
-		StringBuffer mailContent = new StringBuffer();
 		
 		mailContent.append("<html>");
 		mailContent.append("<head>");
