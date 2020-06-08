@@ -158,6 +158,8 @@
 					   , lamp2_cd2
 					   , lamp3_cd2
 					   , use_light
+					   , coalesce(map_x_pos_gl, '0') as map_x_pos_gl
+					   , coalesce(map_y_pos_gl, '0') as map_y_pos_gl
 					   , TO_CHAR(TO_DATE(A.SET_YMD, 'YYYYMMDD'), 'YYYY-MM-DD') AS SET_YMD
 					   , CASE WHEN twin_light = 'Y' THEN '예' ELSE '아니오' END AS twin_light_nm
 					   , F_GY_DATA_CODE_NM('05', LIGHT_GUBUN) AS LIGHT_GUBUN_NM
