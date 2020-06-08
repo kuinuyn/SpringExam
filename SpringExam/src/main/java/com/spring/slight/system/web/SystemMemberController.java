@@ -1,6 +1,10 @@
 package com.spring.slight.system.web;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -26,11 +30,21 @@ public class SystemMemberController {
 	
 	@RequestMapping("/systemMemberList")
 	public String systemMemberList (HttpServletRequest rquest, Model model) {
-		try {
-			model.addAttribute("searchYearList", systemMemberService.getSystemMemberSearchYear());
-		} catch (Exception e) {
-			e.printStackTrace();
+		List<String> searchYearList = new ArrayList<String>();
+		Calendar cal = Calendar.getInstance();
+		String year = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		year = sdf.format(cal.getTime());
+		searchYearList.add(year);
+		
+		for(int i=0; i<9; i++) {
+			cal.add(Calendar.YEAR, -1);
+			year = sdf.format(cal.getTime());
+			searchYearList.add(year);
 		}
+		
+		model.addAttribute("searchYearList", searchYearList);
+		
 		return "slight/system/systemMemberList";
 	}
 	

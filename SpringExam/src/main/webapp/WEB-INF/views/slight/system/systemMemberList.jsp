@@ -150,12 +150,15 @@
 			var areaArr = new Array();
 			if(data['grade'] != "" && data['grade'] != null) {
 				if(data['grade'] != '01') {
-					areaArr = data['area'].split(";");
-					$("input[type=checkbox][name=area]").prop("checked", false);
-					
-					for(i = 0; i<areaArr.length; i++) {
-						$("input[type=checkbox][name=area][value="+areaArr[i]+"]").prop("checked", true);
+					if(data['area'] != null && data['area'] != "") {
+						areaArr = data['area'].split(";");
+						$("input[type=checkbox][name=area]").prop("checked", false);
+						
+						for(i = 0; i<areaArr.length; i++) {
+							$("input[type=checkbox][name=area][value="+areaArr[i]+"]").prop("checked", true);
+						}
 					}
+					
 					$("#trArea").show();
 				}
 				else {
@@ -389,7 +392,7 @@
 					<li  class="b_right">
 						<select id ="searchYear" name="searchYear" class="sel01">
 							<c:forEach items="${searchYearList}" var="year">
-								<option value="${year.year }">${year.year }년</option>
+								<option value="${year }">${year }년</option>
 							</c:forEach>
 						</select>
 					</li>
@@ -476,7 +479,7 @@
 											<span>
 											<select name="year" id="year" class="sel03">
 												<c:forEach items="${searchYearList}" var="year">
-													<option value="${year.year }">${year.year }년</option>
+													<option value="${year }">${year }년</option>
 												</c:forEach>
 											</select>
 											</span>
@@ -491,10 +494,22 @@
 									</tr>
 									<tr>
 										<th>구분</th>
-										<td>
-											<span class="pdr10"><input type="radio" name="grade" value="01" checked="checked"> 시청담당자</span>
+										<td id="radioGradeGubun">
+										<c:forEach items="${MAXRESULT }" var="commondCd" varStatus="status">
+											<c:if test="${commondCd.code_type == '04' }">
+												<c:choose>
+													<c:when test="${status.count % 3 == 0 }">
+														<div><span class="pdr10"><input type="radio" name="grade" value="${commondCd.data_code }"> ${commondCd.data_code_name }</span></div>
+													</c:when>
+													<c:otherwise>
+														<span class="pdr10"><input type="radio" name="grade" value="${commondCd.data_code }"> ${commondCd.data_code_name }</span>
+													</c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+											<!-- <span class="pdr10"><input type="radio" name="grade" value="01" checked="checked"> 시청담당자</span>
 											<span class="pdr10"><input type="radio" name="grade" value="02"> 읍면동담당자</span>
-											<div><span class="pdr10"><input type="radio" name="grade" value="03"> 보수업체 담당자</span></div>
+											<div><span class="pdr10"><input type="radio" name="grade" value="03"> 보수업체 담당자</span></div> -->
 										</td>
 										<th>로그인 여부</th>
 										<td>

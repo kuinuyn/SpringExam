@@ -4,7 +4,8 @@
 	var commonCd = ${MAXRESULT};
 	
 	$(function() {
-		areaTag();
+		//areaTag();
+		Search();
 	});
 	
 	function areaTag() {
@@ -61,6 +62,7 @@
 				$("#"+key).val(data[key]);
 			}
 			
+			/* 
 			var areaArr = new Array();
 			if(data['grade'] != "" && data['grade'] != null) {
 				if(data['grade'] != '01') {
@@ -78,7 +80,8 @@
 				}
 				
 				$("input[type=radio][name=grade][value="+data['grade']+"]").prop("checked", true);
-			}
+			} 
+			*/
 		}
 	}
 	
@@ -115,13 +118,15 @@
 			return;
 		}
 		
+		/* 
 		if($("input[type=radio][name=grade]:checked").val() != "01") {
 			if(!$("input[type=checkbox][name=area]").is(":checked")) {
 				alert("담당지역을 선택하세요.");
 				$("input[type=checkbox][name=area]").focus();
 				return;
 			}
-		}
+		} 
+		*/
 		
 		var obj = $("#slightForm").serializeArray();
 		var json = {};
@@ -140,7 +145,7 @@
 			$.ajax({
 				type : "POST"			
 				, url : "/company/updateCompanyInfo"
-				, data : json
+				, data : obj
 				, dataType : "JSON"
 				, success : function(obj) {
 					getUpdateMemberCallback(obj);
