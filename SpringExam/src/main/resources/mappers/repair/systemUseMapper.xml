@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.repair.systemUseMapper">
+	<select id="getSystemUseSearchYear" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT A.YEAR
+			 FROM GY_MEMBER A
+			 GROUP BY A.YEAR
+			 ORDER BY 
+			 	A.YEAR DESC
+		]]>
+	</select>
+
+	<select id="getSystemUseSearchCom" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT YEAR, MEMBER_ID, COM_NAME 		
+			FROM GY_MEMBER  
+			ORDER BY 
+				COM_NAME ASC 		
+		]]>
+	</select>
+
+	<select id="getSystemUseSearchPart" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[			
+			SELECT YEAR, DATA_CODE AS PART_CD, DATA_CODE_NAME FROM GY_MATERIAL		
+			ORDER BY SUNBUN ASC					
+		]]>
+	</select>	
+
+	<select id="getSystemUseCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)              
+			  FROM GY_MATERIAL A              
+			 WHERE A.YEAR = #{searchYear}			   
+   			   AND (SELECT COALESCE(MAX(MEMBER_ID), '') AS MEMBER_ID
+          			  FROM GY_MEMBER
+         			WHERE A.COMPANY_ID = MEMBER_ID) = #{searchCom}		
+		]]>
+	</select>
+
+	<select id="getSystemUseList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[		
+			SELECT A.DATA_CODE AS PART_CD,
+			       A.DATA_CODE_NAME AS PART_NAME,
+			       A.YEAR,
+       			   A.COMPANY_ID,
+					(SELECT B.COM_NAME 		
+		 			 FROM GY_MEMBER B 
+         			 WHERE B.MEMBER_ID = A.COMPANY_ID) AS COMP_NM,  
+			       CASE
+			         WHEN (SELECT SUM(INOUT_CNT)
+			          FROM GY_LIGHT_PART B
+			         WHERE B.YEAR = A.YEAR
+			           AND B.COMP_NM = A.COMPANY_ID
+			           AND PART_CD = DATA_CODE
+			           AND INOUT_FLAG = '1') IS NULL THEN 0
+			         ELSE (SELECT SUM(INOUT_CNT)
+			          FROM GY_LIGHT_PART B
+			         WHERE B.YEAR = A.YEAR
+			           AND B.COMP_NM = A.COMPANY_ID
+			           AND PART_CD = DATA_CODE
+			           AND INOUT_FLAG = '1')
+			       END AS IN_CNT,
+			       CASE
+			         WHEN (SELECT SUM(INOUT_CNT)
+			          FROM GY_LIGHT_PART B
+			         WHERE B.YEAR = A.YEAR
+			           AND B.COMP_NM = A.COMPANY_ID
+			           AND PART_CD = DATA_CODE
+			           AND INOUT_FLAG = '2') IS NULL THEN 0
+			         ELSE (SELECT SUM(INOUT_CNT)
+			          FROM GY_LIGHT_PART B
+			         WHERE B.YEAR = A.YEAR
+			           AND B.COMP_NM = A.COMPANY_ID
+			           AND PART_CD = DATA_CODE
+			           AND INOUT_FLAG = '2')
+			       END AS OUT_CNT ,
+			       (SELECT COALESCE(MAX(TO_CHAR(LAST_UPDATE, 'YYYY-MM-DD')), '') AS LAST_UPDATE
+			          FROM GY_LIGHT_PART
+			         WHERE YEAR = A.YEAR
+			           AND COMP_NM = A.COMPANY_ID
+			           AND PART_CD = DATA_CODE
+			           AND INOUT_FLAG='1') AS LAST_UPDATE
+			  FROM GY_MATERIAL A
+			 WHERE A.YEAR = #{searchYear}
+		]]>			   
+			<if test="searchCom != null and searchCom != '' ">			   
+   			   AND (SELECT COALESCE(MAX(MEMBER_ID), '') AS MEMBER_ID
+          			  FROM GY_MEMBER
+         			WHERE A.COMPANY_ID = MEMBER_ID) = #{searchCom}
+			</if>         			
+		<![CDATA[         						   
+			 ORDER BY DATA_CODE ASC		
+		]]>
+	</select>
+
+	<select id="getSystemUseView" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[	
+			SELECT *, 
+					(SELECT DATA_CODE_NAME 
+					   FROM GY_MATERIAL 
+					 WHERE PART_CD = DATA_CODE AND YEAR = YEAR
+			]]>						 
+			<if test="searchCom != null and searchCom != '' ">					  
+					 AND COMPANY_ID = #{searchCom}
+			</if>         			
+		<![CDATA[  					 
+					) AS PART_NAME, 
+					(SELECT MEMBER_NAME FROM GY_MEMBER WHERE MEMBER_ID = COMPANY_ID) AS COMPANY_NAME,
+         			COALESCE(BIGO, '') AS BIGO1					
+			FROM GY_LIGHT_PART 
+			WHERE 1 = 1
+			]]>			
+			<if test="searchPart != null and searchPart != '' ">			
+			  AND PART_CD = #{searchPart}
+			</if>         			
+			<if test="searchYear != null and searchYear != '' ">			
+			  AND YEAR = #{searchYear}
+			</if>			   
+			<if test="searchCom != null and searchCom != '' ">				
+			  AND COMP_NM = #{searchCom}
+			</if>
+		<![CDATA[ 			   
+			ORDER BY INOUT_DAY DESC, SEQ_NO DESC
+		]]>
+	</select>
+
+	<select id="getSystemUseDetail" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT MEMBER_ID, PASSWORD, MEMBER_NAME,
+				TRIM(PHONE) AS PHONE,
+				TRIM(MOBILE) AS MOBILE,
+				EMAIL, B.DATA_CODE_NAME, A.COM_NAME, A.LOGIN_YN,
+				AREA, GRADE
+			 FROM GY_MEMBER A,GY_CODE B
+			WHERE A.GRADE = B.DATA_CODE
+			  AND B.CODE_TYPE = '04'
+			  AND A.MEMBER_ID = #{memberId}
+		]]>
+	</select>
+
+	<select id="getSystemUseDetail1" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+			SELECT SEQ_NO,
+			       INOUT_DAY,
+			       PART_CD,
+			       INOUT_FLAG,
+			       INOUT_CNT,
+			       LAST_UPDATE,
+			       BIGO,
+			       COMPANY_ID,
+			       COMPANY_ID1,
+			       YEAR,
+			       COMP_NM
+			  FROM GY_LIGHT_PART
+			 WHERE SEQ_NO = ${seq_no}
+		]]>
+	</select>	
+
+	<insert id="insertSystemUse" parameterType="hashMap">
+		INSERT INTO GY_LIGHT_PART ( 
+			INOUT_DAY, PART_CD, INOUT_FLAG, INOUT_CNT, LAST_UPDATE, 
+			BIGO, COMPANY_ID, COMPANY_ID1, YEAR, COMP_NM 
+		) VALUES ( 
+			#{inout_day}, #{part_cd}, #{inout_flag}, CAST(#{inout_cnt} AS INTEGER), NOW(), #{bigo1}, #{company_id}, #{company_id1}, #{year}, #{company_id} 
+		) 		 
+	</insert>
+
+	<update id="updateSystemUse" parameterType="hashMap">
+		UPDATE GY_LIGHT_PART 
+		SET 
+			 INOUT_DAY = #{inout_day}
+			 , PART_CD = #{part_cd}
+			 , INOUT_FLAG = #{inout_flag}
+			 , INOUT_CNT = CAST(#{inout_cnt} AS INTEGER)  
+			 , LAST_UPDATE = NOW()
+			 , BIGO = #{bigo1}
+			 , COMPANY_ID = #{company_id}
+			 , COMPANY_ID1 = #{company_id1}
+			 , YEAR = #{year}
+			 , COMP_NM = #{company_id}
+		 WHERE SEQ_NO = CAST(#{seq_no} AS INTEGER) 			
+	</update>
+
+	<update id="deleteSystemUse" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_PART 
+		WHERE SEQ_NO = CAST(#{seq_no} AS INTEGER)
+	</update>
+</mapper> 
