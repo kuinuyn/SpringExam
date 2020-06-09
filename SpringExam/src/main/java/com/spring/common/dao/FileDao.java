@@ -20,8 +20,24 @@ public class FileDao {
 		return sqlSession.selectList(NAMESPACE+".getFilesList", vo);
 	}
 	
+	public FilesVO getFiles(FilesVO vo) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".getFilesList", vo);
+	}
+	
+	public int getFileNo(FilesVO vo) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".getFileNo", vo);
+	}
+	
 	public int deleteFiles(FilesVO vo) throws Exception {
 		return sqlSession.update(NAMESPACE+".deleteFiles", vo);
+	}
+	
+	public int updateFiles(FilesVO vo) throws Exception {
+		return sqlSession.update(NAMESPACE+".updateFiles", vo);
+	}
+	
+	public int deleteFile(FilesVO vo) throws Exception {
+		return sqlSession.update(NAMESPACE+".deleteFile", vo);
 	}
 	
 	public int insertFiles(FilesVO vo) throws Exception {

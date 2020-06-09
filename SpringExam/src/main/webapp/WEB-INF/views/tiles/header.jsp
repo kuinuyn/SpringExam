@@ -206,6 +206,7 @@ function chkSession() {
 				<li><a href="/complaint/complaintList">민원처리결과조회</a></li>
 			</ul>
 			
+<<<<<<< HEAD
 			<!-- 기본정보관리소메뉴-->
 			<ul class="smenu03 " >
 				<li><a href="/equipment/securityLightList">보안등관리</a></li>
@@ -225,6 +226,58 @@ function chkSession() {
 				<li><a href="#">자재관리</a></li>
 				<li><a href="#" >자재입/출고관리</a></li>
 			</ul>
+=======
+			<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+				<!-- 기본정보관리소메뉴-->
+				<ul class="smenu03 " >
+					<li><a href="/equipment/securityLightList">보안등관리</a></li>
+					<li><a href="/equipment/streetLightList">가로등관리</a></li>
+					<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
+					<li><a href="/equipment/gisLightList">GIS관리</a></li>
+					<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
+					<li><a href="/system/systemMemberList">사용자관리</a></li>
+				</ul>
+				
+				<!-- 보수이력관리 -->
+				<ul class="smenu04 " >
+					<li><a href="/repair/systemRepairList">보수이력관리</a></li>
+					<li><a href="#" >신설현황</a></li>
+					<li><a href="#">이설현황</a></li>
+					<li><a href="#" >철거현황</a></li>
+					<li><a href="/repair/systemMaterialList">자재관리</a></li>
+					<li><a href="#" >자재입/출고관리</a></li>
+				</ul>
+	
+				<!-- 보수내역관리 -->
+				<ul class="smenu05 " >
+					<li><a href="/company/companyRepair">보수내역입력</a></li>
+					<li><a href="/company/companyInfo" >정보변경</a></li>
+				</ul>
+				
+				<!-- 이용안내 -->
+				<ul class="smenu07 " >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+			</sec:authorize>
+				
+			<sec:authorize access="hasAnyRole('ROLE_USER')">
+				<!-- 보수내역관리 -->
+				<ul class="smenu04" >
+					<li><a href="/company/companyRepair">보수내역입력</a></li>
+					<li><a href="/company/companyInfo" >정보변경</a></li>
+				</ul>
+				
+				<!-- 이용안내 -->
+				<ul class="smenu05" >
+					<li><a href="#">서비스 안내</a></li>
+					<li><a href="#">자료실</a></li>
+					<li><a href="#" >공지사항</a></li>
+				</ul>
+				
+			</sec:authorize>
+>>>>>>> branch '20200527_kh2' of https://github.com/kuinuyn/SpringExam.git
 
 			<!-- 보수내역관리 -->
 			<ul class="smenu05 " >

@@ -2,22 +2,31 @@
 <%@ include file="/WEB-INF/include/include-header.jspf"%>
 <script type="text/javascript">
 	var commonCd = ${MAXRESULT};
-
+	var materialList = null;
+	
 	$(function(){
 		var pageNo = "${param.current_page_no}";
 		var repairCd = "${param.repair_cd}";
 		var paramSDate = "${param.sDate}";
 		var paramEDate = "${param.eDate}";
 		
-	
-		
 		//drawCodeData(리스트, 코드타입, 태그이름, 태그ID, 모드, 현재선택코드)
 		drawCodeData(commonCd, "14", "select", "ALL", "", repairCd).then(function(resolvedData) {
 			$("#sch_repair_cd").empty();
 			$("#sch_repair_cd").append(resolvedData);
-			
-		})			
-		
+		})
+		.then(function() {
+			drawCodeData(commonCd, "03", "select", "", "", repairCd).then(function(resolvedData) {
+				$("#progress_status").empty();
+				$("#progress_status").append(resolvedData);
+			})
+		})
+		.then(function() {
+			drawCodeData(commonCd, "26", "select", "", "", repairCd).then(function(resolvedData) {
+				$("#repair_gubun").empty();
+				$("#repair_gubun").append(resolvedData);
+			})
+		})
 		.then(function() {
 			if(pageNo != "" && pageNo != null) {
 				Search(pageNo);
@@ -52,6 +61,7 @@
 		//$(".ui-datepicker-trigger").css("display", "none");
 		
 		$(".ui-datepicker-trigger").attr("style", "margin-left:4px; vertical-align:middle;");
+		
 	});
 	
 	function Search(currentPageNo) {
@@ -142,10 +152,6 @@
 	function getSearchDetailCallback(obj) {
 		var data = obj.resultData;
 		
-		var photo1 = "";
-		var photo2 = "";
-		var photo3 = "";
-				
 		if(data != null) {
 			var key, element, repairRst = "";
 			var repairList = {};
@@ -160,44 +166,147 @@
 					$("#"+key).val(data[key]);
 				}
 				
-				
 			}
 		}
 		
 		if(data['downLoadFiles'] != null && data['downLoadFiles'] != "") {
 			var downLoadFiles = data['downLoadFiles'];
 			var filePah = "";
-			alert("다운파일2341 : " + downLoadFiles.length+ 1);
+			
+			var str1 = "";
+			var str2 = "";
+			var str3 = "";
 			for(i = 0; i<downLoadFiles.length; i++) {
+				filePah = "/display?name="+downLoadFiles[i].file_name_key;
 				
-				filePah = downLoadFiles[i].file_path+"/"+downLoadFiles[i].file_name_key;
-				//$("#detail_slight").children().eq(i).children("img").attr("src", filePah)
+				$("#detail_slight"+(downLoadFiles[i].file_no-1)).attr("src", filePah)
+				if($("#photo1").val() == downLoadFiles[i].file_no) {
+					str1 = "<div><a href=/board/fileDownload?fileNameKey="+encodeURI( downLoadFiles[i].file_name_key) + "&fileName=" + encodeURI(downLoadFiles[i].file_name) + "&filePath="+encodeURI(downLoadFiles[i].file_path)+">"+ downLoadFiles[i].file_name +"</a>";
+					str1 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+downLoadFiles[i].file_no+", this,1)' /></div>";
+				}
 				
+				if($("#photo2").val() == downLoadFiles[i].file_no) {
+					str2 = "<div><a href=/board/fileDownload?fileNameKey="+encodeURI( downLoadFiles[i].file_name_key) + "&fileName=" + encodeURI(downLoadFiles[i].file_name) + "&filePath="+encodeURI(downLoadFiles[i].file_path)+">"+ downLoadFiles[i].file_name +"</a>";
+					str2 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+downLoadFiles[i].file_no+", this,2)' /></div>";
+				}
 				
-				//alert("#### : " +downLoadFiles[i].file_no);
+				if($("#photo3").val() == downLoadFiles[i].file_no) {
+					str3 = "<div><a href=/board/fileDownload?fileNameKey="+encodeURI( downLoadFiles[i].file_name_key) + "&fileName=" + encodeURI(downLoadFiles[i].file_name) + "&filePath="+encodeURI(downLoadFiles[i].file_path)+">"+ downLoadFiles[i].file_name +"</a>";
+					str3 += "<button class='btn black ml10 mr5' style='padding:3px 5px 6px 5px;' onclick='javascript:setDeleteFile(\""+$("#repairNo").val()+"\", "+downLoadFiles[i].file_no+", this,3)' /></div>";
+				}
 				
-				$("#detail_slight"+i).attr("src", filePah)
 			}
+			
+			if($("#photo1").val() == null || $("#photo1").val() == "") {
+				$("#detail_slight0").attr("src", "/resources/css/images/sub/slight_noimg.gif")
+				str1 = "<div><input type='file' id='files[1]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			}
+			
+			if($("#photo2").val() == null || $("#photo2").val() == "") {
+				$("#detail_slight1").attr("src", "/resources/css/images/sub/slight_noimg.gif")
+				str2 = "<div><input type='file' id='files[2]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			}
+			
+			if($("#photo3").val() == null || $("#photo3").val() == "") {
+				$("#detail_slight2").attr("src", "/resources/css/images/sub/slight_noimg.gif")
+				str3 = "<div><input type='file' id='files[3]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			}
+			
+			if($("#detail_slight").find("img").eq(0).parent().find("div").length > 0) {
+				$("#detail_slight").find("img").eq(0).parent().find("div").empty();
+			}
+			if($("#detail_slight").find("img").eq(1).parent().find("div").length > 0) {
+				$("#detail_slight").find("img").eq(1).parent().find("div").empty();
+			}
+			if($("#detail_slight").find("img").eq(2).parent().find("div").length > 0) {
+				$("#detail_slight").find("img").eq(2).parent().find("div").empty();
+			}
+			
+			$("#detail_slight").find("img").eq(0).parent().append(str1);
+			$("#detail_slight").find("img").eq(1).parent().append(str2);
+			$("#detail_slight").find("img").eq(2).parent().append(str3);
 		}
 		else {
-			alert("3");
-			for(i = 0; i<$("#detail_slight").children().size(); i++) {
-				$("#detail_slight").children().eq(i).children("img").attr("src", "/resources/css/images/sub/slight_noimg.gif");
+			str1 = "<input type='file' id='files[1]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
+			str2 = "<input type='file' id='files[2]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
+			str3 = "<input type='file' id='files[3]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'>";
+			for(i = 0; i<$("#detail_slight").find("img").size(); i++) {
+				$("#detail_slight").find("img").eq(i).parent().find("div").empty();
+				$("#detail_slight").find("img").eq(i).attr("src", "/resources/css/images/sub/slight_noimg.gif");
+				$("#detail_slight").find("img").eq(i).parent().append("<div><input type='file' id='files["+(i+1)+"]' name='files' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>");
 			}
+			
 		}
 		
+		var materiaUsedList = null;
+		$("#tdPartCd").empty();
 		
+		if(data['materialList'] != null && data['materialList'] != "") {
+			materialList = data['materialList'];
+			
+			if(data['materiaUsedList'] != null && data['materiaUsedList'] != "") {
+				materiaUsedList = data['materiaUsedList'];
+				var options = "";
+				var partCd = "";
+				var dataCd = "";
+				var dataCdNm = "";
+				var removeIdx = 0;
+				
+				messageTag = "<span class='red01'>※사용부품 삭제 시 0개를 입력하시면 됩니다.</span>";
+				$("#tdPartCd").append(messageTag);
+				for(i=0; i<materiaUsedList.length; i++) {
+					partCd = materiaUsedList[i].part_cd;
+					
+					options = "<option value=''>자재선택</option>";
+					selectTag = "<p><span><select id='part_cd_"+i+"' name='part_cd_"+i+"' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+					for(j=0; j<materialList.length; j++) {
+						dataCd = materialList[j].data_code;
+						dataCdNm = materialList[j].data_code_name;
+						if(dataCd != partCd) {
+							options += "<option value='"+dataCd+"'>"+dataCdNm+"</option>"
+						}
+						else {
+							removeIdx = j;
+							options += "<option value='"+dataCd+"' selected>"+dataCdNm+"</option>"
+						}
+					}
+					selectTag += options+"</select></span>";
+					selectTag += "<span class=''><input type='text' id='part_cnt_"+i+"' name='part_cnt_"+i+"' class='tbox10' placeholder='0' value='"+materiaUsedList[i].inout_cnt+"'>개</span></p>";
+					
+					$("#tdPartCd").append(selectTag);
+					
+					materialList.splice(removeIdx, 1);
+				}
+				
+				if(materiaUsedList.length < 10) {
+					options = "<option value=''>자재선택</option>";
+					selectTag = "<p><span><select id='part_cd_"+materiaUsedList.length+"' name='part_cd_"+materiaUsedList.length+"' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+					for(j=0; j<materialList.length; j++) {
+						options += "<option value='"+materialList[j].data_code+"'>"+materialList[j].data_code_name+"</option>"
+					}
+					selectTag += options+"</select></span>";
+					selectTag += "<span class=''><input type='text' id='part_cnt_"+materiaUsedList.length+"' name='part_cnt_"+materiaUsedList.length+"' class='tbox10' placeholder='0'>개</span></p>";
+				
+					$("#tdPartCd").append(selectTag);
+				}
+			}
+			else if(materiaUsedList == null) {
+				options = "<option value=''>자재선택</option>";
+				selectTag = "<p><span><select id='part_cd_0' name='part_cd_0' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+				for(j=0; j<materialList.length; j++) {
+					options += "<option value='"+materialList[j].data_code+"'>"+materialList[j].data_code_name+"</option>"
+				}
+				selectTag += options+"</select></span>";
+				selectTag += "<span class=''><input type='text' id='part_cnt_0' name='part_cnt_0' class='tbox10' placeholder='0'>개</span></p>";
+			
+				$("#tdPartCd").append(messageTag+selectTag);
+			}
+		}
 		
 		modalPopupCallback( function() {
 			modal_popup2('messagePop2');
 		});
 		
-		
-		
-			
-		
-		
-			
 	}
 	
 	function modalPopupCallback(fnNm) {
@@ -219,17 +328,15 @@
 		f.submit();
 	}
 	
-	function onDisplay(val)
-	{
+	function onDisplay(val) {
 			
 		if(val == "" ||val == "0" || val=="1" || val=="3" || val=="5") {
 
 			$("#sch_where2").hide();
 			$("#sch_where3").show();
 			
-		} else if (val=="4") {
-
-
+		}
+		else if (val=="4") {
 			$("#sch_where2").show();
 			$("#sch_where3").hide();
 			
@@ -239,37 +346,259 @@
 				
 			})
 			
-		}else if (val=="6") {
-
-			
+		}
+		else if (val=="6") {
 			$("#sch_where2").show();
 			$("#sch_where3").hide();
 			
 			drawCodeData(commonCd, "06", "select", "ALL", "", "").then(function(resolvedData) {
 				$("#sch_where2").empty();
 				$("#sch_where2").append(resolvedData);
-				
-				
-				
-			})
-		}else if(val=="2") {			
+			});
+		}
+		else if(val=="2") {			
 			$("#sch_where2").show();
 			$("#sch_where3").hide();
 			
 			$("#sch_where2").empty();
 		}
 			
-		
 	}
 	
-	function goToMod() {
+	/* function goToMod() {
 		var frm = document.slightForm;
 		frm.action = '/company/companyRepairMod';
 		frm.method ="post";
 		frm.submit();
-	};
+	}; */
 	
+	function setDeleteFile(boardSeq, fileSeq, element,Seq) {
+		var deleteFile = $("#delete_file").val();
+		if(deleteFile != null && deleteFile != "") {
+			deleteFile += "|"+boardSeq+"!"+fileSeq;
+		}
+		else {
+			deleteFile += boardSeq+"!"+fileSeq;
+		}
+		$("#delete_file").val(deleteFile);
+		$(element).parent().empty();
+		//$(element).prev().remove();
+		//$(element).remove();
+		
+		var fileStr = "";
+		
+		if(Seq == "1") {
+			fileStr = "<div><input type='file' id='files[1]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			$("#photo1").val('');
+		}
+		
+		if(Seq == "2" ) {
+			fileStr = "<div><input type='file' id='files[2]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			$("#photo2").val('');
+		}
+		
+		if(Seq == "3") {
+			fileStr = "<div><input type='file' id='files[3]' name='files' value='' accept='image/gif, image/jpeg, image/png' onchange='javascript:fnFile(this)'></div>";
+			$("#photo3").val('');
+		}
+		
+		$("#detail_slight").find("img").parent().eq(Seq-1).append(fileStr);
+		$("#detail_slight").find("img").eq(Seq-1).attr("src", "/resources/css/images/sub/slight_noimg.gif");
+	}
+	
+	function fnFile(element) {
 
+		var fileCnt = $("input[name=files]").length;
+		
+		var key = "";
+		for(i = 1; i <= fileCnt; i++) {
+			key = "files["+i+"]";
+			if($(element).attr("id") == key) {
+				$("#photo"+i).val(i);
+			}
+		}
+		
+		fileTypeCheck(element);
+	}
+	
+	function fileTypeCheck(obj) {
+		pathpoint = obj.value.lastIndexOf('.');
+		
+		filepoint = obj.value.substring(pathpoint+1,obj.length);
+		filetype = filepoint.toLowerCase();
+		if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg' || filetype=='bmp') {
+			// 정상적인 이미지 확장자 파일인 경우
+		} else {
+			alert('이미지 파일만 업로드 가능합니다.');
+			obj.value = '';
+			return false;
+		}
+	}
+	
+	function Save() {
+		if($("#progress_status").val() == "" && $("#progress_status").val() == null) {
+			alert("진행상황을 선택하세요.");
+			return;
+		}
+		
+		var yn = confirm("보수내역 정보를 수정하시겠습니까?");
+		if(yn){
+			$("#slightDetailForm").ajaxForm({
+				url : "/company/updateCompanyRepair"
+				, enctype : "multipart/form-data"
+				, cache : false
+				, async : true
+				, type	: "POST"
+				, beforeSubmit : function(data, form, option) {
+					var partCdIdx = "";
+					var removeIdx = new Array();
+					var partCdArr = new Array();
+					var partCntArr = new Array();
+					for(var idx in data) {
+						
+						if(data[idx].name.indexOf("part_cnt_") > -1) {
+							partCdIdx = data[idx].name.substring("part_cnt_".length, data[idx].name.length);
+							
+							if($("#part_cd_"+partCdIdx).val() != null && $("#part_cd_"+partCdIdx).val() != "") {
+								if(data[idx].value == null || data[idx].value == "") {
+									alert("사용부품을 입력하세요.");
+									$("#"+data[idx].name).focus();
+									return false;
+								}
+								else {
+									removeIdx.push(parseInt(idx)-1);
+									removeIdx.push(parseInt(idx));
+									partCdArr.push($("#part_cd_"+partCdIdx).val());
+									partCntArr.push(parseInt(data[idx].value));
+								}
+							}
+							else {
+								data.splice(parseInt(idx-1), 1);
+								data.splice(parseInt(idx-1), 1);
+							}
+						}
+					}
+					
+					var idx = 0;
+					for(var i=0; i<removeIdx.length; i++) {
+						idx = parseInt(removeIdx[i])-i;
+						
+						data.splice(idx, 1);
+					}
+					
+					data.push({"name" : "part_cd", "value" : partCdArr});
+					data.push({"name" : "part_cnt", "value" : partCntArr});
+				}
+				, success : function(obj) {
+					updateCompanyRepairCallback(obj);
+				}
+				, error 	: function(xhr, status, error) {}
+			}).submit();
+		}
+	}
+	
+	function updateCompanyRepairCallback(obj) {
+		if(obj != null) {
+			if(obj.resultCnt > -1) {
+				alert("수정을 성공하였습니다.");
+				$('.modal-popup2 .bg').trigger("click");
+				Search();
+			}
+			else {
+				alert("수정을 실패하였습니다.");	
+				return;
+			}
+		}
+	}
+
+	function focusPartCd(ele){
+	    $(ele).data('val', $(ele).val());
+	    $(ele).data('text', $(ele).children("option:selected").text());
+	};
+
+	function changePartCd(ele){
+		var current = $(ele).val();
+		var idx = $("#tdPartCd").find("p").size();
+		var eleSelect = null;
+		
+		if(idx > 0 && idx < 10) {
+			var eleId = $(ele).attr("id");
+			var element = "part_cd_"+idx;
+			
+			for(var i=0; i<materialList.length; i++) {
+				if(materialList[i].data_code == current) {
+					materialList.splice(i, 1);
+					break;
+				}
+			}
+			
+			if(idx < 2 || eleId == "part_cd_"+(idx-1)) {
+				var selectTag = "<p><span><select id='"+element+"' name='"+element+"' class='sel04' onchange='changePartCd(this)' onfocus='focusPartCd(this)'>";
+				var options = "<option value=''>자재선택</option>";
+				var dataCd = "";
+				var dataCdNm = "";
+				for(i=0; i<materialList.length; i++) {
+					dataCd = materialList[i].data_code;
+					dataCdNm = materialList[i].data_code_name;
+					options += "<option value='"+dataCd+"'>"+dataCdNm+"</option>"
+				}
+				selectTag += options+"</select></span>";
+				selectTag += "<span class=''><input type='text' id='part_cnt_"+idx+"' name='part_cnt_"+idx+"' class='tbox10' placeholder='0'>개</span></p>";
+				$("#tdPartCd").append(selectTag);
+				
+				eleSelect = $("#tdPartCd").find("select");
+				for(i=0; i<idx; i++) {
+					if($("#tdPartCd").find("select").eq(i).attr("id") != eleId) {
+						eleSelect.eq(i).children("option[value="+current+"]").remove();
+					}
+				}
+			}
+			else {
+				var prevVal = $(ele).data('val');
+				var prevText = $(ele).data('text');
+				var jsonAdd = null;
+				eleSelect = $("#tdPartCd").find("select");
+				$(ele).parent().next().find("input[type=text]").val('')
+				
+				for(i=0; i<idx; i++) {
+					if(prevVal != "" && prevVal != null) {
+						if($("#tdPartCd").find("select").eq(i).attr("id") != eleId) {
+							if(eleSelect.eq(i).children("option[value="+prevVal+"]").size() < 1) {
+								eleSelect.eq(i).append("<option value='"+prevVal+"'>"+prevText+"</option> ");
+							}
+								
+							if(current != null && current != "") {
+								eleSelect.eq(i).children("option[value="+current+"]").remove();
+							}
+						}
+						else {
+							jsonAdd = {"data_code" : prevVal, "data_code_name" : prevText};
+						}
+					}
+					else {
+						if($("#tdPartCd").find("select").eq(i).attr("id") != eleId) {
+							eleSelect.eq(i).children("option[value="+current+"]").remove();
+						}
+					}
+				}
+				
+				var cnt = 0;
+				if(jsonAdd != null) {
+					for(i=0; i<materialList.length; i++) {
+						if(materialList[i].data_code == jsonAdd.data_code) {
+							cnt++;
+						}
+					}
+
+					if(cnt < 1) {
+						materialList.push(jsonAdd);
+					}
+				}
+				
+			}
+			
+		}
+	};
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -378,162 +707,177 @@
 
 <!--결과조회 상세 Popup-->
 <form id="slightDetailForm" name="slightDetailForm" method="post" action="">
-<div class="modal-popup2">
-	<div class="bg"></div>
-	<div id="messagePop2" class="pop-layer">
-		<div class="pop-container">
-			<div class="pop-conts">
-				<div class="btn-r">
-					<a href="#" class="cbtn"><i class="fa fa-times " aria-hidden="true"></i><span class="hide">Close</span></a>
-				</div>
-				<div class="pop_detail2 ">
-					<h3>보수내역 상세조회</h3>
-					<div id="board_view">
-						<!-- 텍스트컬러- 고장신고-blue 고장상태-red -->
-						<table summary="보수내역현황목록" cellpadding="0" cellspacing="0">
-							<colgroup>
-								<col width="14%">
-								<col width="36%">
-								<col width="14%">
-								<col width="36%">
-							</colgroup>
-							<tbody>
-							<tr>
-							</tr>
-							<tr>
-									<th>관리번호</th>
-									<td colspan="3"><span id="det_light_no"></span></td>
-								</tr>
-								<tr>
-									<th>주소</th>
-									<td colspan="3"><span id="det_location"></span></td>
-								</tr>
-								
-								<tr>
-								<th>지지방식</th>
-								<td><span id="det_stand_cd_nm"></span></td>
-								<th>등기구 형태</th>
-								<td><span id="det_lamp1_cd_etc"></span></td>
-								</tr>
-								
-								<tr>
-								<th>광원종류</th>
-								<td><span id="det_lamp2_cd_nm"></span></td>
-								<th>꽝원용량</th>
-								<td><span id="det_lamp3_cd_nm"></span></td>
-								</tr>
-								
-								<tr>
-								<th>점 멸 기</th>
-								<td colspan="3"><span id="det_onoff_cd_nm"></span></td>
-								</tr>
-								
-								<tr>
-								<th>신고구분</th>
-								<td><span id="det_repair_nm"></span></td>
-								<th>작업구분</th>
-								<td><span id="det_repair_gubun_nm"></span></td>
-								</tr>
-								
-								<tr>
-								<th>고장상태</th>
-								<td><span id="det_trouble_nm"></span></td>
-								<th>상태설명</th>
-								<td><span id="det_trouble_detail"></span></td>
-								</tr>
-								
-								<tr>
-								<th>접 수 일</th>
-								<td><span id="det_repair_date"></span></td>
-								<th>작업지시일</th>
-								<td><span id="det_modify_date"></span></td>
-								</tr>
-								
-								<tr>
-								<th>보 수 일</th>
-								<td><span id="det_last_update"></span></td>
-								<th>처리상황</th>
-								<td><span id="det_remark"></span></td>
-								</tr>
-								
-								<tr>
-								<th>신 고 인</th>
-								<td><span id="det_notice_name"></span></td>
-								<th>전화번호</th>
-								<td><span id="det_phone"></span></td>
-								</tr>
-								
-								<tr>
-								<th>이 메 일</th>
-								<td><span id="det_email"></span></td>
-								<th>휴대폰번호</th>
-								<td><span id="det_mobile"></span></td>
-								</tr>
-								
-								<tr>
-								<th>처리결과 회신</th>
-								<td><span id="det_inform_nm"></span></td>
-								<th>공사업자</th>
-								<td><span id="det_com_name"></span></td>
-								</tr>
-								
-								<tr>
-								<th>작업지시사항</th>
-								<td colspan="3"><span id="det_remark_etc"></span></td>
-								</tr>
-								<tr>
-								<th>비고</th>
-								<td colspan="3"><span id="det_repair_bigo"></span> </td>
-								</tr>
-								
-								
-								
-								<tr>
-									<th>진행상황</th>
-									<td colspan="3"><span id="det_progress_status_nm"> </span>	</td>
-								</tr>
-								
-								<tr>
-								<th>보수내역</th>
-								<td colspan="3"><span id="det_repair_desc"> </span></td>
-								</tr>
-								
-								
-																
-								
-							</tbody>
-						</table>
-						<table id = "detail_slight">
-						<colgroup>
-								<col width="14%">
-								<col width="86%">
-							</colgroup>
-						<tbody >
-							<tr>
-							<th>보수전사진</th>
-							<td><img id = "detail_slight0" src="/resources/css/images/sub/slight_noimg.gif" width="250" height="200"></td>
-							</tr>
-							<tr>
-							<th>보수중사진</th>
-							<td><img id = "detail_slight1" src="/resources/css/images/sub/slight_noimg.gif" width="250" height="200"></td>
-							</tr>
-							<tr>
-							<th>보수후사진</th>
-							<td><img id = "detail_slight2" src="/resources/css/images/sub/slight_noimg.gif" width="250" height="200"></td>
-							</tr>						
-					</tbody>
-						</table>
-					<div id="btn">
-						<p>
-						<span><a href="#"  class="btn_gray02">닫기</a></span>
-						<span><a href="javascript:goToMod()"  class="btn_gray02">수정</a></span>
-						</p>
+	<input type="hidden" id="delete_file" name="delete_file" value=""/><!-- 삭제할 파일 -->
+	<input type="hidden" id="photo1" name="photo1" >
+	<input type="hidden" id="photo2" name="photo2" >
+	<input type="hidden" id="photo3" name="photo3" >
+	<input type="hidden" id="repair_date" name="repair_date" >
+	<input type="hidden" id="repair_no" name="repair_no" value="">
+	<div class="modal-popup2">
+		<div class="bg"></div>
+		<div id="messagePop2" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-conts">
+					<div class="btn-r">
+						<a href="#" class="cbtn"><i class="fa fa-times " aria-hidden="true"></i><span class="hide">Close</span></a>
+					</div>
+					<div class="pop_detail2 ">
+						<h3>보수내역 상세조회</h3>
+						<div id="board_view">
+							<!-- 텍스트컬러- 고장신고-blue 고장상태-red -->
+							<h4>민원신고내역</h4>
+							<table summary="보수내역현황목록" cellpadding="0" cellspacing="0">
+								<colgroup>
+									<col width="14%">
+									<col width="36%">
+									<col width="14%">
+									<col width="36%">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th>관리번호</th>
+										<td colspan="3"><span id="det_light_no"></span></td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td colspan="3"><span id="det_location"></span></td>
+									</tr>
+									<tr>
+										<th>지지방식</th>
+										<td><span id="det_stand_cd_nm"></span></td>
+										<th>등기구 형태</th>
+										<td><span id="det_lamp1_cd_etc"></span></td>
+									</tr>
+									<tr>
+										<th>광원종류</th>
+										<td><span id="det_lamp2_cd_nm"></span></td>
+										<th>꽝원용량</th>
+										<td><span id="det_lamp3_cd_nm"></span></td>
+									</tr>
+									<tr>
+										<th>점 멸 기</th>
+										<td colspan="3"><span id="det_onoff_cd_nm"></span></td>
+									</tr>
+									<tr>
+										<th>신고구분</th>
+										<td colspan="3"><span id="det_repair_nm"></span></td>
+									</tr>
+									<tr>
+										<th>고장상태</th>
+										<td><span id="det_trouble_nm"></span></td>
+										<th>상태설명</th>
+										<td><span id="det_trouble_detail"></span></td>
+									</tr>
+									<tr>
+										<th>접 수 일</th>
+										<td><span id="det_repair_date"></span></td>
+										<th>작업지시일</th>
+										<td><span id="det_modify_date"></span></td>
+									</tr>
+									<tr>
+										<th>보 수 일</th>
+										<td><span id="det_last_update"></span></td>
+										<th>처리상황</th>
+										<td><span id="det_remark"></span></td>
+									</tr>
+									<tr>
+										<th>신 고 인</th>
+										<td><span id="det_notice_name"></span></td>
+										<th>전화번호</th>
+										<td><span id="det_phone"></span></td>
+									</tr>
+									<tr>
+										<th>이 메 일</th>
+										<td><span id="det_email"></span></td>
+										<th>휴대폰번호</th>
+										<td><span id="det_mobile"></span></td>
+									</tr>
+									<tr>
+										<th>처리결과 회신</th>
+										<td><span id="det_inform_nm"></span></td>
+										<th>공사업자</th>
+										<td><span id="det_com_name"></span></td>
+									</tr>
+									<tr>
+										<th>작업지시사항</th>
+										<td colspan="3"><span id="det_remark_etc"></span></td>
+									</tr>
+									<tr>
+										<th>비고</th>
+										<td colspan="3"><span id="det_repair_bigo"></span> </td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="board_view">
+							<h4>보수내역입력</h4>
+							<table id = "detail_slight">
+								<colgroup>
+									<col width="14%">
+									<col width="86%">
+								</colgroup>
+								<tbody >
+									<tr>
+										<th>진행상황</th>
+										<td><!-- <span id="det_progress_status_nm"> </span>	 -->
+											<select id="progress_status" name="progress_status" class="sel04">
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>작업구분</th>
+										<td>
+											<select id="repair_gubun" name="repair_gubun" class="sel04">
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>사용부품</th>
+										<td id="tdPartCd">
+											<p>
+												<span>
+													<select id="part_cd_0" name="part_cd_0" class="sel04" onchange="changePartCd(this)" onfocus="focusPartCd(this)">
+													</select>
+												</span>
+												<span class=""><input type="text" id="part_cnt_0" name="part_cnt_0" class="tbox10" placeholder="0">개</span>
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<th>보수내역</th>
+										<td>
+										<!-- 
+											<span id="det_repair_desc"> </span> 
+										-->
+											<input type="text" id="repair_desc" name="repair_desc" class="tbox06">
+										</td>
+									</tr>
+									<tr>
+										<th>보수전사진</th>
+										<td><img id = "detail_slight0" src="/resources/css/images/sub/slight_noimg.gif" width="250" height="200"></td>
+									</tr>
+									<tr>
+										<th>보수중사진</th>
+										<td><img id = "detail_slight1" src="/resources/css/images/sub/slight_noimg.gif" width="250" height="200"></td>
+									</tr>
+									<tr>
+										<th>보수후사진</th>
+										<td><img id = "detail_slight2" src="/resources/css/images/sub/slight_noimg.gif" width="250" height="200"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="btn">
+							<p>
+								<span><a href="#"  class="btn_gray02">닫기</a></span>
+								<span><a href="javascript:Save()"  class="btn_gray02">수정</a></span>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </form>
 <!--//결과조회 상세 Popup-->
 

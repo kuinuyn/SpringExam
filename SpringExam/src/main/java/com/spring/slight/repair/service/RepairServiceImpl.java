@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.common.CommandMap;
 import com.spring.common.util.PagingUtil;
@@ -16,6 +17,16 @@ import com.spring.slight.repair.dao.RepairDao;
 public class RepairServiceImpl implements RepairService{
 	@Autowired
 	private RepairDao repairDao;
+	
+	@Override
+	public List<Map<String, Object>> getSystemRepairSearchCom() throws Exception {
+		return repairDao.getSystemRepairSearchCom();
+	}
+	
+	@Override
+	public List<Map<String, Object>> getSystemRepairSearchYear() throws Exception {
+		return repairDao.getSystemRepairSearchYear();
+	}	
 
 	@Override
 	public ResultUtil getSystemRepairList(CommandMap paramMap) throws Exception {
@@ -50,4 +61,29 @@ public class RepairServiceImpl implements RepairService{
 		return repairDao.getSystemRepairExcelList(paramMap);
 	}
 	
+	@Override
+	public int updateRepair(CommandMap paramMap) throws Exception {
+		int resultCnt = repairDao.updateRepair(paramMap);
+		int cnt = 0;
+		String saveFlag = (String) paramMap.get("saveFlag");
+		
+		if(resultCnt > 0) {
+			if("I".equals(saveFlag)) {
+				cnt = repairDao.insertRepairPart(paramMap);			
+			} else if("U".equals(saveFlag)){
+				cnt = repairDao.updateRepairPart(paramMap);			
+			} else {
+				cnt = repairDao.insertRepairPart(paramMap);			
+			}
+		}
+		
+		return resultCnt;
+	}
+
+	@Override
+	public int updateRepairCancel(CommandMap paramMap) throws Exception {
+		int resultCnt = repairDao.updateRepairCancel(paramMap);
+		
+		return resultCnt;
+	}
 }

@@ -47,30 +47,38 @@
 	<select id="getCompanyRepairCnt" resultType="int" parameterType="hashMap">
 		<![CDATA[
 			SELECT COUNT(*)
-			 from gy_light_repair a, gy_light_repair_part b 
-  where a.repair_no = b.repair_no 
-  and b.company_id = 'yang' 
-     and to_char(b.last_update, 'yyyy-mm-dd') between #{sDate} and #{eDate}    
+			FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
+			WHERE A.REPAIR_NO = B.REPAIR_NO 
+			AND B.COMPANY_ID = #{member_id}
+			AND TO_CHAR(b.last_update, 'yyyy-mm-dd') between #{sDate} and #{eDate}    
 		]]>
-			<if test="repair_cd != null and repair_cd != '' ">
-				AND A.REPAIR_CD = #{repair_cd}	
+			<if test="sch_repair_cd != null and sch_repair_cd != '' ">
+				AND A.REPAIR_CD = #{sch_repair_cd}	
+			</if>
+			<if test="sch_where1 == 1 ">
+				AND A.LIGHT_NO LIKE '%'|| #{sch_where3}	||'%'
+			</if>
+			<if test="sch_where1 == 5 ">
+				AND A.NOTICE_NAME LIKE '%'|| #{sch_where3}	||'%'
+			</if>
+			<if test="sch_where1 eq 4 ">
+				AND A.PROGRESS_STATUS LIKE '%'|| #{sch_where2}	||'%'
+			</if>
+			<if test="sch_where1 == 6 ">
+				AND A.DONG LIKE '%'|| #{sch_where2} ||'%'	
+			</if>
+			<if test="sch_where1 == 2 ">
+				AND A.LIGHT_NO LIKE '%'|| #{sch_where2} ||'%'	
 			</if>
 	</select>
 	
 	<select id="getCompanyRepairList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 			  SELECT A.REPAIR_NO
-			        , SUBSTR(A.REPAIR_NO,1,6)||'-'||SUBSTR(A.REPAIR_NO,9,2) AS REPAIR_NO2 
+			        , A.REPAIR_NO AS REPAIR_NO2
+			        --, SUBSTR(A.REPAIR_NO,1,6)||'-'||SUBSTR(A.REPAIR_NO,9,2) AS REPAIR_NO2
 			        , A.REPAIR_CD
-			        , CASE WHEN A.REPAIR_CD = '1' AND A.LIGHT_GUBUN = '1' THEN '보안등/불편신고'
-			               WHEN A.REPAIR_CD = '1' AND A.LIGHT_GUBUN = '2' THEN '가로등/불편신고'
-			               WHEN A.REPAIR_CD = '2' AND A.LIGHT_GUBUN = '1' THEN '보안등/신설요청'
-			               WHEN A.REPAIR_CD = '2' AND A.LIGHT_GUBUN = '2' THEN '가로등/신설요청'
-			               WHEN A.REPAIR_CD = '3' AND A.LIGHT_GUBUN = '1' THEN '보안등/이설요청'
-			               WHEN A.REPAIR_CD = '3' AND A.LIGHT_GUBUN = '2' THEN '가로등/이설요청'
-			               WHEN A.REPAIR_CD = '4' AND A.LIGHT_GUBUN = '1' THEN '보안등/철거요청'
-			               WHEN A.REPAIR_CD = '4' AND A.LIGHT_GUBUN = '2' THEN '가로등/철거요청'
-			               END  AS REPAIR_NAME
+			        , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS REPAIR_NAME 
 			        , A.PASSWORD
 			        , A.LIGHT_NO
 			        , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
@@ -93,14 +101,13 @@
 			        , TO_CHAR(A.MODIFY_DATE, 'YYYY.MM.DD') AS MODIFY_DATE
 			        , A.DONG
 			        , A.REMARK
-			        , (SELECT DATA_CODE_NAME FROM GY_CODE WHERE CODE_TYPE='03' AND A.PROGRESS_STATUS = DATA_CODE) AS PROGRESS_NAME
-			        , (SELECT DATA_CODE_NAME FROM GY_CODE WHERE CODE_TYPE='28' AND DATA_CODE = A.REMARK) AS REMARK_NAME
+			        , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS ) AS PROGRESS_NAME
 			        , A.LIGHT_GUBUN
 			        , SUBSTR(B.REPAIR_DATE,1,4)||'.'||SUBSTR(B.REPAIR_DATE,5,2)||'.'||SUBSTR(B.REPAIR_DATE,7,2)  AS REPAIR_DATE
-   FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
-  WHERE A.REPAIR_NO = B.REPAIR_NO 
-  AND B.COMPANY_ID = 'yang' 
-     AND TO_CHAR(B.LAST_UPDATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
+					FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
+					WHERE A.REPAIR_NO = B.REPAIR_NO 
+					AND B.COMPANY_ID = #{member_id}
+					AND TO_CHAR(B.LAST_UPDATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
 			]]>
 					<if test="sch_repair_cd != null and sch_repair_cd != '' ">
 						AND A.REPAIR_CD = #{sch_repair_cd}	
@@ -127,7 +134,6 @@
 	</select>
 	
 	
-	
 	<select id="getCompanyRepairDetail" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 	  	 SELECT A.REPAIR_NO
@@ -138,6 +144,7 @@
               , B.LOCATION
               , A.COMPANY_ID
               , B.REPAIR_GUBUN
+              , TO_CHAR(B.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
               , CASE WHEN B.REPAIR_GUBUN = '1' THEN '교체(변경)'
                      WHEN B.REPAIR_GUBUN = '2' THEN '이설'
                      WHEN B.REPAIR_GUBUN = '3' THEN '철거'
@@ -156,7 +163,7 @@
               , F_GY_DATA_CODE_NM('02',B.INFORM_METHOD ) AS INFORM_NM
               , B.MOBILE
               , B.EMAIL
-              , B.PROGRESS_STATUS               
+              , B.PROGRESS_STATUS
               , F_GY_DATA_CODE_NM('03',B.PROGRESS_STATUS ) AS PROGRESS_STATUS_NM
               , B.NOTICE_NAME
               , B.LIGHT_GUBUN
@@ -186,15 +193,7 @@
 	<select id="getCompanyRepairExcelList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
 				SELECT SUBSTR(A.REPAIR_NO,1,6)||'-'||SUBSTR(A.REPAIR_NO,9,2) AS  "접수번호"
-			        , CASE WHEN A.REPAIR_CD = '1' AND A.LIGHT_GUBUN = '1' THEN '보안등/불편신고'
-			               WHEN A.REPAIR_CD = '1' AND A.LIGHT_GUBUN = '2' THEN '가로등/불편신고'
-			               WHEN A.REPAIR_CD = '2' AND A.LIGHT_GUBUN = '1' THEN '보안등/신설요청'
-			               WHEN A.REPAIR_CD = '2' AND A.LIGHT_GUBUN = '2' THEN '가로등/신설요청'
-			               WHEN A.REPAIR_CD = '3' AND A.LIGHT_GUBUN = '1' THEN '보안등/이설요청'
-			               WHEN A.REPAIR_CD = '3' AND A.LIGHT_GUBUN = '2' THEN '가로등/이설요청'
-			               WHEN A.REPAIR_CD = '4' AND A.LIGHT_GUBUN = '1' THEN '보안등/철거요청'
-			               WHEN A.REPAIR_CD = '4' AND A.LIGHT_GUBUN = '2' THEN '가로등/철거요청'
-			               END  AS "민원종류"
+			        , F_GY_DATA_CODE_NM('14', REPAIR_CD)||'/'||F_GY_DATA_CODE_NM('13', LIGHT_GUBUN) AS "민원종류"
 			        , A.LIGHT_NO AS "관리번호"
 			        , A.NOTICE_NAME AS "신고인"
 			        , CASE WHEN INFORM_METHOD = '01'
@@ -207,13 +206,31 @@
 			        , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS "접수일"
 			        , SUBSTR(B.REPAIR_DATE,1,4)||'.'||SUBSTR(B.REPAIR_DATE,5,2)||'.'||SUBSTR(B.REPAIR_DATE,7,2)  AS "보수일"
 			        , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS "처리상황"
-   FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
-  WHERE A.REPAIR_NO = B.REPAIR_NO 
-  AND B.COMPANY_ID = 'yang' 
-     AND TO_CHAR(B.LAST_UPDATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
+					FROM GY_LIGHT_REPAIR A, GY_LIGHT_REPAIR_PART B 
+					WHERE A.REPAIR_NO = B.REPAIR_NO 
+					AND B.COMPANY_ID = #{member_id}
+					AND TO_CHAR(B.LAST_UPDATE, 'YYYY-MM-DD') BETWEEN #{sDate} and #{eDate}     
 			]]>
 					<if test="repair_cd != null and repair_cd != '' ">
 						AND A.REPAIR_CD = #{repair_cd}	
+					</if>
+					<if test="sch_repair_cd != null and sch_repair_cd != '' ">
+						AND A.REPAIR_CD = #{sch_repair_cd}	
+					</if>
+					<if test="sch_where1 == 1 ">
+						AND A.LIGHT_NO LIKE '%'|| #{sch_where3}	||'%'
+					</if>
+					<if test="sch_where1 == 5 ">
+						AND A.NOTICE_NAME LIKE '%'|| #{sch_where3}	||'%'
+					</if>
+					<if test="sch_where1 eq 4 ">
+						AND A.PROGRESS_STATUS LIKE '%'|| #{sch_where2}	||'%'
+					</if>
+					<if test="sch_where1 == 6 ">
+						AND A.DONG LIKE '%'|| #{sch_where2} ||'%'	
+					</if>
+					<if test="sch_where1 == 2 ">
+						AND A.LIGHT_NO LIKE '%'|| #{sch_where2} ||'%'	
 					</if>
 			<![CDATA[
 				ORDER BY A.REPAIR_NO
@@ -222,26 +239,117 @@
 	</select>
 	
 	
+	<select id="getMaterialList" parameterType="hashMap" resultType="hashMap">
+		SELECT DATA_CODE_NAME||'-'||STANDARD AS DATA_CODE_NAME
+						, DATA_CODE
+		FROM GY_CODE
+		WHERE
+			CODE_TYPE = '24' 
+			AND YEAR = TO_CHAR(TO_DATE(#{noticeDate}, 'YYYY'), 'YYYY') 
+			<!-- AND COMP_NM = #{companyId} -->
+			AND COMP_NM = 'upche1'
+		ORDER BY SUNBUN ASC
+	</select>
+	
+	
+	<select id="getMaterialUsedList" parameterType="hashMap" resultType="hashMap">
+		SELECT SEQ_NO
+						, PART_CD
+						, INOUT_CNT
+		FROM GY_LIGHT_PART
+		WHERE 1=1
+			<!-- AND COMP_NM = #{companyId} -->
+			<!-- AND COMPANY_ID = #{companyId} -->
+			AND COMPANY_ID = 'yang'
+			AND REPAIR_NO = #{repairNo}
+			AND INOUT_FLAG = '2'
+		ORDER BY SEQ_NO ASC
+	</select>
+	
+	
+	<select id="getMaterialUsedMap" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*) AS CNT
+						   , INOUT_DAY
+						   , SEQ_NO
+			FROM GY_LIGHT_PART
+			WHERE
+		]]>
+				REPAIR_NO = #{repair_no}
+				AND PART_CD = #{part_cd}
+				AND COMPANY_ID = #{company_id}
+				AND INOUT_FLAG = '2'
+		<![CDATA[
+			GROUP BY SEQ_NO, INOUT_DAY
+		]]>
+	</select>
+	
+	
 	<update id="updateCompanyRepair" parameterType="hashMap">
-		update gy_light_repair set
+		update gy_light_repair 
+		set
 			progress_status = #{progress_status}
-			, repair_gubun = #{repair_gubun}
+			<!-- , repair_gubun = #{repair_gubun} -->
 			, repair_bigo = #{repair_bigo}	
 		WHERE
-			repair_no = #{repairNo}
+			repair_no = #{repair_no}
 	</update>
 	
+	
 	<update id="updateCompanyRepairPart" parameterType="hashMap">
-		update gy_light_repair_part set
-			  repair_date = #{repair_date}
-			, repair_desc = #{repair_desc}
+		update gy_light_repair_part 
+		set
+			repair_desc = #{repair_desc}
 			, photo1 = #{photo1}
 			, photo2 = #{photo2}
 			, photo3 = #{photo3}
 			, last_update = now()
 		WHERE
-			repair_no = #{repairNo}
+			repair_no = #{repair_no}
 	</update>
 	
 	
+	<update id="updateMaterialUsed" parameterType="hashMap">
+		UPDATE GY_LIGHT_PART 
+		SET
+			INOUT_CNT = #{inout_cnt}
+			, LAST_UPDATE = now()
+		WHERE
+			SEQ_NO = #{seq_no}
+			AND INOUT_DAY = #{inout_day}
+			AND PART_CD = #{part_cd}
+			AND INOUT_FLAG = '2'
+			AND REPAIR_NO = #{repair_no}
+	</update>
+	
+	
+	<insert id="insertMaterialUsed" parameterType="hashMap">
+		<selectKey resultType="hashMap" keyProperty="seq_no,year,comp_nm" order="BEFORE">
+				SELECT nextval('gy_light_part_seq'::regclass) as "seq_no"
+								, year AS "year"
+								, comp_nm AS "comp_nm"
+				FROM GY_CODE
+				WHERE 1=1
+					   AND CODE_TYPE = '24'
+					   AND DATA_CODE = #{part_cd}
+					   <!-- 
+					   AND COMP_NM = #{company_id} 
+					   -->
+					   AND YEAR = TO_CHAR(TO_DATE(#{repair_date}, 'YYYYMMDD'), 'YYYY')
+		</selectKey>
+	
+		INSERT INTO GY_LIGHT_PART 
+		(SEQ_NO, INOUT_DAY, PART_CD, INOUT_FLAG, INOUT_CNT, LAST_UPDATE, REPAIR_NO, COMPANY_ID, YEAR, COMP_NM)
+		VALUES
+		(#{seq_no}, TO_CHAR(now(), 'YYYYMMDD'), #{part_cd}, '2', #{inout_cnt}, now(), #{repair_no}, #{company_id}, #{year}, #{comp_nm})
+	</insert>
+	
+	<delete id="deleteMaterialUsed" parameterType="hashMap">
+		DELETE FROM GY_LIGHT_PART
+		WHERE
+			SEQ_NO = #{seq_no}
+			AND INOUT_DAY = #{inout_day}
+			AND PART_CD = #{part_cd}
+			AND INOUT_FLAG = '2'
+	</delete>
 </mapper>

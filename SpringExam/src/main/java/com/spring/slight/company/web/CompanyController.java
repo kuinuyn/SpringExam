@@ -8,13 +8,11 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -57,7 +55,10 @@ public class CompanyController {
 	public ResultUtil getCompanyRepairList(HttpServletRequest request, CommandMap paramMap) {
 		ResultUtil result = new ResultUtil();
 		
-				try {
+		try {
+			CustomVO vo = (CustomVO) SecurityContextHolder.getContext().getAuthentication().getDetails();
+			paramMap.put("member_id", vo.getUserId());
+			
 			result = companyService.getCompanyRepairList(paramMap);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,11 +103,13 @@ public class CompanyController {
 	
 	
 	@RequestMapping(value="/updateCompanyRepair", method = RequestMethod.POST)
-	public ModelAndView updateCompanyRepair(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files) {
+	public ModelAndView updateCompanyRepair(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
 		try {
-			System.out.println("$$$$ : " + files);
+			
+			CustomVO vo = (CustomVO) SecurityContextHolder.getContext().getAuthentication().getDetails();
+			paramMap.put("company_id", vo.getUserId());
 			resultCnt = companyService.updateCompanyRepair(paramMap, files);
 			mv.addObject("resultCnt", resultCnt);
 		} catch (Exception e) {
@@ -127,6 +130,10 @@ public class CompanyController {
 		
 		String[] headerNm = request.getParameter("excelHeader").split(",");
 		FileDownloadUtil fileUtil = new FileDownloadUtil();
+		
+		CustomVO vo = (CustomVO) SecurityContextHolder.getContext().getAuthentication().getDetails();
+		paramMap.put("member_id", vo.getUserId());
+		
 		try {
 			List<Map<String, Object>> excelList = companyService.getCompanyRepairExcelList(paramMap);
 			SXSSFWorkbook workbook = fileUtil.makeSimpleExcelWorkbook(excelList, headerNm);
@@ -184,6 +191,9 @@ public class CompanyController {
 		int resultCnt = 0;
 		
 		try {
+			CustomVO vo = (CustomVO) SecurityContextHolder.getContext().getAuthentication().getDetails();
+			paramMap.put("member_id", vo.getUserId());
+			
 			resultCnt = companyService.updateCompanyInfo(paramMap);
 			mv.addObject("resultCnt", resultCnt);
 		}

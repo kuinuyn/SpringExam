@@ -26,7 +26,7 @@ public class PagingUtil {
 		}
 		
 		int totalFirstPage = 1; // 전체 페이지 중에 처음 페이지
-		int totalLastPage = totalPageCount; // 전체 페이지 중에 마지막 페이지
+		//int totalLastPage = totalPageCount; // 전체 페이지 중에 마지막 페이지
 		int prePerPage = 0; // 이전 화면에 첫번째 번호
 		if (viewFirstPage - countPerPage > 0) {
 			prePerPage = viewFirstPage - countPerPage;

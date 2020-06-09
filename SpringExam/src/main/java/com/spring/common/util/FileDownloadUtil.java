@@ -10,7 +10,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -37,7 +41,7 @@ public class FileDownloadUtil extends AbstractView{
 		response.setContentType(getContentType());
 		response.setContentLength((int) file.length());
 		
-		//ë¸Œë¼ìš°ì €, ìš´ì˜ì²´ì œì •ë³´
+		//ë¸Œë¼?š°??, ?š´?˜ì²´ì œ? •ë³?
 		String userAgent = request.getHeader("User-Agent");
 		
 		//IE
@@ -73,43 +77,55 @@ public class FileDownloadUtil extends AbstractView{
 	}
 	
 	/**
-	 * ì—‘ì…€ ì›Œí¬ë¶ ê°ì²´ë¡œ ìƒì„±
+	 * ?—‘?? ?›Œ?¬ë¶? ê°ì²´ë¡? ?ƒ?„±
 	 */
-	public SXSSFWorkbook makeSimpleExcelWorkbook(List<Map<String, Object>> list, String[] headerNm) {
+	@SuppressWarnings("unchecked")
+	public SXSSFWorkbook makeSimpleExcelWorkbook(List<?> list, String[] headerNm) {
 		SXSSFWorkbook workbook = new SXSSFWorkbook();
 		
-		//ì‹œíŠ¸ìƒì„±
+		//?‹œ?Š¸?ƒ?„±
 		SXSSFSheet sheet = workbook.createSheet();
+		CellStyle style = workbook.createCellStyle();
+		//?…Œ?‘ë¦? ?„  (?š°,ì¢?,?œ„,?•„?˜)
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderBottom(BorderStyle.THIN);
 		
-		//í–‰ ìƒì„±
+		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		
+		//?–‰ ?ƒ?„±
 		int row = 0;
-		Row headerRow = sheet.createRow(row);
+		Row headerRow = sheet.createRow(row++);
 		Cell headerCell = null;
 		
 		Row bodyRow = null;
 		Cell bodyCell = null;
 		String val = "";
+		for(int j=0; j<headerNm.length; j++) {
+			headerCell = headerRow.createCell(j);
+			headerCell.setCellValue(headerNm[j]);
+			headerCell.setCellStyle(style);
+		}
+		
+		style = workbook.createCellStyle();
+		//?…Œ?‘ë¦? ?„  (?š°,ì¢?,?œ„,?•„?˜)
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderBottom(BorderStyle.THIN);
+		
 		for(int i=0; i<list.size(); i++) {
-			row++;
 			for(int j=0; j<headerNm.length; j++) {
 				if(j == 0) {
-					bodyRow = sheet.createRow(row);
+					bodyRow = sheet.createRow(row++);
 				}
 				
-				if(i == 0) {
-					headerCell = headerRow.createCell(j);
-					headerCell.setCellValue(headerNm[j]);
-					
-					bodyCell = bodyRow.createCell(j);
-					val = String.valueOf(list.get(i).get(headerNm[j]));
-					bodyCell.setCellValue(val);
-				}
-				else {
-					
-					bodyCell = bodyRow.createCell(j);
-					val = String.valueOf(list.get(i).get(headerNm[j]));
-					bodyCell.setCellValue(val);
-				}
+				bodyCell = bodyRow.createCell(j);
+				val = String.valueOf(((Map<String, Object>) list.get(i)).get(headerNm[j]));
+				bodyCell.setCellValue(val);
+				bodyCell.setCellStyle(style);
 			}
 		}
 		

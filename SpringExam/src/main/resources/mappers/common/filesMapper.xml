@@ -14,17 +14,35 @@
 						, INS_USER_ID
 						, UPD_USER_ID
 		FROM GY_FILE_INFO
+		WHERE 1=1
+			<if test="seq != null and seq != '' ">
+				AND SEQ = #{seq}
+			</if>
+			<if test="file_name_key != null and file_name_key != '' ">
+				AND FILE_NAME_KEY = #{file_name_key}
+			</if>
+			AND DEL_YN = 'N'
+	</select>
+	
+	<select id="getFileNo" parameterType="com.spring.common.vo.FilesVO" resultType="int">
+		SELECT COUNT(*)
+		FROM GY_FILE_INFO
 		WHERE
 			SEQ = #{seq}
-			AND DEL_YN = 'N'
+			AND FILE_NO = #{file_no}
 	</select>
 	
 	<insert id="insertFiles" parameterType="com.spring.common.vo.FilesVO">
 		<selectKey resultType="int" keyProperty="file_no" order="BEFORE">
-			SELECT COALESCE(MAX(FILE_NO), 0)+1
-			FROM GY_FILE_INFO
-			WHERE
-				SEQ = #{seq}
+			<if test="file_no == null or file_no == '' ">
+				SELECT COALESCE(MAX(FILE_NO), 0)+1
+				FROM GY_FILE_INFO
+				WHERE
+					SEQ = #{seq}
+			</if>
+			<if test="file_no != null and file_no != '' ">
+				SELECT #{file_no}
+			</if>
 		</selectKey>
 		
 		INSERT INTO GY_FILE_INFO
@@ -56,6 +74,21 @@
 			, NOW()
 		)
 	</insert>
+	
+	<update id="updateFiles" parameterType="com.spring.common.vo.FilesVO">
+		UPDATE GY_FILE_INFO
+		SET
+			FILE_NAME_KEY = #{file_name_key}
+			, FILE_NAME = #{file_name}
+			, FILE_PATH = #{file_path}
+			, FILE_SIZE = #{file_size}
+			, DEL_YN = 'N'
+			, UPD_USER_ID = 'NOMEMBER'
+			, UPD_DATE = NOW()
+		WHERE
+			SEQ = #{seq}
+			AND FILE_NO = #{file_no}
+	</update>
 	
 	<update id="deleteFiles" parameterType="com.spring.common.vo.FilesVO">
 		UPDATE GY_FILE_INFO

@@ -1,5 +1,7 @@
 package com.spring.slight.company.service;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,11 +49,6 @@ public class CompanyServiceImpl implements CompanyService{
 		ResultUtil result = new ResultUtil();
 		int totalCount = companyDao.getCompanyRepairCnt(paramMap);
 		
-		System.out.println("@@@@sch_repair_cd : "+  (String) paramMap.get("sch_repair_cd"));
-		System.out.println("@@@@sch_where1 : "+  (String) paramMap.get("sch_where1"));
-		System.out.println("@@@@sch_where2 : "+  (String) paramMap.get("sch_where2"));
-		System.out.println("@@@@sch_where3 : "+  (String) paramMap.get("sch_where3"));
-		
 		if(totalCount > 0) {
 			paramMap.put("total_list_count", totalCount);
 			
@@ -75,29 +72,43 @@ public class CompanyServiceImpl implements CompanyService{
 		HashMap<String, Object> resultData = companyDao.getCompanyRepairDetail(paramMap);
 		FilesVO filesVo = new FilesVO();
 		filesVo.setSeq((String) paramMap.get("repairNo"));
-		System.out.println("!!!!! : " +paramMap.get("repairNo"));
 		List<FilesVO> filesList = fileDao.getFilesList(filesVo);
-		//List<Map<String, Object>> detRepirList = companyDao.getDetRepirList(paramMap);
-		if(filesList.size() > 0) {
-			resultData.put("downLoadFiles", filesList);
+		
+		if(resultData != null) {
+			String noticeDate = "";
+			String companyId = "";
+
+			noticeDate = (String) resultData.get("notice_date");
+			companyId = (String) resultData.get("company_id");
+			
+			paramMap.put("noticeDate", noticeDate);
+			paramMap.put("companyId", companyId);
+			List<Map<String, Object>> materiaList = companyDao.getMaterialList(paramMap);
+			List<Map<String, Object>> materiaUsedList = companyDao.getMaterialUsedList(paramMap);
+			
+			if(filesList.size() > 0) {
+				resultData.put("downLoadFiles", filesList);
+			}
+			
+			if(materiaList.size() > 0) {
+				resultData.put("materialList", materiaList);
+			}
+			
+			if(materiaUsedList.size() > 0) {
+				resultData.put("materiaUsedList", materiaUsedList);
+			}
 		}
-		//if(detRepirList.size() > 0) {
-			//resultData.put("detRepirList", detRepirList);
-		//}
 		
 		return resultData;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
 		
-	
 		int resultCnt = companyDao.updateCompanyRepair(paramMap);
 		
 		String deleteFile = (String) paramMap.get("delete_file");
-		
-		System.out.println("@@@@deleteFile : "+ deleteFile);
-		
 		
 		String[] deleteFileInfo = new String[3];
 		FilesVO filesVo = new FilesVO();
@@ -122,22 +133,96 @@ public class CompanyServiceImpl implements CompanyService{
 			}
 		}
 		
-		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("repairNo"));
+		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("repair_no"), "repair");
+		String photo1 = (String) paramMap.get("photo1");
+		String photo2 = (String) paramMap.get("photo2");
+		String photo3 = (String) paramMap.get("photo3");
 		
-		//FilesVO file1 = files.;
-		
-		
+		int cnt = 0;
 		for(FilesVO file : files) {
-			System.out.println("######## : " + file.getFile_name_key()  );
-			System.out.println("######## : " + file.getFile_path()  );
-			System.out.println("######## : " + file.getFile_name()  );
-			System.out.println("######## : " + file.getFile_no());
+			if(cnt > -1) {
+				if(!"".equals(photo1) && photo1 != null) {
+					file.setFile_no(Integer.parseInt(photo1));
+					photo1 = "";
+				}
+				else if(!"".equals(photo2) && photo2 != null) {
+					file.setFile_no(Integer.parseInt(photo2));
+					photo2 = "";
+				}
+				else if(!"".equals(photo3) && photo3 != null) {
+					file.setFile_no(Integer.parseInt(photo3));
+					photo3 = "";
+				}
+			}
+			else if(cnt > 0) {
+				if(!"".equals(photo2) && photo2 != null) {
+					file.setFile_no(Integer.parseInt(photo2));
+					photo2 = "";
+				}
+				else if(!"".equals(photo3) && photo3 != null) {
+					file.setFile_no(Integer.parseInt(photo3));
+					photo3 = "";
+				}
+			}
+			else if(cnt > 1) {
+				if(!"".equals(photo3) && photo3 != null) {
+					file.setFile_no(Integer.parseInt(photo3));
+					photo3 = "";
+				}
+			}
 			
-			fileDao.insertFiles(file);			
+			if(fileDao.getFileNo(file) > 0) {
+				fileDao.updateFiles(file);
+			}
+			else {
+				fileDao.insertFiles(file);
+			}
+			
+			cnt++;
 		}
 		
-		
 		int resultCnt2 = companyDao.updateCompanyRepairPart(paramMap);
+		
+		HashMap<String, Object> materialUsedMap = new HashMap<String, Object>();
+		
+		String partCd = (String) paramMap.get("part_cd");
+		String partCnt = (String) paramMap.get("part_cnt");
+		
+		if(partCd != null && !"".equals(partCd)) {
+			String[] partCds = partCd.split(",");
+			String[] partCnts = partCnt.split(",");
+			System.out.println(partCds.length+" -- "+partCnts.length);
+			
+			if(partCds.length > 0) {
+				for(int i=0; i<partCds.length; i++) {
+					
+					paramMap.put("part_cd", partCds[i]);
+					paramMap.put("inout_cnt", Integer.parseInt(partCnts[i]));
+					materialUsedMap = companyDao.getMaterialUsedMap(paramMap);
+					
+					if(Integer.parseInt(partCnts[i]) != 0) {
+						
+						if(materialUsedMap != null) {
+							paramMap.put("seq_no", materialUsedMap.get("seq_no"));
+							paramMap.put("inout_day", materialUsedMap.get("inout_day"));
+							
+							companyDao.updateMaterialUsed(paramMap);
+						}
+						else {
+							companyDao.insertMaterialUsed(paramMap);
+						}
+					}
+					else {
+						paramMap.put("seq_no", materialUsedMap.get("seq_no"));
+						paramMap.put("inout_day", materialUsedMap.get("inout_day"));
+						
+						companyDao.deleteMaterialUsed(paramMap);
+					}
+				}
+				
+			}
+		}
+		
 		return resultCnt;
 	}
 	
