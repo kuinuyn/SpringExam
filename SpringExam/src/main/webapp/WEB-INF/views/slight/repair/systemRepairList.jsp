@@ -136,12 +136,21 @@
 		});
 	});
 	
-	function Search(currentPageNo) {
+	function Search(currentPageNo, orderNm, order) {
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
 		}
 		
 		$("#current_page_no").val(currentPageNo);
+		
+		if(orderNm == undefined && order == undefined) {
+			$(".sortable").removeClass("order-asc");
+			$(".sortable").removeClass("order-desc")
+		}
+		else {
+			$("#orderNm").val(orderNm);
+			$("#order").val(order);
+		}
 		
 		$.ajax({
 			type : "POST"			
@@ -178,12 +187,11 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_no+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].light_gubun+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:goGisMap(\""+list[i].light_no+"\")'>"+list[i].light_no+"</a></span></td>";
-					//str += "	<td><span> <a href='javascript:modal_popup3(\"messagePop3\")'>"+list[i].light_no+"</a></span></td>";
-					str += "	<td><span> "+list[i].notice_name+" </span></td>";
-					str += "	<td><span> "+formatContactNumber(list[i].contact)+" </span></td>";
-					str += "	<td><span> "+list[i].notice_date+" </span></td>";
-					str += "	<td><span> "+list[i].repair_date+" </span></td>";
-					str += "	<td><span> "+list[i].repair_date_2+" </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].notice_name+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+formatContactNumber(list[i].contact)+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].notice_date+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_date+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_date_2+"</a> </span></td>";
 					str += "	<td style='text-align: center;'><span> "+list[i].progress_name+" </span></td>";	
 					btnFn = "getRepairDetail(\""+list[i].repair_no+"\", \"Process\" )";
 					if(list[i].progress_status == "01") {
@@ -242,6 +250,7 @@
 			slightDetailForm.repair_no.value = data['repair_no'];
 			slightDetailForm.lightNo.value = data['light_no'];
 			slightDetailForm.repair_date.value = data['repair_date'];
+			slightDetailForm.dong.value = data['dong'];
 			
 			$("#searchYear").trigger("change");
 		}
@@ -492,6 +501,7 @@
 	}
 	
 	function goToTrbList(lightNo, light_type, address, hj_dong_cd) {
+		
 		$("#light_no").val(lightNo);
 		$("#lightType").val(light_type);
 		$("#address").val(address);
@@ -558,7 +568,7 @@
 								temp.fadeOut();
 							}
 							
-							Search(); // goToList();
+							Search();
 						}
 						else {
 							alert("오류가 발생했습니다.");	
@@ -658,7 +668,7 @@
 			if(obj.resultCnt > -1) {
 				alert("저장되었습니다.");
 				$('.modal-popup2 .bg').trigger("click");
-				Search(); // goToList();
+				Search();
 			}
 			else if(obj.resultCnt == -1) { 
 				alert("수정을 실패하였습니다.");
@@ -696,7 +706,7 @@
 		if(obj != null) {
 			if(obj.resultCnt > -1) {
 				alert("작업지시 취소가 완료되었습니다.");
-				Search(); // goToList();
+				Search();
 			}
 			else {
 				alert("오류가 발생했습니다.");	
@@ -706,20 +716,17 @@
 		
 	}
 	
-	function goToList() {
-		var frm = document.slightForm;
-		frm.action = '/repair/getSystemRepairList';
-		frm.method ="post";
-		frm.submit();
-		//$("#slightForm").attr({action:'/equipment/securityLight'}).submit();
-	}	
-	
 	function searchCompany(st_yy, ele) {
+		var jsonParam = {"searchYear" : st_yy};
+		
+		if($("#dong").val() != null && $("#dong").val() != "") {
+			jsonParam = {"searchYear" : st_yy, "dong": $("#dong").val()};
+		}
 		
 		$.ajax({
 			type : "POST"			
 			, url : "/equipment/getCompanyId"
-			, data : {"searchYear" : st_yy}
+			, data : jsonParam
 			, dataType : "JSON"
 			, success : function(obj) {
 				var option = "<option value=''>시공업체</option>";
@@ -887,6 +894,7 @@
 			return false;
 		}
 	}
+	
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -925,6 +933,12 @@
 			<input type="hidden" id="excelHeader" name="excelHeader" value="" />
 			<input type="hidden" id="function_name" name="function_name" value="Search" />
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
+			<input type="hidden" id="light_no" name="light_no" value="" />
+			<input type="hidden" id="lightType" name="lightType" value="" />
+			<input type="hidden" id="address" name="address" value="" />
+			<input type="hidden" id="hj_dong_cd" name="hj_dong_cd" value="" />
+			<input type="hidden" id="order" name="order" value="" />
+			<input type="hidden" id="orderNm" name="orderNm" value="" />
 			<div id="search_box">
 				<ul>
 					<li class="title">등록일</li>
@@ -995,12 +1009,12 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>접수번호</th>
+						<th class="sortable" onclick="sortEvent(this)">접수번호</th>
 						<th>민원종류</th>
 						<th>관리번호</th>
 						<th>신고인</th>
 						<th>전화번호</th>
-						<th>접수일</th>
+						<th class="sortable" onclick="sortEvent(this)">접수일</th>
 						<th>지시일</th>
 						<th>보수일</th>
 						<th>처리상황</th>
@@ -1076,6 +1090,7 @@
 								<input type="hidden" name="repair_no" id="repair_no" value="">
 								<input type="hidden" name="lightNo" name="lightNo" value="">
 								<input type="hidden" name="repair_date" id="repair_date" value="">
+								<input type="hidden" name="dong" id="dong" value="">
 								<!--결과조회 상세 Popup-->
 								<input type="hidden" id="delete_file" name="delete_file" value=""/><!-- 삭제할 파일 -->
 								<input type="hidden" id="photo1" name="photo1" >

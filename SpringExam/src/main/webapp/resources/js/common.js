@@ -501,3 +501,59 @@ function isDate(str) {
 			document.loginForm.submit();
 		}
 	}
+	
+	/**
+	 * Sort Function
+	 **/
+	//default
+	var config = {
+		targetTable: "table.sortable",
+		cssAsc: "order-asc",
+		cssDesc: "order-desc",
+		cssBg: "sortable",
+		selectorHeaders: "thead th"
+	};
+	
+	function sortEvent(elem) {
+
+		var table = getTableElement(elem);
+		if (!table) {
+			return;
+		}
+		
+		var sortOrder = !elem.classList.contains(config.cssAsc) ? 1 : -1;
+		
+		removeTHClass(table);
+		setTHClass(elem, sortOrder, function() {
+			Search(1, $(elem).text(), sortOrder);
+		});
+	}
+	
+	function getTableElement(elem) {
+		var closest = function(th) {
+			var parent = th.parentNode;
+			if (parent.tagName.toUpperCase() === "TABLE") {
+				return parent;
+			}
+			return closest(parent);
+		};
+		return closest(elem);
+	}
+	
+	function removeTHClass(table) {
+		var tableElem = table.querySelectorAll(config.selectorHeaders);
+		Object.keys(tableElem).forEach(function(key) {
+			tableElem[key].classList.remove(config.cssDesc);
+			tableElem[key].classList.remove(config.cssAsc);
+		});
+	}
+		
+	function setTHClass(elem, sortOrder, callback) {
+		if (sortOrder == 1) {
+			elem.classList.add(config.cssAsc);
+		}else {
+			elem.classList.add(config.cssDesc);
+		}
+		
+		callback();
+	}

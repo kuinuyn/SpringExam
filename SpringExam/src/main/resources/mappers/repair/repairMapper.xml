@@ -39,7 +39,7 @@
 							   , COALESCE(TO_CHAR(TO_DATE(A.REPAIR_DATE, 'YYYY.MM.DD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE
 							   , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE_2
 							   , F_GY_DATA_CODE_NM('01', TROUBLE_CD) AS TROUBLE_NM
-							   , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS PROGRESS_NAME							   
+							   , F_GY_DATA_CODE_NM('03', PROGRESS_STATUS) AS PROGRESS_NAME
 							   , PROGRESS_STATUS
 					FROM GY_LIGHT_REPAIR A
 								LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B
@@ -53,9 +53,14 @@
 					<if test="light_gubun != null and light_gubun != '' ">
 						AND A.LIGHT_GUBUN = #{light_gubun}	
 					</if>
-					<if test="repair_cd != null and repair_cd != '' ">
-						AND A.REPAIR_CD = #{repair_cd}	
-					</if>
+					<choose>
+						<when test="repair_cd != null and repair_cd != '' ">
+							AND A.REPAIR_CD = #{repair_cd}	
+						</when>
+						<otherwise>
+							AND A.REPAIR_CD not in ('6', '7', '8')
+						</otherwise>
+					</choose>
 					<if test="searchType != null and searchType != '' ">
 						<choose>
 							<when test="searchType == 1">
@@ -72,8 +77,32 @@
 							</when>
 						</choose>
 					</if>
+				<choose>
+					<when test="orderNm.equals('repair_no')">
+						<choose>
+							<when test="order == 1">
+								ORDER BY A.REPAIR_NO ASC
+							</when>
+							<when test="order != 1">
+								ORDER BY A.REPAIR_NO DESC
+							</when>
+						</choose>
+					</when>
+					<when test="orderNm.equals('notice_date')">
+						<choose>
+							<when test="order == 1">
+								ORDER BY A.NOTICE_DATE ASC
+							</when>
+							<when test="order  != 1">
+								ORDER BY A.NOTICE_DATE DESC
+							</when>
+						</choose>
+					</when>
+					<otherwise>
+						ORDER BY A.REPAIR_NO DESC
+					</otherwise>
+				</choose>
 			<![CDATA[
-				ORDER BY A.REPAIR_NO DESC
 			) T1
 			LEFT OUTER JOIN GY_LIGHT_REPAIR_PART AS B  ON T1.REPAIR_NO = B.REPAIR_NO ) A
 			]]>			
@@ -132,6 +161,7 @@
 						   , F_GY_DATA_CODE_NM('13', (select onoff_cd from gy_light where light_no = a.light_no)) as onoff_cd_nm 
 						   , COALESCE((SELECT ETC FROM GY_LIGHT WHERE LIGHT_NO = A.LIGHT_NO),'') AS ETC 
 						   , COALESCE((SELECT LAMP1_CD_ETC FROM GY_LIGHT WHERE LIGHT_NO = A.LIGHT_NO),'') AS LAMP1_CD_ETC
+						   , DONG
 				FROM GY_LIGHT_REPAIR A 
 				LEFT OUTER JOIN GY_LIGHT_REPAIR_PART B 
 	          	ON A.REPAIR_NO = B.REPAIR_NO

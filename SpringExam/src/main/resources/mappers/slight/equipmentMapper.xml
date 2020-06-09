@@ -103,8 +103,22 @@
 							</when>
 						</choose>
 					</if>
+					<choose>
+						<when test="orderNm.equals('light_no')">
+							<choose>
+								<when test="order == 1">
+									ORDER BY LIGHT_NO ASC
+								</when>
+								<when test="order  != 1">
+									ORDER BY LIGHT_NO DESC
+								</when>
+							</choose>
+						</when>
+						<otherwise>
+							ORDER BY LIGHT_NO
+						</otherwise>
+					</choose>
 			<![CDATA[
-				ORDER BY LIGHT_NO
 			) T1
 			LIMIT #{limit} OFFSET #{offset}
 		]]>
@@ -403,6 +417,9 @@
 		]]>
 				<if test="searchYear != null and searchYear != '' ">
 					AND A.YEAR = #{searchYear}
+				</if>
+				<if test="dong != null and dong != '' ">
+					AND A.AREA LIKE '%'||#{dong}||'%'
 				</if>
 		<![CDATA[
 			ORDER BY A.MEMBER_ID DESC

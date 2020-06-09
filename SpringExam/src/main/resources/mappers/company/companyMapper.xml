@@ -124,10 +124,31 @@
 					<if test="sch_where1 == 2 ">
 						AND A.LIGHT_NO LIKE '%'|| #{sch_where2} ||'%'	
 					</if>
-			<![CDATA[
-				ORDER BY A.REPAIR_NO DESC
-			
-		]]>
+				<choose>
+					<when test="orderNm.equals('repair_no')">
+						<choose>
+							<when test="order == 1">
+								ORDER BY A.REPAIR_NO ASC
+							</when>
+							<when test="order != 1">
+								ORDER BY A.REPAIR_NO DESC
+							</when>
+						</choose>
+					</when>
+					<when test="orderNm.equals('notice_date')">
+						<choose>
+							<when test="order == 1">
+								ORDER BY A.NOTICE_DATE ASC
+							</when>
+							<when test="order  != 1">
+								ORDER BY A.NOTICE_DATE DESC
+							</when>
+						</choose>
+					</when>
+					<otherwise>
+						ORDER BY A.REPAIR_NO DESC
+					</otherwise>
+				</choose>
 	</select>
 	
 	

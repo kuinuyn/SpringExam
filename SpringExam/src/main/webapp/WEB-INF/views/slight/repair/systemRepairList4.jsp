@@ -130,12 +130,21 @@
 		});
 	});
 	
-	function Search(currentPageNo) {
+	function Search(currentPageNo, orderNm, order) {
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
 		}
 		
 		$("#current_page_no").val(currentPageNo);
+		
+		if(orderNm == undefined && order == undefined) {
+			$(".sortable").removeClass("order-asc");
+			$(".sortable").removeClass("order-desc")
+		}
+		else {
+			$("#orderNm").val(orderNm);
+			$("#order").val(order);
+		}
 		
 		$.ajax({
 			type : "POST"			
@@ -552,7 +561,7 @@
 								temp.fadeOut();
 							}
 							
-							Search(); // goToList();
+							Search();
 						}
 						else {
 							alert("오류가 발생했습니다.");	
@@ -652,7 +661,7 @@
 			if(obj.resultCnt > -1) {
 				alert("저장되었습니다.");
 				$('.modal-popup2 .bg').trigger("click");
-				Search(); // goToList();
+				Search();
 			}
 			else if(obj.resultCnt == -1) { 
 				alert("수정을 실패하였습니다.");
@@ -690,7 +699,7 @@
 		if(obj != null) {
 			if(obj.resultCnt > -1) {
 				alert("작업지시 취소가 완료되었습니다.");
-				Search(); // goToList();
+				Search();
 			}
 			else {
 				alert("오류가 발생했습니다.");	
@@ -699,14 +708,6 @@
 		}
 		
 	}
-	
-	function goToList() {
-		var frm = document.slightForm;
-		frm.action = '/repair/getSystemRepairList';
-		frm.method ="post";
-		frm.submit();
-		//$("#slightForm").attr({action:'/equipment/securityLight'}).submit();
-	}	
 	
 	function searchCompany(st_yy, ele) {
 		
@@ -919,6 +920,12 @@
 			<input type="hidden" id="excelHeader" name="excelHeader" value="" />
 			<input type="hidden" id="function_name" name="function_name" value="Search" />
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
+			<input type="hidden" id="light_no" name="light_no" value="" />
+			<input type="hidden" id="lightType" name="lightType" value="" />
+			<input type="hidden" id="address" name="address" value="" />
+			<input type="hidden" id="hj_dong_cd" name="hj_dong_cd" value="" />
+			<input type="hidden" id="order" name="order" value="" />
+			<input type="hidden" id="orderNm" name="orderNm" value="" />
 			<div id="search_box">
 				<ul>
 					<li class="title">등록일</li>
@@ -989,12 +996,12 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>접수번호</th>
+						<th class="sortable" onclick="sortEvent(this)">접수번호</th>
 						<th>민원종류</th>
 						<th>관리번호</th>
 						<th>신고인</th>
 						<th>전화번호</th>
-						<th>접수일</th>
+						<th class="sortable" onclick="sortEvent(this)">접수일</th>
 						<th>지시일</th>
 						<th>보수일</th>
 						<th>처리상황</th>

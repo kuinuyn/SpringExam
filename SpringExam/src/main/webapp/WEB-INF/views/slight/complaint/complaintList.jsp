@@ -110,7 +110,7 @@
 		$(".ui-datepicker-trigger").attr("style", "margin-left:4px; vertical-align:middle;");
 	});
 	
-	function Search(currentPageNo) {
+	function Search(currentPageNo, orderNm, order) {
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
 		}
@@ -131,6 +131,15 @@
 				$("#progress_status").focus();
 				return;
 			}
+		}
+		
+		if(orderNm == undefined && order == undefined) {
+			$(".sortable").removeClass("order-asc");
+			$(".sortable").removeClass("order-desc")
+		}
+		else {
+			$("#orderNm").val(orderNm);
+			$("#order").val(order);
 		}
 		
 		$.ajax({
@@ -315,6 +324,8 @@
 		<form id="slightForm" name="slightForm" method="post" action="">
 			<input type="hidden" id="function_name" name="function_name" value="Search" />
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
+			<input type="hidden" id="order" name="order" value="" />
+			<input type="hidden" id="orderNm" name="orderNm" value="" />
 			<div id="search_box">
 				<ul class="inform_num">
 					<li>
@@ -398,9 +409,9 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>접수번호</th>
+						<th class="sortable" onclick="sortEvent(this)">접수번호</th>
 						<th>신고구분</th>
-						<th>접수일</th>
+						<th class="sortable" onclick="sortEvent(this)">접수일</th>
 						<th>고장상태</th>
 						<th>관리번호</th>
 						<th>주소</th>

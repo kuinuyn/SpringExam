@@ -96,7 +96,7 @@
 		
 	});
 	
-	function Search(currentPageNo) {
+	function Search(currentPageNo, orderNm, order) {
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
 		}
@@ -714,38 +714,40 @@
 		<form id="slightForm" name="slightForm" method="post" action="">
 		<input type="hidden" id="excelHeader" name="excelHeader" value="" />
 		<input type="hidden" id="repairNo" name="repairNo" value="">
-			<input type="hidden" id="function_name" name="function_name" value="Search" />
-			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
-			<div id="search_box">
-				<ul>
-					<li class="title">접수일</li>
-					<li>
-						<input type="text" id="sDate" name="sDate" class="tbox02" readonly="readonly">
-						~ 
-						<input type="text" id="eDate" name="eDate" class="tbox02" readonly="readonly">
-					</li>
-					<li class="pdl10">
-						<select class="sel01" id="sch_repair_cd" name="sch_repair_cd">
-						</select>
-					</li>
-					<li>
-						<select class="sel01" id="sch_where1" name="sch_where1" onchange="onDisplay(this.value)">
-							<option value = "0">전체</option>
-							<option value = "5">신고인</option>
-							<option value = "1">관리번호</option>
-							<option value = "4">처리상황</option>
-							<option value = "6">동명</option>
-							<option value = "2">시공업체</option>
-						</select>
-					</li>
-					<li class="pdl10">
-						<select class="sel01" id="sch_where2" name="sch_where2"  >
-						</select>
-					</li>
-					<li><input type="text" id="sch_where3" name="sch_where3" class="tbox03"></li>
-					<li><a href="javascript:Search()"  class="btn_search01">검 색</a></li>
-				</ul>
-			</div>
+		<input type="hidden" id="function_name" name="function_name" value="Search" />
+		<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
+		<input type="hidden" id="order" name="order" value="" />
+		<input type="hidden" id="orderNm" name="orderNm" value="" />
+		<div id="search_box">
+			<ul>
+				<li class="title">접수일</li>
+				<li>
+					<input type="text" id="sDate" name="sDate" class="tbox02" readonly="readonly">
+					~ 
+					<input type="text" id="eDate" name="eDate" class="tbox02" readonly="readonly">
+				</li>
+				<li class="pdl10">
+					<select class="sel01" id="sch_repair_cd" name="sch_repair_cd">
+					</select>
+				</li>
+				<li>
+					<select class="sel01" id="sch_where1" name="sch_where1" onchange="onDisplay(this.value)">
+						<option value = "0">전체</option>
+						<option value = "5">신고인</option>
+						<option value = "1">관리번호</option>
+						<option value = "4">처리상황</option>
+						<option value = "6">동명</option>
+						<option value = "2">시공업체</option>
+					</select>
+				</li>
+				<li class="pdl10">
+					<select class="sel01" id="sch_where2" name="sch_where2"  >
+					</select>
+				</li>
+				<li><input type="text" id="sch_where3" name="sch_where3" class="tbox03"></li>
+				<li><a href="javascript:Search()"  class="btn_search01">검 색</a></li>
+			</ul>
+		</div>
 		</form>
 			<div id="toptxt">
 			<ul>
@@ -768,12 +770,12 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>접수번호</th>
+						<th class="sortable" onclick="sortEvent(this)">접수번호</th>
 						<th>민원종류</th>
 						<th>관리번호</th>
 						<th>신고인</th>
 						<th>전화번호</th>
-						<th>접수일</th>
+						<th class="sortable" onclick="sortEvent(this)">접수일</th>
 						<th>보수일</th>
 						<th>처리상황</th>
 					</tr>

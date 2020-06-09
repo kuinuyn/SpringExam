@@ -60,13 +60,7 @@ public class RepairController {
 		}
 		return "slight/repair/"+menu;
 	}	
-/*	
-	@RequestMapping(value="/systemRepairList")
-	public String systemRepairList(ModelMap map, HttpServletRequest request, HttpSession session) {
-		
-		return "slight/repair/systemRepairList";
-	}
-*/	
+
 	@RequestMapping(value="/getSystemRepairList")
 	@ResponseBody
 	public ResultUtil getSystemRepairList(HttpServletRequest reuqest, CommandMap paramMap) {

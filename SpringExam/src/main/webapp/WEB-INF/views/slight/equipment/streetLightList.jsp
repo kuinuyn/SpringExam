@@ -145,6 +145,8 @@
 			<input type="hidden" id="function_name" name="function_name" value="Search" />
 			<input type="hidden" id="excelHeader" name="excelHeader">
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
+			<input type="hidden" id="order" name="order" value="" />
+			<input type="hidden" id="orderNm" name="orderNm" value="" />
 			<!-- 지역선택box -->
 			<div id="area_box">
 				<table summary="가로등관리 지역목록"  cellpadding="0" cellspacing="0" >
@@ -214,7 +216,7 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>관리번호</th>
+						<th class="sortable" onclick="sortEvent(this)">관리번호</th>
 						<th>주소</th>
 						<th>도로명주소</th>
 						<th>지지방식</th>

@@ -407,12 +407,16 @@ color:#fff;background-color: #0577f0;font-weight:bold;float:left; border-radius:
 .pop_pw h3{ color:#222;font-size:17px; font-weight:bold;line-height:30px;float:left;margin:0 10px 0 30px;}
 .pop_pw p{padding-bottom:0px ; }
 
+thead th.sortable.order-asc {
+    background-image: url("../images/sortable/asc.png");
+}
+thead th.sortable.order-desc {
+    background-image: url("../images/sortable/desc.png");
+}
 
-
-
-
-
-
-
-
-
+thead th.sortable {
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+    background-image: url("../images/sortable/bg.png");
+}

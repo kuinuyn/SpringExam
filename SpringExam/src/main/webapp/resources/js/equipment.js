@@ -9,7 +9,7 @@ function searchArea(code) {
 		});
 	}
 	
-	function Search(currentPageNo) {
+	function Search(currentPageNo, orderNm, order) {
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
 		}
@@ -37,6 +37,15 @@ function searchArea(code) {
 				alert("검색조건을 선택하세요.");
 				return;
 			}
+		}
+		
+		if(orderNm == undefined && order == undefined) {
+			$(".sortable").removeClass("order-asc");
+			$(".sortable").removeClass("order-desc")
+		}
+		else {
+			$("#orderNm").val(orderNm);
+			$("#order").val(order);
 		}
 		
 		$.ajax({
@@ -269,3 +278,4 @@ function searchArea(code) {
 		f.excelHeader.value = headerArr;
 		f.submit();
 	}
+	
