@@ -314,7 +314,7 @@
 						}
 					}
 					selectTag += options+"</select></span>";
-					selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' style='ime-mode:disabled;' id='part_cnt_"+i+"' name='part_cnt_"+i+"' class='tbox10' placeholder='0' value='"+materiaUsedList[i].inout_cnt+"'>개</span></p>";
+					selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' oninput='maxLengthCheck(this)' style='ime-mode:disabled;' maxlength='10' id='part_cnt_"+i+"' name='part_cnt_"+i+"' class='tbox10' placeholder='0' value='"+materiaUsedList[i].inout_cnt+"'>개</span></p>";
 					
 					$("#tdPartCd").append(selectTag);
 					
@@ -328,7 +328,7 @@
 						options += "<option value='"+materialList[j].data_code+"'>"+materialList[j].data_code_name+"</option>"
 					}
 					selectTag += options+"</select></span>";
-					selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' style='ime-mode:disabled;' id='part_cnt_"+materiaUsedList.length+"' name='part_cnt_"+materiaUsedList.length+"' class='tbox10' placeholder='0'>개</span></p>";
+					selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' oninput='maxLengthCheck(this)' style='ime-mode:disabled;' maxlength='10' id='part_cnt_"+materiaUsedList.length+"' name='part_cnt_"+materiaUsedList.length+"' class='tbox10' placeholder='0'>개</span></p>";
 				
 					$("#tdPartCd").append(selectTag);
 				}
@@ -340,7 +340,7 @@
 					options += "<option value='"+materialList[j].data_code+"'>"+materialList[j].data_code_name+"</option>"
 				}
 				selectTag += options+"</select></span>";
-				selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' style='ime-mode:disabled;' id='part_cnt_0' name='part_cnt_0' class='tbox10' placeholder='0'>개</span></p>";
+				selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' oninput='maxLengthCheck(this)' style='ime-mode:disabled;' maxlength='10' id='part_cnt_0' name='part_cnt_0' class='tbox10' placeholder='0'>개</span></p>";
 			
 				$("#tdPartCd").append(messageTag+selectTag);
 			}
@@ -593,10 +593,16 @@
 		}
 	}
 	
-	function onlyNumber(obj) {
-		
+	function onlyNumber(obj) {		
 	     obj.value = obj.value.replace(/\D/g, '');
-	 };
+	      
+	 }
+	
+	function maxLengthCheck(obj){
+	    if (obj.value.length > obj.maxLength){
+	    	obj.value = obj.value.slice(0, obj.maxLength);
+	    }    
+	  }
 
 	function focusPartCd(ele){
 	    $(ele).data('val', $(ele).val());
@@ -630,7 +636,7 @@
 					options += "<option value='"+dataCd+"'>"+dataCdNm+"</option>"
 				}
 				selectTag += options+"</select></span>";
-				selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' style='ime-mode:disabled;' id='part_cnt_"+idx+"' name='part_cnt_"+idx+"' class='tbox10' placeholder='0'>개</span></p>";
+				selectTag += "<span class=''><input type='number' pattern='[0-9]*' onkeydown='onlyNumber(this)' oninput='maxLengthCheck(this)' style='ime-mode:disabled;' maxlength='10' id='part_cnt_"+idx+"' name='part_cnt_"+idx+"' class='tbox10' placeholder='0'>개</span></p>";
 				$("#tdPartCd").append(selectTag);
 				
 				eleSelect = $("#tdPartCd").find("select");
@@ -928,7 +934,7 @@
 													<select id="part_cd_0" name="part_cd_0" class="sel04" onchange="changePartCd(this)" onfocus="focusPartCd(this)">
 													</select>
 												</span>
-												<span class=""><input type="number" pattern="[0-9]*" onkeyup="onlyNumber(this)" style="ime-mode:disabled;" id="part_cnt_0" name="part_cnt_0" class="tbox10" placeholder="0" >개</span>
+												<span class=""><input type="number" pattern="[0-9]*" onkeydown="onlyNumber(this)" oninput="maxLengthCheck(this)" style="ime-mode:disabled;" maxlength="10" id="part_cnt_0" name="part_cnt_0" class="tbox10" placeholder="0" >개</span>
 											</p>
 										</td>
 									</tr>

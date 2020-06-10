@@ -276,6 +276,18 @@
 		}
 	}
 	
+	function onlyNumber(obj) {		
+	     obj.value = obj.value.replace(/\D/g, '');
+	      
+	 }
+	
+	function maxLengthCheck(obj){
+	    if (obj.value.length > obj.maxLength){
+	    	obj.value = obj.value.slice(0, obj.maxLength);
+	    }    
+	  }
+	
+	
 	function goToList() {
 		var frm = document.slightForm;
 		frm.action = '/repair/systemUseList';
@@ -470,17 +482,17 @@
 									</tr>
 									<tr>
 										<th>입출고일</th>
-										<td><input type="text" id="inout_day" name="inout_day" class="tbox02">
+										<td><input type="number" pattern="[0-9]*" onkeydown="onlyNumber(this)" oninput="maxLengthCheck(this)" style="ime-mode:disabled;" maxlength="8" id="inout_day" name="inout_day" class="tbox02" >
 										</td>
 									</tr>
 									<tr>	
 										<th>수량</th>
-										<td><span><input type="text" name="inout_cnt" id="inout_cnt" class="tbox07" value="">개</span>
+										<td><span><input type="number" pattern="[0-9]*" onkeydown="onlyNumber(this)" oninput="maxLengthCheck(this)" style="ime-mode:disabled;" maxlength="10" name="inout_cnt" id="inout_cnt" class="tbox07" value="">개</span>
 										</td>
 									</tr>
 									<tr>	
 										<th>비고</th>
-										<td><input type="text" id="bigo" name="bigo1" class="tbox04">
+										<td><input type="text" id="bigo" name="bigo1" class="tbox04" maxlength="100" >
 										</td>
 									</tr>
 									
