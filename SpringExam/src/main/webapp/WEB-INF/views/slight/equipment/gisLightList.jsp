@@ -425,7 +425,7 @@
 							</ul>
 							<ul>
 								<li class="gis_tit">관리번호</li>
-								<li><input type="text" id="light_no" name="light_no" class="tbox11"></li>
+								<li><input type="text" id="light_no" name="light_no" class="tbox11" maxlength="20"></li>
 							</ul>
 							<ul>
 								<li class="gis_tit">지역선택</li>
@@ -459,11 +459,11 @@
 							</ul> -->
 							<ul>
 								<li class="gis_tit">인입주번호</li>
-								<li><input type="text" name="pole_no" id="pole_no" class="tbox11"></li>
+								<li><input type="text" name="pole_no" id="pole_no" class="tbox11" maxlength="50" ></li>
 							</ul>
 							<ul>
 								<li class="gis_tit">고객번호</li>
-								<li><input type="text" name="kepco_cust_no" id="kepco_cust_no" class="tbox11"></li>
+								<li><input type="text" name="kepco_cust_no" id="kepco_cust_no" class="tbox11" maxlength="15" ></li>
 							</ul>
 							<ul>
 								<li class="gis_tit">계약전력</li>
@@ -474,7 +474,7 @@
 							</ul>
 							<ul>
 								<li class="gis_tit">사용량</li>
-								<li><input type="text" name="use_light" id="use_light" class="tbox11"></li>
+								<li><input type="text" name="use_light" id="use_light" class="tbox11" maxlength="10"></li>
 							</ul>
 							<!-- <ul>
 								<li class="gis_tit">사용량</li>
@@ -498,11 +498,11 @@
 							</ul>
 							<ul>
 								<li class="gis_tit">구주소</li>
-								<li><input type="text" name="address" id="address" class="tbox11"></li>
+								<li><input type="text" name="address" id="address" class="tbox11" maxlength="100"></li>
 							</ul>
 							<ul>
 								<li class="gis_tit">신주소</li>
-								<li><input type="text" name="new_address" id="new_address" class="tbox11"></li>
+								<li><input type="text" name="new_address" id="new_address" class="tbox11" maxlength="100"></li>
 							</ul>
 						</div>
 						<div id="sidebox_search" style="display: none;">

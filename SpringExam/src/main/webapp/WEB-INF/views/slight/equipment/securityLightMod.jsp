@@ -374,21 +374,21 @@
 						<tr>
 							<th>도엽번호</th>
 							<td>
-								<input id="doyep_no" name="doyep_no" value="" class="tbox03"/>
+								<input id="doyep_no" name="doyep_no" value="" class="tbox03" maxlength="15"/>
 							</td>
 							<th>공사번호</th>
 							<td>
-								<input id="bgs_no" name="bgs_no" value="" class="tbox03"/>
+								<input id="bgs_no" name="bgs_no" value="" class="tbox03" maxlength="20" />
 							</td>
 						</tr>
 						<tr>
 							<th>변대주</th>
 							<td>
-								<input id="bdj" name="bdj" value="" class="tbox03"/>
+								<input id="bdj" name="bdj" value="" class="tbox03" maxlength="50"/>
 							</td>
 							<th>인입주</th>
 							<td>
-								<input id="pole_no" name="pole_no" value="" class="tbox03"/>
+								<input id="pole_no" name="pole_no" value="" class="tbox03" maxlength="50" />
 							</td>
 						</tr>
 						<tr>
@@ -456,7 +456,7 @@
 						<tr>
 							<th>한전고객번호</th>
 							<td>
-								<input id="kepco_cust_no" name="kepco_cust_no" value="" class="tbox03"/>
+								<input id="kepco_cust_no" name="kepco_cust_no" value="" class="tbox03" maxlength="15" />
 							</td>
 							<th>한전계약전력</th>
 							<td>
@@ -478,19 +478,19 @@
 						<tr>
 							<th>사용량</th>
 							<td colspan="3">
-								<input id="use_light" name="use_light" value="" class="tbox03"/>
+								<input id="use_light" name="use_light" value="" class="tbox03" maxlength="10" />
 							</td>
 						</tr>
 						<tr>
 							<th>구주소</th>
 							<td colspan="3">
-								<input id="address" name="address" value="" class="tbox03"/>
+								<input id="address" name="address" value="" class="tbox03" maxlength="100"/>
 							</td>
 						</tr>
 						<tr>
 							<th>신주소</th>
 							<td colspan="3">
-								<input id="new_address" name="new_address" value="" class="tbox03"/>
+								<input id="new_address" name="new_address" value="" class="tbox03" maxlength="100"/>
 							</td>
 						</tr>
 						<tr>

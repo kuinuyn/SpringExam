@@ -67,10 +67,7 @@ public class SystemMemberServiceImpl implements SystemMemberService{
 	public int updateSystemMember(CommandMap paramMap) throws Exception {
 		int cnt = 0;
 		String saveFlag = (String) paramMap.get("saveFlag");
-		
-		if(!paramMap.get("password").equals(paramMap.get("passwordChk"))) {
-			return -2;
-		}
+				
 		
 		if("I".equals(saveFlag)) {
 			String chkIdFlag = "";

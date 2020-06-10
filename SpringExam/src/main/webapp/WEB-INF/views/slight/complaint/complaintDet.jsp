@@ -234,14 +234,14 @@
 						</tr>
 						<tr>
 							<th>신고인</th>
-							<td><input type="text" id="notice_name" name="notice_name" class="tbox03" value="${resultMap.notice_name }"></td>
+							<td><input type="text" id="notice_name" name="notice_name" class="tbox03" value="${resultMap.notice_name }" maxlength ="20" ></td>
 							<th>비밀번호</th>
-							<td><input type="password" id="password" name="password" class="tbox03" value="${resultMap.password }"></td>
+							<td><input type="password" id="password" name="password" class="tbox03" value="${resultMap.password }" maxlength ="8" ></td>
 						</tr>
 						<tr>
 							<th>주소</th>
 							<td id="addr" colspan="3">
-								<div style="margin-bottom: 5px;"><input type="text" class="tbox06" id="address" name="address" value="${resultMap.location }"></div>
+								<div style="margin-bottom: 5px;"><input type="text" class="tbox06" id="address" name="address" value="${resultMap.location }" maxlength ="100" ></div>
 							</td>
 						</tr>
 						<tr>
@@ -253,17 +253,17 @@
 						<tr>
 							<th>핸드폰</th>
 							<td>
-								<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.mobile }">
+								<input type="text" name="mobile" id="mobile" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.mobile }" maxlength ="13" >
 							</td>
 							<th>전화번호</th>
 							<td>
-								<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.phone }">
+								<input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${resultMap.phone }" maxlength ="13">
 							</td>
 						</tr>
 						<tr>
 							<th>이메일</th>
 							<td>
-								<input name="email" type="text" class="tbox03" id="email" size="35" value="${resultMap.email }">
+								<input name="email" type="text" class="tbox03" id="email" size="35" value="${resultMap.email }" maxlength ="40">
 							</td>
 							<th>고장상태</th>
 							<td>
@@ -275,7 +275,7 @@
 						</tr>
 						<tr>
 							<th>상태설명</th>
-							<td colspan="3"><textarea name="trouble_detail" id="trouble_detail" cols="55" rows="3">${resultMap.trouble_detail }</textarea></td>
+							<td colspan="3"><textarea name="trouble_detail" id="trouble_detail" cols="55" rows="3" maxlength ="500" >${resultMap.trouble_detail }</textarea></td>
 						</tr>
 						<tr>
 							<th>회신처리결과</th>

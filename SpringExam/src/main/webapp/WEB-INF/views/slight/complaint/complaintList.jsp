@@ -428,7 +428,7 @@
 				<div class="btn-r">
 					<a href="#" class="cbtn"><i class="fa fa-times " aria-hidden="true"></i><span class="hide">Close</span></a>
 				</div>
-				<div class="pop_detail ">
+				<div class="pop_detail2 ">
 					<h3>민원처리 상세조회</h3>
 					<div id="board_view">
 						<!-- 텍스트컬러- 고장신고-blue 고장상태-red -->

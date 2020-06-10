@@ -432,7 +432,7 @@ function popupClose() {
 								<tbody>
 								<tr>
 									<th>자재명</th>
-									<td colspan="3"><input id="data_code_name" name="data_code_name" value="" class="tbox07"/> </td>
+									<td colspan="3"><input id="data_code_name" name="data_code_name" value="" class="tbox07" maxlength="50"/> </td>
 								</tr>
 								
 								<tr>
@@ -446,12 +446,12 @@ function popupClose() {
 								
 								<tr>
 									<th>자재규격</th>
-									<td colspan="3"><input id="standard" name="standard" value="" class="tbox07" /> </td>
+									<td colspan="3"><input id="standard" name="standard" value="" class="tbox07" maxlength="200"/> </td>
 								</tr>
 								
 								<tr>
 									<th>자재단가</th>
-									<td colspan="3"><input id="danga" name="danga" value="" class="tbox07"/> </td>
+									<td colspan="3"><input id="danga" name="danga" value="" class="tbox07" maxlength="20" /> </td>
 								</tr>
 								
 								<tr>
@@ -465,7 +465,7 @@ function popupClose() {
 								
 								<tr>
 									<th>비고</th>
-									<td colspan="3"><input id="remarks" name="remarks" value="" class="tbox07"/> </td>
+									<td colspan="3"><input id="remarks" name="remarks" value="" class="tbox07" maxlength="100" /> </td>
 								</tr>
 								
 								

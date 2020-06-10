@@ -1106,7 +1106,7 @@
 										<tr>
 											<th>작업지시사항</th>
 											<td colspan="3">
-												<span><input type="text" name="remark_etc" id="remark_etc" class="tbox07_gray"></span>
+												<span><input type="text" name="remark_etc" id="remark_etc" class="tbox07_gray" maxlength="500"></span>
 												<span><a href="javascript:saveProcess()" class="btn_gray04">지시 </a></span>											
 											</td>
 										</tr>
