@@ -77,31 +77,33 @@
 							</when>
 						</choose>
 					</if>
-				<choose>
-					<when test="orderNm.equals('repair_no')">
+					<if test="orderNm != null and orderNm != ''">
 						<choose>
-							<when test="order == 1">
-								ORDER BY A.REPAIR_NO ASC
+							<when test="orderNm.equals('repair_no')">
+								<choose>
+									<when test="order == 1">
+										ORDER BY A.REPAIR_NO ASC
+									</when>
+									<when test="order != 1">
+										ORDER BY A.REPAIR_NO DESC
+									</when>
+								</choose>
 							</when>
-							<when test="order != 1">
+							<when test="orderNm.equals('notice_date')">
+								<choose>
+									<when test="order == 1">
+										ORDER BY A.NOTICE_DATE ASC
+									</when>
+									<when test="order  != 1">
+										ORDER BY A.NOTICE_DATE DESC
+									</when>
+								</choose>
+							</when>
+							<otherwise>
 								ORDER BY A.REPAIR_NO DESC
-							</when>
+							</otherwise>
 						</choose>
-					</when>
-					<when test="orderNm.equals('notice_date')">
-						<choose>
-							<when test="order == 1">
-								ORDER BY A.NOTICE_DATE ASC
-							</when>
-							<when test="order  != 1">
-								ORDER BY A.NOTICE_DATE DESC
-							</when>
-						</choose>
-					</when>
-					<otherwise>
-						ORDER BY A.REPAIR_NO DESC
-					</otherwise>
-				</choose>
+					</if>
 			<![CDATA[
 			) T1
 			LEFT OUTER JOIN GY_LIGHT_REPAIR_PART AS B  ON T1.REPAIR_NO = B.REPAIR_NO ) A
