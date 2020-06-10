@@ -238,13 +238,7 @@
 			alert("비밀번호를 입력하세요.");
 			return;
 		}
-		else {
-			if($("#password").val() != $("#passwordChk").val()) {
-				$("#passwordChk").focus();
-				alert("비밀번호를 확인하세요.");
-				return;
-			}
-		}
+		
 		
 		if($("#member_name").val() == "" || $("#member_name").val() == null) {
 			$("#member_name").focus();
@@ -468,7 +462,7 @@
 										<th>아이디</th>
 										<td>
 											<span>
-												<input type="text" name="member_id" id="member_id" class="tbox07_gray" placeholder="ID" readonly="readonly">
+												<input type="text" name="member_id" id="member_id" class="tbox07_gray" placeholder="ID" readonly="readonly" maxlength="20" >
 											</span>
 											<span id="chkBtn">
 												<a href="#"  class="btn_blue03" onclick="chkMemberId()">확인</a>
@@ -488,9 +482,7 @@
 									
 									<tr>
 										<th>비밀번호</th>
-										<td><span><input type="password" name="password" id="password" class="tbox07" placeholder="******"></span></td>
-										<th>비밀번호확인</th>
-										<td><span><input type="password" name="passwordChk" id="passwordChk" class="tbox07" value=""></span></td>
+										<td colspan="3"><span><input type="password" name="password" id="password" class="tbox07" placeholder="******" maxlength="20"></span></td>
 									</tr>
 									<tr>
 										<th>구분</th>
@@ -535,20 +527,20 @@
 									
 									<tr>
 										<th>부서(업체)명</th>
-										<td colspan="3"><span><input type="text" name="com_name" id="com_name" class="tbox07" value=""></span></td>
+										<td colspan="3"><span><input type="text" name="com_name" id="com_name" class="tbox07" value="" maxlength="50" ></span></td>
 									</tr>
 									
 									<tr>
 										<th>담당자</th>
-										<td><span><input type="text" name="member_name" id="member_name" class="tbox07" value=""></span></td>
+										<td><span><input type="text" name="member_name" id="member_name" class="tbox07" value="" maxlength="20"></span></td>
 										<th>이메일주소</th>
-										<td><span><input type="text" name="email" id="email" class="tbox07" value=""></span></td>
+										<td><span><input type="text" name="email" id="email" class="tbox07" value="" maxlength="40"></span></td>
 									</tr>
 									<tr>
 										<th>전화번호</th>
-										<td><span><input type="text" name="phone" id="phone" class="tbox07" value=""></span></td>
+										<td><span><input type="text" name="phone" id="phone" class="tbox07" value="" maxlength="11"></span></td>
 										<th>휴대폰번호</th>
-										<td><span><input type="text" name="mobile" id="mobile" class="tbox07" value=""></span></td>
+										<td><span><input type="text" name="mobile" id="mobile" class="tbox07" value="" maxlength="11"></span></td>
 									</tr>
 									<tr id="trArea" style="display: none;">
 										<th>담당지역</th>

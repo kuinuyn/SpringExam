@@ -229,9 +229,9 @@
 						
 						<tr>
 							<th>비밀번호</th>
-							<td><span><input type="password" id="password" name="password" class="tbox07" placeholder="******"></span></td>
+							<td><span><input type="password" id="password" name="password" class="tbox07" placeholder="******" maxlength="20" ></span></td>
 							<th>비밀번호확인</th>
-							<td><span><input type="password" id="passwordChk" name="passwordChk" class="tbox07" placeholder="******"></span></td>
+							<td><span><input type="password" id="passwordChk" name="passwordChk" class="tbox07" placeholder="******" maxlength="20" ></span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -249,21 +249,21 @@
 					<tbody>
 						
 						<tr>
-							<th>부서명</th>
-							<td colspan="3"><span><input type="text" id="com_name" name="com_name" class="tbox07" placeholder=""></span></td>
+							<th>부서(업체)명</th>
+							<td colspan="3"><span><input type="text" id="com_name" name="com_name" class="tbox07" placeholder="" maxlength="50" ></span></td>
 						</tr>
 						
 						<tr>
 							<th>담당자</th>
-							<td><span><input type="text" id="member_name" name="member_name" class="tbox07" placeholder=""></span></td>
+							<td><span><input type="text" id="member_name" name="member_name" class="tbox07" placeholder="" maxlength="20" ></span></td>
 							<th>이메일주소</th>
-							<td><span><input type="text" id="email" name="email" class="tbox07" placeholder=""></span></td>
+							<td><span><input type="text" id="email" name="email" class="tbox07" placeholder="" maxlength="40" ></span></td>
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><span><input type="text" id="phone" name="phone" class="tbox07" placeholder=""></span></td>
+							<td><span><input type="text" id="phone" name="phone" class="tbox07" placeholder="" maxlength="11"></span></td>
 							<th>휴대폰번호</th>
-							<td><span><input type="text" id="mobile" name="mobile" class="tbox07" placeholder=""></span></td>
+							<td><span><input type="text" id="mobile" name="mobile" class="tbox07" placeholder="" maxlength="11"></span></td>
 						</tr>
 						<tr id="trArea">
 							<th>담당지역</th>

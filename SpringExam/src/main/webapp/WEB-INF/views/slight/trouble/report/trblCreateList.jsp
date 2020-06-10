@@ -428,7 +428,7 @@
 						</tr>
 						<tr>
 							<th>신고인</th>
-							<td><input type="text" id="notice_name" name="notice_name" class="tbox03"></td>
+							<td><input type="text" id="notice_name" name="notice_name" class="tbox03" maxlength ="20" ></td>
 						</tr>
 						<tr>
 							<th>관리번호</th>
@@ -443,7 +443,7 @@
 						<tr>
 							<th>주소</th>
 							<td id="addr">
-								<div style="margin-bottom: 5px;"><input type="text" class="tbox06" id="address" name="address"></div>
+								<div style="margin-bottom: 5px;"><input type="text" class="tbox06" id="address" name="address" maxlength ="100" ></div>
 								<p class="gray02">※관리번호를 모르시고 GIS로도 못찾으실 경우 시설물 근처의 주소를 입력</p>
 							</td>
 						</tr>
@@ -453,17 +453,17 @@
 						</tr>
 						<tr>
 							<th>연락처</th>
-							<td><input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
+							<td><input type="text" name="phone" id="phone" class="tbox03" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength ="13" ></td>
 						</tr>
 						<tr>
 							<th height="28">이메일</th>
 							<td>
-								<input name="email" type="text" class="tbox03" id="email" size="35">
+								<input name="email" type="text" class="tbox03" id="email" size="35" maxlength ="40" >
 							</td>
 						</tr>
 						<tr>
 							<th>상태설명</th>
-							<td><textarea name="trouble_detail" id="trouble_detail" cols="55" rows="3"></textarea></td>
+							<td><textarea name="trouble_detail" id="trouble_detail" cols="55" rows="3" maxlength ="500" ></textarea></td>
 						</tr>
 						<tr>
 							<th>회신처리결과</th>
