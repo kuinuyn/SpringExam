@@ -17,15 +17,15 @@ public class SmsMsgUtil {
 		String progressStatus = (String) paramMap.get("progress_status");
 		
 		if("01".equals(progressStatus)) {
-			if(paramMap.get("cancelYn") != null && "".equals(paramMap.get("cancelYn"))) {
+			if(paramMap.get("cancelYn") == null || "".equals(paramMap.get("cancelYn"))) {
 				if("1".equals(paramMap.get("ligth_gubun"))) {
-					suffix = "보안등".concat("] 민원신고가 접수되었습니다.");
+					suffix = " - 보안등".concat("] 민원신고가 접수되었습니다.");
 				}
 				else if("2".equals(paramMap.get("ligth_gubun"))) {
-					suffix = "가로등".concat("] 민원신고가 접수되었습니다.");
+					suffix = " - 가로등".concat("] 민원신고가 접수되었습니다.");
 				}
 				else {
-					suffix = "분전함".concat("] 민원신고가 접수되었습니다.");
+					suffix = " - 분전함".concat("] 민원신고가 접수되었습니다.");
 				}
 			}
 			else {

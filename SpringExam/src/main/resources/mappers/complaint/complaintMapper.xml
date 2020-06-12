@@ -118,6 +118,9 @@
 							</otherwise>
 						</choose>
 					</if>
+					<if test="orderNm == null or orderNm == ''">
+						ORDER BY A.REPAIR_NO DESC
+					</if>
 			<![CDATA[
 			) T1
 			LIMIT #{limit} OFFSET #{offset}

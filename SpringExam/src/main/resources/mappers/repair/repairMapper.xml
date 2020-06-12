@@ -104,6 +104,9 @@
 							</otherwise>
 						</choose>
 					</if>
+					<if test="orderNm == null or orderNm == ''">
+						ORDER BY A.REPAIR_NO DESC
+					</if>
 			<![CDATA[
 			) T1
 			LEFT OUTER JOIN GY_LIGHT_REPAIR_PART AS B  ON T1.REPAIR_NO = B.REPAIR_NO ) A

@@ -78,10 +78,10 @@ function searchArea(code) {
 					str += "	<td><span><a href='javascript:goGisMap(\""+list[i].light_no+"\", \""+list[i].map_x_pos_gl+"\", \""+list[i].map_y_pos_gl+"\")'>"+list[i].light_no+"</a></span></td>";
 					str += "	<td><span><a href='javascript:getEquipmentDetail(\""+list[i].light_no+"\")'>"+((list[i].address.trim()=="" || list[i].address == null)?"":list[i].address)+"</a></span></td>";
 					str += "	<td><span><a href='javascript:getEquipmentDetail(\""+list[i].light_no+"\")'>"+list[i].new_address+"</a></span></td>";
-					str += "	<td><span>"+list[i].stand_nm+"</span> </td>";
-					str += "	<td><span>"+list[i].lamp2_nm+"</span> </td>";
-					str += "	<td><span>"+list[i].lamp3_nm+"</span> </td>";
-					str += "	<td><span>"+list[i].kepco_cust_no+"</span> </td>";
+					str += "	<td><span><a href='javascript:getEquipmentDetail(\""+list[i].light_no+"\")'>"+list[i].stand_nm+"</a></span> </td>";
+					str += "	<td><span><a href='javascript:getEquipmentDetail(\""+list[i].light_no+"\")'>"+list[i].lamp2_nm+"</a></span> </td>";
+					str += "	<td><span><a href='javascript:getEquipmentDetail(\""+list[i].light_no+"\")'>"+list[i].lamp3_nm+"</a></span> </td>";
+					str += "	<td><span><a href='javascript:getEquipmentDetail(\""+list[i].light_no+"\")'>"+list[i].kepco_cust_no+"</a></span> </td>";
 					str += "	<td><span><a href='javascript:excelDownload(\""+list[i].light_no+"\")' class='btn_more'>수리내역</a></span> </td>";
 					str += "</tr>";
 				}

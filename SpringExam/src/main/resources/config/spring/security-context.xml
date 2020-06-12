@@ -11,8 +11,6 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 	
 	<!-- resources 폴더 안에 있는 파일들은 security 대상이 아님 -->
-	<http pattern="/index.jsp" security="none" />
-	<http pattern="/upload/**" security="none" />
 	<http pattern="/resources/**" security="none" />
 	<http pattern="/common/**" security="none" />
 	<http pattern="/css/**" security="none" />
