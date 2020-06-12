@@ -66,6 +66,9 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/**"/>
+			<exclude-mapping path="/resources/**" />
+			<exclude-mapping path="/common/**" />
+			<exclude-mapping path="/upload/**" />
 			<beans:bean id="loggerInterceptor" class="com.spring.common.logger.LoggerInterceptor"></beans:bean>
 		</interceptor>
 	</interceptors>
