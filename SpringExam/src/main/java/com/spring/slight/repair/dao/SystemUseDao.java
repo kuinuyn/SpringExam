@@ -39,6 +39,10 @@ public class SystemUseDao {
 		return resultList;
 	}
 
+	public int getSystemUseViewCnt(CommandMap paramMap) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+".getSystemUseViewCnt", paramMap.getMap());
+	}
+	
 	public List<Map<String, Object>> getSystemUseView(CommandMap paramMap) throws Exception {
 		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getSystemUseView", paramMap.getMap());
 		return resultList;

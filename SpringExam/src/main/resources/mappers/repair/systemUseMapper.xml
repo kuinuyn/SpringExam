@@ -14,7 +14,7 @@
 
 	<select id="getSystemUseSearchCom" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-			SELECT YEAR, MEMBER_ID, COM_NAME 		
+			SELECT YEAR, MEMBER_ID AS DATA_CODE, COM_NAME AS DATA_CODE_NAME 		
 			FROM GY_MEMBER  
 			ORDER BY 
 				COM_NAME ASC 		
@@ -93,6 +93,23 @@
 		<![CDATA[         						   
 			 ORDER BY DATA_CODE ASC		
 		]]>
+	</select>
+
+	<select id="getSystemUseViewCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[	
+			SELECT count(*)					
+			FROM GY_LIGHT_PART 
+			WHERE 1 = 1
+			]]>			
+			<if test="searchPart != null and searchPart != '' ">			
+			  AND PART_CD = #{searchPart}
+			</if>         			
+			<if test="searchYear != null and searchYear != '' ">			
+			  AND YEAR = #{searchYear}
+			</if>			   
+			<if test="searchCom != null and searchCom != '' ">				
+			  AND COMP_NM = #{searchCom}
+			</if>
 	</select>
 
 	<select id="getSystemUseView" resultType="hashMap" parameterType="hashMap">

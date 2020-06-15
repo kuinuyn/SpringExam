@@ -58,7 +58,7 @@ public class SystemUseServiceImpl implements SystemUseService{
 	@Override
 	public ResultUtil getSystemUseView(CommandMap paramMap) throws Exception {
 		ResultUtil result = new ResultUtil();
-		int totalCount = systemUseDao.getSystemUseCnt(paramMap);
+		int totalCount = systemUseDao.getSystemUseViewCnt(paramMap);
 
 		if(totalCount > 0) {
 			paramMap.put("total_list_count", totalCount);

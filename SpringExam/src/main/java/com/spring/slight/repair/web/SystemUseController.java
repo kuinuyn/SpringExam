@@ -27,8 +27,7 @@ public class SystemUseController {
 	@RequestMapping("/systemUseList")
 	public String systemUseList (HttpServletRequest rquest, Model model) {
 		try {
-			model.addAttribute("searchYearList", systemUseService.getSystemUseSearchYear());
-			model.addAttribute("searchComList", systemUseService.getSystemUseSearchCom());			
+			model.addAttribute("searchYearList", systemUseService.getSystemUseSearchYear());			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,8 +50,7 @@ public class SystemUseController {
 	@RequestMapping("/systemUseView")
 	public String systemUseView (HttpServletRequest rquest, Model model) {
 		try {
-			model.addAttribute("searchYearList", systemUseService.getSystemUseSearchYear());
-			model.addAttribute("searchComList", systemUseService.getSystemUseSearchCom());				
+			model.addAttribute("searchYearList", systemUseService.getSystemUseSearchYear());				
 			model.addAttribute("searchPartList", systemUseService.getSystemUseSearchPart());			
 		} catch (Exception e) {
 			e.printStackTrace();

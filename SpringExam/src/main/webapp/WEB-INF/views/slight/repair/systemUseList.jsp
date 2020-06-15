@@ -3,16 +3,12 @@
 <script type="text/javascript">
 	var commonCd = ${MAXRESULT};
 	$(function(){	
-//		var searchYear = "${param.searchYear}";			
-		
-//		if(searchYear == "" ||searchYear == Null ){
-//			searchYear = today.getFullYear();
-//		}
-//		$("#searchYear").val("${param.searchYear}");
-		
+	
+		searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 		Search();
 		
-		$("#searchYear").change(function() {				
+		$("#searchYear").change(function() {		
+			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 			Search();
 		});
 		
@@ -93,6 +89,33 @@
 		frm.submit();
 		
 	}
+	
+	function searchCompany(st_yy, ele,sel) {
+		
+		$.ajax({
+			type : "POST"			
+			, url : "/equipment/getCompanyId"
+			, data : {"searchYear" : st_yy}
+			, dataType : "JSON"
+			, success : function(obj) {
+				var option = "<option value=''>선택</option>";
+				for(i=0; i<obj.resultData.length; i++) {
+					
+					if(obj.resultData[i].data_code == sel) {
+						option += "<option value='"+obj.resultData[i].data_code+"' selected>"+obj.resultData[i].data_code_name+"</option>";
+					}
+					else {
+						option += "<option value='"+obj.resultData[i].data_code+"'>"+obj.resultData[i].data_code_name+"</option>";
+					}
+				}
+				
+				$(ele).html(option);
+			}
+			, error : function(xhr, status, error) {
+				
+			}
+		});
+	}	
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -154,10 +177,6 @@
 					</li>
 					<li class="b_left">
 						<select id ="searchCom" name="searchCom" class="sel01">
-								<option value="">전체</option>
-							<c:forEach items="${searchComList}" var="company_id">
-								<option value="${company_id.member_id }">${company_id.com_name }</option>
-							</c:forEach>
 						</select>
 					</li>					
 				</ul>
