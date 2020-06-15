@@ -6,27 +6,56 @@
 	var year = "${param.year}";
 	var comp_nm = "${param.comp_nm}";
 	var company_id = "${param.company_id}";
-	var paramSDate = "${param.sDate}";		
 	
 //	alert("part_cd1111:::"+"${param.part_cd}");
 //	alert("company_id1111:::"+company_id);
 //	alert("company_id2222:::"+"${param.company_id}");
+
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		if(dd<10) {
+		    dd='0'+dd
+		} 
+
+		if(mm<10) {
+		    mm='0'+mm
+		}
+		
+		today = yyyy+mm+dd;
+		
+//		alert("today:::"+today);
 	
 	$(function(){		
 		
 //		if(year == "" ||year == Null ){
 //			year = today.getFullYear();
 //		}		
-						
 		$("#searchYear").val(year);
-		$("#searchCom").val(company_id);
+		$("#searchCom1").val(company_id);
+		alert("1111:::"+$("#searchYear").val());
+		alert("2222:::"+$("#searchCom1").val());
+		alert("3333:::"+company_id);		
+		
+		searchCompany($("#searchYear").val(), $("#searchCom"), company_id); 
+		$("#searchCom").val(company_id);		
+//		$("#searchCom option:selected").val(company_id);		
+//		alert("4444:::"+$("#searchCom option:selected").val());
+//		$("#searchCom option:selected").val(company_id);		
+		alert("5555:::"+$("#searchCom").val());
+		
+//		alert("#searchCom:::"+$("#searchCom option:selected").val());
 		$("#searchPart").val(part_cd);		
-//		alert("#searchCom:::"+$("#searchCom").val());		
-//		alert("#searchPart:::"+$("#searchPart").val());
-			
+//		alert("searchCom:::"+document.slightForm.searchCom.value);
 		getSystemUseView();
 		
-		$("#searchYear").change(function() {		
+		$("#searchYear").change(function() {
+			searchCompany($("#searchYear").val(), $("#searchCom"), company_id);
+			$("#searchCom option:selected").val(company_id);
+//			alert("#searchCom:::"+$("#searchCom option:selected").val());
+			
 			getSystemUseView();
 		});
 		
@@ -37,30 +66,7 @@
 		$("#searchPart").change(function() {
 			getSystemUseView();
 		});
-		
-		var today = new Date();
-		var sDate = (paramSDate == "" || paramSDate == null) ? new Date(today.getFullYear(), today.getMonth(), today.getDate()) : sDate;
-			
-		$("#sDate").datepicker({
-			showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시 
-			, maxDate : eDate
-			, dateFormat: 'yy-mm-dd'
-			, buttonImage : "/resources/css/images/icon/calendar.gif"
-		});
-		$('#sDate').datepicker('setDate', sDate);		
-		
-		$("#eDate").datepicker({
-			showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시 
-			, maxDate : eDate
-			, dateFormat: 'yy-mm-dd'
-			, buttonImage : "/resources/css/images/icon/calendar.gif"
-		});
-		$('#eDate').datepicker('setDate', eDate);
-		
-		//$(".ui-datepicker-trigger").css("display", "none");
-		
-		$(".ui-datepicker-trigger").attr("style", "margin-left:4px; vertical-align:middle;");		
-		
+					
 	});
 	
 	function getSystemUseView(currentPageNo) {
@@ -141,7 +147,7 @@
 			$("#saveFlag").val("I");
 			$("#company_id").val(company_id);
 			$("#part_cd").val(part_cd);
-			$("#inout_day").val("2020");
+			$("#inout_day").val(today);			
 			$("input[type=radio][name=inout_flag]").prop("checked", false);			
 			modal_popup2('messagePop2');
 			
@@ -287,6 +293,34 @@
 	function popupClose() {
 		
 		$('.modal-popup2').fadeOut();
+	}
+	
+	function searchCompany(st_yy, ele, sel) {
+//	alert("st_yy:::"+st_yy);
+//	alert("sel:::"+sel);
+		$.ajax({
+			type : "POST"			
+			, url : "/equipment/getCompanyId"
+			, data : {"searchYear" : st_yy}
+			, dataType : "JSON"
+			, success : function(obj) {
+				var option = "<option value=''>선택</option>";
+				for(i=0; i<obj.resultData.length; i++) {
+					
+					if(obj.resultData[i].data_code == sel) {
+						option += "<option value='"+obj.resultData[i].data_code+"' selected>"+obj.resultData[i].data_code_name+"</option>";
+					}
+					else {
+						option += "<option value='"+obj.resultData[i].data_code+"'>"+obj.resultData[i].data_code_name+"</option>";
+					}
+				}
+				
+				$(ele).html(option);
+			}
+			, error : function(xhr, status, error) {
+				
+			}
+		});
 	}	
 </script>
 <div id="container">
@@ -334,7 +368,8 @@
 		<form id="slightForm" name="slightForm" method="post" action="">
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />			
 			<input type="hidden" name="seq_no" value="" />
-			<input type="hidden" name="cmd" value="" />	
+			<input type="hidden" name="cmd" value="" />
+			<input type="hidden" id="searchCom1" name="searchCom1" value="" />
 			<div id="toptxt">
 				<ul>
 					<li class="b_left">
@@ -346,9 +381,6 @@
 					</li>
 					<li class="b_left">
 						<select id ="searchCom" name="searchCom" class="sel01">
-							<c:forEach items="${searchComList}" var="company_id">
-								<option value="${company_id.member_id }">${company_id.com_name }</option>
-							</c:forEach>
 						</select>
 					</li>
 					<li class="b_left">
@@ -443,7 +475,7 @@
 											<span>										
 											<select name="company_id" id="company_id" class="sel03">
 												<c:forEach items="${searchComList}" var="company_id">
-													<option value="${company_id.member_id }">${company_id.com_name }</option>
+													<option value="${company_id.data_code }">${company_id.data_code_name }</option>
 												</c:forEach>
 											</select>
 											</span>
@@ -453,7 +485,7 @@
 										<th>자재명/자재규격</th>
 										<td>
 											<span>
-											<select name="part_cd" id="part_cd" class="sel03">
+											<select name="part_cd" id="part_cd" class="sel02">
 												<c:forEach items="${searchPartList}" var="part_cd">
 													<option value="${part_cd.part_cd }">${part_cd.data_code_name }</option>
 												</c:forEach>
