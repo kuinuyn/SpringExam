@@ -1,0 +1,41 @@
+@charset"utf-8";
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,
+blockquote,pre,abbr,address,cite,code,del,dfn,em,img,
+ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,
+fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,
+article,aside,canvas,details,figcaption,figure,footer,header,hgroup,
+menu,nav,section,summary,time,mark,audio,video{margin:0; padding:0;}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {  display: block; }
+
+li { list-style-type:none; }
+img,fieldset,iframe{border:0;}
+img,fieldset,button { border:none; }
+img{ width:100%; max-width:100%; }
+li img, dd img , img{ vertical-align:middle; }
+input { vertical-align:middle; }
+hr{display:none;}
+a { text-decoration:none; color:#999; }
+a:hover { color:#666; }
+h1,h2,h3,h4,h5,h6 { font-size:100%; }
+address,strong{font-style:normal; font-weight:normal;}
+input:focus,select:focus {outline:none;}
+
+/*ios  form style reset*/
+input,button,textarea,select {border-radius:0; appearance:none; -webkit-appearance:none; -moz-appearance:none; }
+select{ background: url("../img/select_arrow.png") no-repeat 100% 50%; border: 1px solid #ddd; border-radius: 5px}
+
+input[type="radio"] { background:url("../img/radio_off.png") no-repeat center;background-size:17px 17px;width:17px; height:17px;margin-top:-3px; }
+input[type="radio"]:checked{ background:url("../img/radio_on.png") no-repeat center; background-size:17px 17px; width:17px; height:17px; margin-top:-3px; }
+input[type="radio"]:disabled{background:url("../img/radio_off.png") no-repeat center;background-size:17px 17px; width:17px; height:17px;margin-top:-3px; }
+
+
+
+@font-face{font-family:'NGothic'; src:url('../font/NanumGothic.woff') format('woff');}
+@font-face{font-family:'NGothicEB'; src:url('../font/NanumGothicExtraBold.woff') format('woff');}
+
+body { font:14px "NGothic",Gulim; background-color:#f2f4f4}
+
+#skip, .skip { font-size:0; width:0; height:0; line-height:0; position:absolute; left:-9999px; }
+#hide, .hide{display:none;}

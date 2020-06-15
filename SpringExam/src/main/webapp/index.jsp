@@ -7,7 +7,12 @@
 	<%@ include file="/WEB-INF/include/include-header.jspf"%>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			location.href="/main";
+			if("${pageContext.request.requestURI}".indexOf("mobile") > -1) {
+				location.href="index";
+			}
+			else {
+				location.href="/main";
+			}
 		});
 	</script>
 </head>
