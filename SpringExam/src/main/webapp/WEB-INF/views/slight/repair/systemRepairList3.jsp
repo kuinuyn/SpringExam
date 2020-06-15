@@ -182,11 +182,11 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].light_gubun+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:goGisMap(\""+list[i].light_no+"\")'>"+list[i].light_no+"</a></span></td>";
 					//str += "	<td><span> <a href='javascript:modal_popup3(\"messagePop3\")'>"+list[i].light_no+"</a></span></td>";
-					str += "	<td><span> "+list[i].notice_name+" </span></td>";
-					str += "	<td><span> "+formatContactNumber(list[i].contact)+" </span></td>";
-					str += "	<td><span> "+list[i].notice_date+" </span></td>";
-					str += "	<td><span> "+list[i].repair_date+" </span></td>";
-					str += "	<td><span> "+list[i].repair_date_2+" </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].notice_name+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+formatContactNumber(list[i].contact)+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].notice_date+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_date+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_date_2+"</a> </span></td>";
 					str += "	<td style='text-align: center;'><span> "+list[i].progress_name+" </span></td>";	
 					btnFn = "getRepairDetail(\""+list[i].repair_no+"\", \"Process\" )";
 					if(list[i].progress_status == "01") {
@@ -246,6 +246,7 @@
 			slightDetailForm.lightNo.value = data['light_no'];
 			slightDetailForm.repair_date.value = data['repair_date'];
 			
+			$("#remark_etc").val("");
 			$("#searchYear").trigger("change");
 		}
 		

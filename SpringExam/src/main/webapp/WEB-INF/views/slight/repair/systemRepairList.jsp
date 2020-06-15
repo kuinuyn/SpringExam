@@ -252,6 +252,7 @@
 			slightDetailForm.repair_date.value = data['repair_date'];
 			slightDetailForm.dong.value = data['dong'];
 			
+			$("#remark_etc").val("");
 			$("#searchYear").trigger("change");
 		}
 		

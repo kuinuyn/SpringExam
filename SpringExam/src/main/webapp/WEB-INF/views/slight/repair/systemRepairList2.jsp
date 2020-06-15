@@ -246,6 +246,7 @@
 			slightDetailForm.lightNo.value = data['light_no'];
 			slightDetailForm.repair_date.value = data['repair_date'];
 			
+			$("#remark_etc").val("");
 			$("#searchYear").trigger("change");
 		}
 		
