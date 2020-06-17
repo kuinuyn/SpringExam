@@ -364,7 +364,7 @@
 						   				THEN A.MOBILE
 						   				WHEN A.inform_method = '02'
 						   				THEN A.EMAIL
-						   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+						   				ELSE CASE WHEN COALESCE(A.MOBILE, '') = '' or A.MOBILE = null then A.PHONE ELSE A.MOBILE END
 						   	END, '') AS CONTACT
 						   , F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS PROGRESS_STATUS
 						   , COALESCE(C.MEMBER_NAME, '') AS MEMBER_NAME
