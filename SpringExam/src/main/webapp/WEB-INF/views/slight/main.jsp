@@ -447,25 +447,23 @@
 		<a href="javascript:goToComplaintList()" class="more">더보기</a>
 		<c:forEach items="${lastSummaryMap.complaintList }" var="complaintList">
 			<ul>
-				<a href="#" >
-					<li><span><c:out value="${complaintList.repair_no }"/></span>   </li>
-					<li><span><c:out value="${complaintList.light_gubun }"/></span>   </li>
-					<li><span><c:out value="${complaintList.notice_date }"/></span>   </li>
-					<c:choose>
-						<c:when test="${complaintList.progress_status eq '01'}">
-							<li><span class="orange01">신고접수</span></li>
-						</c:when>
-						<c:when test="${complaintList.progress_status eq '02'}">
-							<li><span class="red01">작업지시</span></li>
-						</c:when>
-						<c:when test="${complaintList.progress_status eq '03'}">
-							<li><span class="red01">처리중</span></li>
-						</c:when>
-						<c:when test="${complaintList.progress_status eq '04'}">
-							<li><span class="blue03">보수완료</span></li>
-						</c:when>
-					</c:choose>
-				</a>
+				<li><span><c:out value="${complaintList.repair_no }"/></span>   </li>
+				<li><span><c:out value="${complaintList.light_gubun }"/></span>   </li>
+				<li><span><c:out value="${complaintList.notice_date }"/></span>   </li>
+				<c:choose>
+					<c:when test="${complaintList.progress_status eq '01'}">
+						<li><span class="orange01">신고접수</span></li>
+					</c:when>
+					<c:when test="${complaintList.progress_status eq '02'}">
+						<li><span class="red01">작업지시</span></li>
+					</c:when>
+					<c:when test="${complaintList.progress_status eq '03'}">
+						<li><span class="red01">처리중</span></li>
+					</c:when>
+					<c:when test="${complaintList.progress_status eq '04'}">
+						<li><span class="blue03">보수완료</span></li>
+					</c:when>
+				</c:choose>
 			</ul>
 		</c:forEach>
 	</div>
@@ -475,25 +473,23 @@
 		
 		<c:forEach items="${lastSummaryMap.repairList }" var="repairList">
 			<ul>
-				<a href="#" >
-					<li><span><c:out value="${repairList.repair_no }"/></span></li>
-					<li><span><c:out value="${repairList.light_gubun }"/></span></li>
-					<li><span><c:out value="${repairList.notice_date }"/></span></li>
-					<c:choose>
-						<c:when test="${repairList.progress_status eq '01'}">
-							<li><span class="orange01">신고접수</span></li>
-						</c:when>
-						<c:when test="${repairList.progress_status eq '02'}">
-							<li><span class="red01">작업지시</span></li>
-						</c:when>
-						<c:when test="${repairList.progress_status eq '03'}">
-							<li><span class="red01">처리중</span></li>
-						</c:when>
-						<c:when test="${repairList.progress_status eq '04'}">
-							<li><span class="blue03">보수완료</span></li>
-						</c:when>
-					</c:choose>
-				</a>
+				<li><span><c:out value="${repairList.repair_no }"/></span></li>
+				<li><span><c:out value="${repairList.light_gubun }"/></span></li>
+				<li><span><c:out value="${repairList.notice_date }"/></span></li>
+				<c:choose>
+					<c:when test="${repairList.progress_status eq '01'}">
+						<li><span class="orange01">신고접수</span></li>
+					</c:when>
+					<c:when test="${repairList.progress_status eq '02'}">
+						<li><span class="red01">작업지시</span></li>
+					</c:when>
+					<c:when test="${repairList.progress_status eq '03'}">
+						<li><span class="red01">처리중</span></li>
+					</c:when>
+					<c:when test="${repairList.progress_status eq '04'}">
+						<li><span class="blue03">보수완료</span></li>
+					</c:when>
+				</c:choose>
 			</ul>
 		</c:forEach>
 	</div>
