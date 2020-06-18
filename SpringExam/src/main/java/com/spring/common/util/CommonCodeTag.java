@@ -9,10 +9,8 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.tags.EscapeBodyTag;
 
+import com.google.gson.Gson;
 import com.spring.common.service.CommonTagService;
-
-import net.sf.json.JSONSerializer;
-
 
 public class CommonCodeTag extends EscapeBodyTag {
 
@@ -46,7 +44,8 @@ public class CommonCodeTag extends EscapeBodyTag {
 		
 		if (value != null) {
 			// ... reading our attribute
-			result = JSONSerializer.toJSON(value);
+			Gson gson = new Gson();
+			result = gson.toJson(value);
 		}
 		else {
 			try {

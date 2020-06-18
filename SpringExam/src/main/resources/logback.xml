@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	
+	<!-- 변수 지정 -->
+    <property name="LOG_PATH_NAME" value="/project/slight_spring_template/logs/data.log" />
+
+    <!-- FILE Appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH_NAME}</file>
+        일자별로 로그파일 적용하기
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH_NAME}.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>60</maxHistory> 일자별 백업파일의 보관기간
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%F]%M\(%L\) : %m%n</pattern>
+        </encoder>
+    </appender>
+	
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
@@ -8,7 +24,8 @@
 	</appender>
 	
 	<logger name="org.springframework" level="info" additivity="false">
-		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="FILE"/>
+		<!-- <appender-ref ref="STDOUT"/> -->
 	</logger>
 	
 	<logger name="com.spring.common" level="debug" additivity="false">
@@ -20,6 +37,7 @@
 	</logger>
 	
 	<root level="error">
-		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="FILE"/>
+		<!-- <appender-ref ref="STDOUT"/> -->
 	</root>
 </configuration>

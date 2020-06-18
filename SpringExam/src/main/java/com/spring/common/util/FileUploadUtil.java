@@ -32,7 +32,7 @@ public class FileUploadUtil {
 			File file = new File(filePath);
 			
 			if(!file.exists()) {
-				file.mkdirs();
+				file.mkdir();
 			}
 			
 			for(MultipartFile multipartFile : files) {
