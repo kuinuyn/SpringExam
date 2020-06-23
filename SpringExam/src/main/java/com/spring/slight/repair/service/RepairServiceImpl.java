@@ -185,11 +185,11 @@ public class RepairServiceImpl implements RepairService{
 			Map<String, Object> revInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
 			
 			paramMap.putAll(resultStatus);
-			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(paramMap));
 			smsMsg.put("notice_name", resultStatus.get("notice_name"));
 			smsMsg.put("mobile", revInfo.get("mobile"));
 			smsMsg.put("jisaNum", companyInfo.get("phone"));
 			smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
+			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(paramMap));
 			smsSendDao.insertSmsSend(smsMsg);
 		}
 		
@@ -220,12 +220,12 @@ public class RepairServiceImpl implements RepairService{
 			Map<String, Object> revInfo = systemMemberDao.getSystemMemberDetail(smsMsg);
 			
 			smsMsg.putAll(resultStatus);
-			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
+			smsMsg.put("cancelYn", "Y");
 			smsMsg.put("notice_name", resultStatus.get("notice_name"));
 			smsMsg.put("mobile", revInfo.get("mobile"));
 			smsMsg.put("jisaNum", companyInfo.get("phone"));
 			smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
-			smsMsg.put("cancelYn", "Y");
+			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
 			
 			smsSendDao.insertSmsSend(smsMsg);
 		}
@@ -381,11 +381,11 @@ public class RepairServiceImpl implements RepairService{
 			}
 			else if("01".equals(method)) {
 				smsMsg.putAll(resultStatus);
-				smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
 				smsMsg.put("notice_name", resultStatus.get("notice_name"));
 				smsMsg.put("mobile", resultStatus.get("mobile"));
 				smsMsg.put("jisaNum", companyInfo.get("phone"));
 				smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
+				smsMsg.put("msg", SmsMsgUtil.setSmsMsg(smsMsg));
 				
 				smsSendDao.insertSmsSend(smsMsg);
 			}

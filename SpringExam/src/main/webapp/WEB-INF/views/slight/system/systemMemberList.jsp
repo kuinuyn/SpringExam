@@ -7,6 +7,23 @@
 		Search();
 		areaTag();
 		
+		var cnt = 0;
+		var radioStr = "";
+		for(var i=0; i<commonCd.length; i++) {
+			cnt++;
+			if(commonCd[i].code_type == "04") {
+				if(cnt % 3 == 0) {
+					radioStr += "<div><span class='pdr10'><input type='radio' name='grade' value='"+commonCd[i].data_code+"'> "+commonCd[i].data_code_name +"</span></div>";
+				}
+				else {
+					radioStr += "<span class='pdr10'><input type='radio' name='grade' value='"+commonCd[i].data_code+"'>"+commonCd[i].data_code_name +"</span>";
+				}
+			}
+		}
+		
+		$("#radioGradeGubun").html(radioStr);
+		//radioGradeGubun
+		
 		$("input[type=radio][name=grade]").change(function() {
 			if($(this).val() == "01") {
 				$("#trArea").hide();
@@ -362,7 +379,7 @@
 						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
-				<li><a href="#">보안등관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
+				<li><a href="#">사용자관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
 						<li><a href="/equipment/securityLightList">보안등관리</a></li>
 						<li><a href="/equipment/streetLightList">가로등관리</a></li>
@@ -487,7 +504,7 @@
 									<tr>
 										<th>구분</th>
 										<td id="radioGradeGubun">
-										<c:forEach items="${MAXRESULT }" var="commondCd" varStatus="status">
+										<%-- <c:forEach items="${MAXRESULT }" var="commondCd" varStatus="status">
 											<c:if test="${commondCd.code_type == '04' }">
 												<c:choose>
 													<c:when test="${status.count % 3 == 0 }">
@@ -498,7 +515,7 @@
 													</c:otherwise>
 												</c:choose>
 											</c:if>
-										</c:forEach>
+										</c:forEach> --%>
 											<!-- <span class="pdr10"><input type="radio" name="grade" value="01" checked="checked"> 시청담당자</span>
 											<span class="pdr10"><input type="radio" name="grade" value="02"> 읍면동담당자</span>
 											<div><span class="pdr10"><input type="radio" name="grade" value="03"> 보수업체 담당자</span></div> -->

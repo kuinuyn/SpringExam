@@ -38,7 +38,7 @@
 				var title = "보안등";
 			}
 			else if($(this).val() == 3) {
-				var title = "분점함";
+				var title = "분전함";
 			}
 			
 			children.eq(0).text(title);

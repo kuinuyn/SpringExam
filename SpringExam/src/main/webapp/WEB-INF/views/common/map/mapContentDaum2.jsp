@@ -24,7 +24,7 @@
 	#close .img {display: block;background: url(//i1.daumcdn.net/localimg/localimages/07/mapapidoc/rv_close.png) no-repeat;width: 14px;height: 14px;}
 
 	/* 인쇄버튼 추가를 위한 CSS 추가 */
-	.radius_border{border:1px solid #919191;border-radius:5px;}
+	/* .radius_border{border:1px solid #919191;border-radius:5px;}
 	.custom_typecontrol {position:absolute;top:7px;right:55px;overflow:hidden;width:148px;height:25px;margin:0;padding:0;font-size:12px;font-family:'Malgun Gothic', '맑은 고딕', sans-serif;}
 	.custom_typecontrol span {display:block;width:43px;height:30px;float:left;text-align:center;line-height:22px;cursor:pointer;}
 	.custom_typecontrol #btnSkyview {display:block;width:60px;height:30px;float:left;text-align:center;line-height:22px;cursor:pointer;}
@@ -32,7 +32,20 @@
 	.custom_typecontrol .btn:hover {background:#f5f5f5;}
 	.custom_typecontrol .btn:active {background:#e6e6e6;}
 	.custom_typecontrol .selected_btn {color:#fff;background:#425470;}
-	.custom_typecontrol .selected_btn:hover {color:#fff;}
+	.custom_typecontrol .selected_btn:hover {color:#fff;} */
+	
+	.radius_border{border:1px solid #919191;border-radius:5px;}     
+	.custom_typecontrol {position:absolute;top:7px;right:55px;overflow:hidden;height:25px;margin:0;padding:0;z-index:1;font-size:12px;font-family:'Malgun Gothic', '맑은 고딕', sans-serif;}
+	.custom_typecontrol span {display:block;width:43px;height:30px;float:left;text-align:center;line-height:22px;cursor:pointer;}
+	.custom_typecontrol .btn {background:#fff;background:linear-gradient(#fff,  #e6e6e6);}       
+	.custom_typecontrol .btn:hover {background:#f5f5f5;background:linear-gradient(#f5f5f5,#e3e3e3);}
+	.custom_typecontrol .btn:active {background:#e6e6e6;background:linear-gradient(#e6e6e6, #fff);}    
+	.custom_typecontrol .selected_btn {color:#fff;background:#425470;background:linear-gradient(#425470, #5b6d8a);}
+	.custom_typecontrol .selected_btn:hover {color:#fff;}   
+	.custom_zoomcontrol {position:absolute;top:50px;right:10px;width:36px;height:80px;overflow:hidden;z-index:1;background-color:#f5f5f5;} 
+	.custom_zoomcontrol span {display:block;width:36px;height:40px;text-align:center;cursor:pointer;}     
+	.custom_zoomcontrol span img {width:15px;height:15px;padding:12px 0;border:none;}             
+	.custom_zoomcontrol span:first-child{border-bottom:1px solid #bfbfbf;} 
 </style>
 
 <div id="mapContainer" class="view_map">
@@ -149,7 +162,7 @@
 	function setMapType(maptype) { 
 		var roadmapControl = document.getElementById('btnRoadmap');
 		var skyviewControl = document.getElementById('btnSkyview'); 
-		if (maptype === 'roadmap') {
+		if (maptype == 'roadmap') {
 			map.setMapTypeId(daum.maps.MapTypeId.ROADMAP);    
 			roadmapControl.className = 'selected_btn';
 			skyviewControl.className = 'btn';
@@ -171,7 +184,7 @@
 	function mapPrint(){
 		//로드뷰인 경우 인쇄버튼 없으므로 hidden 처리 후 view
 		document.getElementById("rvWrapper").style.visibility = "hidden";
-		parent.mapBodyFrame.focus();
+		parent.mapContentDaum.focus();
 		window.print();
 		document.getElementById("rvWrapper").style.visibility = "visible";
 	}
@@ -300,7 +313,7 @@
 		//지도 확대축소 컨트롤러 보이기
 		zoomControl = new daum.maps.ZoomControl();
 		map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
-	
+		
 		center = map.getCenter(); //지도 중심좌표
 		center_x ="";
 		center_y ="";
