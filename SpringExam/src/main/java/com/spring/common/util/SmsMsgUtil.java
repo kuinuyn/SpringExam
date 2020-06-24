@@ -21,7 +21,7 @@ public class SmsMsgUtil {
 				if("1".equals(paramMap.get("ligth_gubun"))) {
 					suffix = " - 보안등".concat("] 민원신고가 접수되었습니다.");
 				}
-				else if("2".equals(paramMap.get("ligth_gubun"))) {
+				else if("2".equals(paramMap.get("light_gubun"))) {
 					suffix = " - 가로등".concat("] 민원신고가 접수되었습니다.");
 				}
 				else {

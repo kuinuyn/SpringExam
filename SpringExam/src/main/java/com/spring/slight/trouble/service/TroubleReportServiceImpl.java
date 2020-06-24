@@ -61,6 +61,7 @@ public class TroubleReportServiceImpl implements TroubleReportService{
 			
 			smsMsg.put("notice_name", paramMap.get("notice_name"));
 			smsMsg.put("mobile", paramMap.get("mobile"));
+			smsMsg.put("light_gubun", paramMap.get("light_gubun"));
 			smsMsg.put("jisaNum", companyInfo.get("phone"));
 			smsMsg.put("groupDomain", properties.getProperty("domin.groupDomain"));
 			smsMsg.put("msg", SmsMsgUtil.setSmsMsg(paramMap));
