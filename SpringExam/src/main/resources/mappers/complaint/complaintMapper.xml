@@ -46,10 +46,10 @@
 							   , A.LIGHT_NO
 							   , A.NOTICE_NAME
 							   , COALESCE(CASE WHEN A.inform_method = '03'
-							   				THEN PHONE
+							   				THEN A.PHONE
 							   				WHEN A.inform_method = '01'
-							   				THEN MOBILE
-							   				ELSE CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+							   				THEN A.MOBILE
+							   				ELSE CASE WHEN COALESCE(A.MOBILE, '') = '' or A.MOBILE = null then A.PHONE ELSE A.MOBILE END
 							   	END, '') AS CONTACT
 							   , A.EMAIL
 							   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
@@ -148,11 +148,11 @@
 						   , A.PHONE
 						   , A.MOBILE
 						   , COALESCE(CASE WHEN inform_method = '03'
-						   				THEN PHONE
+						   				THEN A.PHONE
 						   				WHEN inform_method = '01'
-						   				THEN MOBILE
+						   				THEN A.MOBILE
 						   				ELSE 
-						   					CASE WHEN COALESCE(MOBILE, '') = '' or MOBILE = null then PHONE ELSE MOBILE END
+						   					CASE WHEN COALESCE(A.MOBILE, '') = '' or A.MOBILE = null then A.PHONE ELSE A.MOBILE END
 						   	END, '') AS CONTACT
 						   , TO_CHAR(A.NOTICE_DATE, 'YYYY.MM.DD') AS NOTICE_DATE
 						   , COALESCE(TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD'), '') AS REPAIR_DATE

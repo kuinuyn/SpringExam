@@ -175,6 +175,7 @@
 			}
 		}
 		else if(inform_method == "02"){
+			var email = $("#email").val();
 			if(!checkEmail(email)) {
 				alert("E-MAIL 회신 요청 시 메일주소를 정확히 입력하세요.");
 				return;

@@ -294,19 +294,19 @@
 									<th>등기구모형1</th>
 									<td><span id="det_lamp1_nm"></span></td>
 									<th>등기구모형2</th>
-									<td><span id="det_lamp1_nm"></span></td>
+									<td><span id="det_lamp1_nm2"></span></td>
 								</tr>
 								<tr>
 									<th>광원종류1</th>
 									<td><span id="det_lamp2_nm"></span></td>
 									<th>광원종류2</th>
-									<td><span id="det_lamp2_nm"></span></td>
+									<td><span id="det_lamp2_nm2"></span></td>
 								</tr>
 								<tr>
 									<th>광원용량1</th>
 									<td><span id="det_lamp3_nm"></span></td>
 									<th>광원용량2</th>
-									<td><span id="det_lamp3_nm"></span></td>
+									<td><span id="det_lamp3_nm2"></span></td>
 								</tr>
 								<tr>
 									<th>스위치종류</th>
