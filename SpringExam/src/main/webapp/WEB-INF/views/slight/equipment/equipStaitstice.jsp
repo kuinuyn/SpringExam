@@ -284,7 +284,7 @@
 			$("#headerGroup").empty();
 			title = "설치형태별 현황";
 			
-			$("#thead").html("<th>번호</th><th>구분</th><th>한전주</th><th>강관주</th><th>테파주</th><th>기타주</th><th>벽부등</th><th>터널주</th><th>팔각주</th><th>통신주</th><th>스텐주</th><th>촐주</th><th>주물주</th><th>주철주</th><th>합계</th>")
+			$("#thead").html("<th>번호</th><th>구분</th><th>한전주</th><th>강관주</th><th>테파주</th><th>기타주</th><th>벽부등</th><th>터널주</th><th>팔각주</th><th>통신주</th><th>스텐주</th><th>철주</th><th>주물주</th><th>주철주</th><th>합계</th>")
 			$("#headerGroup").html("<col width='7%'><col width='15%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'><col width='6%'>");
 		}
 		else if(searchGubun == 2) {
