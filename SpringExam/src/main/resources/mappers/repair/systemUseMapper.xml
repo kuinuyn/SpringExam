@@ -32,11 +32,13 @@
 		<![CDATA[
 			SELECT COUNT(*)              
 			  FROM GY_MATERIAL A              
-			 WHERE A.YEAR = #{searchYear}			   
+			 WHERE A.YEAR = #{searchYear}
+		]]>			   
+			<if test="searchCom != null and searchCom != '' ">				 		   
    			   AND (SELECT COALESCE(MAX(MEMBER_ID), '') AS MEMBER_ID
           			  FROM GY_MEMBER
-         			WHERE A.COMPANY_ID = MEMBER_ID) = #{searchCom}		
-		]]>
+         			WHERE A.COMPANY_ID = MEMBER_ID) = #{searchCom}
+			</if>         			
 	</select>
 
 	<select id="getSystemUseList" resultType="hashMap" parameterType="hashMap">
@@ -90,8 +92,9 @@
           			  FROM GY_MEMBER
          			WHERE A.COMPANY_ID = MEMBER_ID) = #{searchCom}
 			</if>         			
-		<![CDATA[         						   
-			 ORDER BY DATA_CODE ASC		
+		<![CDATA[         						    
+			 ORDER BY SUBSTRING(DATA_CODE FROM '[^0-9]+'), SUBSTRING(DATA_CODE FROM '([0-9]+)')::INTEGER			 
+			 LIMIT #{limit} OFFSET #{offset}
 		]]>
 	</select>
 
@@ -140,6 +143,7 @@
 			</if>
 		<![CDATA[ 			   
 			ORDER BY INOUT_DAY DESC, SEQ_NO DESC
+			LIMIT #{limit} OFFSET #{offset}			
 		]]>
 	</select>
 

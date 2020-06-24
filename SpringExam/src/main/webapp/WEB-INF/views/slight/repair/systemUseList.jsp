@@ -8,7 +8,7 @@
 		Search();
 		
 		$("#searchYear").change(function() {		
-			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
+//			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 			Search();
 		});
 		
@@ -42,7 +42,7 @@
 		if(state == "SUCCESS"){
 			var data = obj.data;			
 			var list = data.list;
-			var listLen = list.length;		
+			var listLen = list.length;
 			var totalCount = data.totalCount;
 			var pagination = data.pagination;
 			var residualQuantity = "";
@@ -71,8 +71,8 @@
 				str += "</tr>";
 			}
 			
-			$("#tbody").html(str);
-			$("#total_count").text(totalCount);
+			$("#tbody").html(str);			
+	//		$("#total_count").text(totalCount);		
 			$("#pagination").html(pagination);
 		}
 	}
@@ -205,15 +205,10 @@
 					</tr>
 				</thead>
 				<tbody id="tbody">
-
 				</tbody>
 			</table>
 		</div>
-		<!--<div style="width:1160px;margin:0 auto;text-align:center;overflow:hidden;margin-top: 10px;">
-			<span style="float: right;"><a href="javascript:getSystemUseDetail1()" class="btn_blue03">등록</a></span>
-		</div>-->
 		<div id="pagination">
 		</div>
-
 	</div>
 </div>

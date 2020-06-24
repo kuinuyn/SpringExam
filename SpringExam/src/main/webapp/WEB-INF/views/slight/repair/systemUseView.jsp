@@ -27,49 +27,48 @@
 		today = yyyy+mm+dd;
 		
 //		alert("today:::"+today);
-	
+
 	$(function(){		
 		
 //		if(year == "" ||year == Null ){
 //			year = today.getFullYear();
-//		}		
-		$("#searchYear").val(year);
-		$("#searchCom1").val(company_id);
-		alert("1111:::"+$("#searchYear").val());
-		alert("2222:::"+$("#searchCom1").val());
-		alert("3333:::"+company_id);		
-		
-		searchCompany($("#searchYear").val(), $("#searchCom"), company_id); 
-		$("#searchCom").val(company_id);		
+//		}
+	
+		$("#searchYear").val(year);		
+		searchCompany($("#searchYear").val(), $("#searchCom"), company_id);
+		alert("11111");
+//		console.log("searchCom:::"+ $("#searchCom").val());
+//		$("#searchCom").val(company_id);		
+//		alert("#searchCom:::"+$("#searchCom option:selected").val(company_id));	
+//		$("select[name=searchCom]").val(company_id);
 //		$("#searchCom option:selected").val(company_id);		
 //		alert("4444:::"+$("#searchCom option:selected").val());
 //		$("#searchCom option:selected").val(company_id);		
-		alert("5555:::"+$("#searchCom").val());
-		
+//		alert("5555:::"+$("#searchCom").val());
+//		alert("5555:::"+$("select[name=searchCom]").val(company_id));
 //		alert("#searchCom:::"+$("#searchCom option:selected").val());
-		$("#searchPart").val(part_cd);		
-//		alert("searchCom:::"+document.slightForm.searchCom.value);
-		getSystemUseView();
+		$("#searchPart").val(part_cd);	
+
+		Search();
 		
 		$("#searchYear").change(function() {
-			searchCompany($("#searchYear").val(), $("#searchCom"), company_id);
-			$("#searchCom option:selected").val(company_id);
-//			alert("#searchCom:::"+$("#searchCom option:selected").val());
-			
-			getSystemUseView();
+//			searchCompany($("#searchYear").val(), $("#searchCom"), company_id);			
+			Search();
 		});
 		
-		$("#searchCom").change(function() {	
-			getSystemUseView();
+		$("#searchCom").change(function() {
+			
+			Search();			
 		});
 		
 		$("#searchPart").change(function() {
-			getSystemUseView();
+			Search();
 		});
 					
 	});
 	
-	function getSystemUseView(currentPageNo) {
+	function Search(currentPageNo) {
+		
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
 		}
@@ -135,17 +134,19 @@
 			}
 			
 			$("#tbody").html(str);
-			$("#total_count").text(totalCount);
+		//	$("#total_count").text(totalCount);
 			$("#pagination").html(pagination);
 		}
 	}
 	
 	function getSystemUseDetail1(seq_no) {
 		
+		searchCompany($("#searchYear").val(), $("#company_id"), company_id);		
+		
 		if(seq_no == null || seq_no == ""){
 			
 			$("#saveFlag").val("I");
-			$("#company_id").val(company_id);
+//			$("#company_id").val(company_id);				
 			$("#part_cd").val(part_cd);
 			$("#inout_day").val(today);			
 			$("input[type=radio][name=inout_flag]").prop("checked", false);			
@@ -244,7 +245,7 @@
 			if(obj.resultCnt > -1) {
 				alert("저장 되었습니다.");
 				$('.modal-popup2 .bg').trigger("click");
-				getSystemUseView();
+				Search();
 			}
 		}
 	}
@@ -273,7 +274,7 @@
 			if(obj.resultCnt > -1) {
 				alert("삭제 되었습니다.");
 			//	$('.modal-popup2 .bg').trigger("click");
-				getSystemUseView();
+				Search();
 			}
 			else {
 				alert("삭제 실패했습니다.");
@@ -310,6 +311,7 @@
 	function searchCompany(st_yy, ele, sel) {
 //	alert("st_yy:::"+st_yy);
 //	alert("sel:::"+sel);
+
 		$.ajax({
 			type : "POST"			
 			, url : "/equipment/getCompanyId"
@@ -321,6 +323,8 @@
 					
 					if(obj.resultData[i].data_code == sel) {
 						option += "<option value='"+obj.resultData[i].data_code+"' selected>"+obj.resultData[i].data_code_name+"</option>";
+						// alert("selected sel:::"+obj.resultData[i].data_code);
+						
 					}
 					else {
 						option += "<option value='"+obj.resultData[i].data_code+"'>"+obj.resultData[i].data_code_name+"</option>";
@@ -378,10 +382,10 @@
 	<div id="sub">
 		<div id="sub_title"><h3>자재입/출고관리</h3></div>
 		<form id="slightForm" name="slightForm" method="post" action="">
+			<input type="hidden" id="function_name" name="function_name" value="Search" />		
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />			
 			<input type="hidden" name="seq_no" value="" />
 			<input type="hidden" name="cmd" value="" />
-			<input type="hidden" id="searchCom1" name="searchCom1" value="" />
 			<div id="toptxt">
 				<ul>
 					<li class="b_left">
@@ -486,9 +490,6 @@
 										<td>
 											<span>										
 											<select name="company_id" id="company_id" class="sel03">
-												<c:forEach items="${searchComList}" var="company_id">
-													<option value="${company_id.data_code }">${company_id.data_code_name }</option>
-												</c:forEach>
 											</select>
 											</span>
 										</td>
