@@ -510,8 +510,7 @@
 		var bounds = map.getBounds();
 		var sw = bounds.getSouthWest();
 		var ne = bounds.getNorthEast();
-		//var url = "./mapdata_daum.jsp?center_x="+center_x+"&center_y="+center_y+"&level="+map.getLevel();
-		var url = "/common/map/mapDataKakao?center_x="+center_x+"&center_y="+center_y+"&level="+map.getLevel()+"&max_y="+ne.getLng()+"&min_y="+sw.getLng()+"&max_x="+ne.getLat()+"&min_x="+sw.getLat()+"&keytype="+keytype+"&keyword="+keyword;
+		var url = "/common/map/mapDataKakao?center_x="+center_x+"&center_y="+center_y+"&level="+map.getLevel()+"&max_y="+ne.getLng()+"&min_y="+sw.getLng()+"&max_x="+ne.getLat()+"&min_x="+sw.getLat()+"&keytype="+keytype+"&keyword="+encodeURI(encodeURIComponent(keyword));
 		httpRequest = getXMLHttpRequest(); // xmlhttp 객체를 생성      
 		httpRequest.open("POST", url, true);  // GET방식으로 동기식으로호출
 		httpRequest.onreadystatechange = function(){

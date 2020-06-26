@@ -1,5 +1,6 @@
 package com.spring.common.service;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class MapServiceImpl implements MapService {
 			String minX, String maxX, String minY, String maxY, String CheckLogin, String dgubun, String dongNm,
 			String searchGubun, String lightGn) throws Exception {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("area", area);paramMap.put("area2", area2);paramMap.put("keytype", keytype);paramMap.put("keyword", keyword);
+		paramMap.put("area", area);paramMap.put("area2", area2);paramMap.put("keytype", keytype);paramMap.put("keyword", URLDecoder.decode(keyword,"UTF-8"));
 		paramMap.put("minX", minX);paramMap.put("maxX", maxX);paramMap.put("minY", minY);
 		paramMap.put("maxY", maxY);paramMap.put("CheckLogin", CheckLogin);paramMap.put("dgubun", dgubun);
 		paramMap.put("dongNm", dongNm);paramMap.put("searchGubun", searchGubun);paramMap.put("lightGn", lightGn);
