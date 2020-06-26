@@ -181,10 +181,10 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+formatContactNumber(list[i].contact)+" </a></span></td>";
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")'>"+list[i].repair_date+" </a></span></td>";
 					if(list[i].progress_status == "01") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange'>신고접수</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_red'>신고접수</a></span>";
 					}
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
-						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_red'>작업지시</a></span>";
+						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_orange'>작업지시</a></span>";
 					}
 					else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
 						btnStr = "<span><a href='javascript:getRepairDetail(\""+list[i].repair_no+"\")' class='btn_blue02'>보수완료</a></span>";

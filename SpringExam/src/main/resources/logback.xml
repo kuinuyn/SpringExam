@@ -2,7 +2,7 @@
 <configuration>
 	
 	<!-- 변수 지정 -->
-    <property name="LOG_PATH_NAME" value="/project/slight_spring_template/logs/data.log" />
+    <property name="LOG_PATH_NAME" value="/project/energy/slight_spring_template/logs/data.log" />
 
     <!-- FILE Appender -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

@@ -190,11 +190,11 @@
 					str += "	<td style='text-align: center;'><span> "+list[i].progress_name+" </span></td>";	
 					btnFn = "getRepairDetail(\""+list[i].repair_no+"\", \"Process\" )";
 					if(list[i].progress_status == "01") {
-						btnClass = "btn_orange02";
+						btnClass = "btn_red02";
 						btnText = "작업지시";
 					}
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
-						btnClass = "btn_red02";
+						btnClass = "btn_orange02";
 						btnText = "작업지시취소";
 						btnFn = "updateRepairCancel(\""+list[i].repair_no+"\")";
 					}

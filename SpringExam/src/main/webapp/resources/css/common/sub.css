@@ -194,7 +194,7 @@ color:#fff;background-color: #373c46;font-weight:bold;float:left; }
 
 #search_box ul.inform_num{clear:both;border-bottom:solid 1px #ddd;overflow:hidden;text-align:center;width:100%;margin:0 auto;}
 #search_box ul.inform_num li{margin:0 auto;text-align:center;width:1160px;}
-#search_box ul.inform_num li table{width:900px;padding:22px 0;}
+#search_box ul.inform_num li table{width:900px;padding:22px 0;margin:0 auto;}
 #search_box ul.inform_num li table td{text-align:center;}
 
 
