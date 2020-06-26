@@ -16,4 +16,5 @@ public interface SystemUseService {
 	public Map<String, Object> getSystemUseDetail1(CommandMap paramMap) throws Exception;	
 	public int updateSystemUse(CommandMap paramMap) throws Exception;
 	public int deleteSystemUse(CommandMap paramMap) throws Exception;
+	public List<Map<String, Object>> getRepairPartId(CommandMap paramMap) throws Exception;	
 }

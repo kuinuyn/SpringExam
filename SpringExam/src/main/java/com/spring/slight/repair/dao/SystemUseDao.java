@@ -57,7 +57,12 @@ public class SystemUseDao {
 		Map<String, Object> resultMap = sqlSession.selectOne(NAMESPACE+".getSystemUseDetail1", paramMap.getMap());
 		return resultMap;
 	}
-
+	
+	public List<Map<String, Object>> getRepairPartId(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultList = sqlSession.selectList(NAMESPACE+".getRepairPartId", paramMap.getMap());
+		return resultList;
+	}
+	
 	public int insertSystemUse(CommandMap paramMap) throws Exception {
 		int cnt = sqlSession.update(NAMESPACE+".insertSystemUse", paramMap.getMap());
 
