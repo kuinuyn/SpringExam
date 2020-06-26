@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=c5a71e08bd2dc04d789a6dc8b64bcad2&libraries=services"></script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c5a71e08bd2dc04d789a6dc8b64bcad2&libraries=services"></script>
 <link rel="stylesheet" type="text/css" rel="stylesheet" href="/resources/css/map/map.css" />
 <script type="text/javascript" src="${contextPath }/resources/js/prototype.js"></script>
 <link rel="stylesheet" type="text/css" href="/resources/css/common/common.css" /> 
