@@ -283,7 +283,7 @@ public class EquipmentSerivceImpl implements EquipmentService{
 
 	@Override
 	public List<Map<String, Object>> getEquipmentExcelList(CommandMap paramMap) throws Exception {
-		return equipmentDao.getDetRepirList(paramMap);
+		return equipmentDao.getEquipmentExcelList(paramMap);
 	}
 
 }
