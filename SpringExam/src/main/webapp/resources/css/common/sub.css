@@ -503,35 +503,6 @@ background-color: #2171c6;cursor: pointer;border:none;width:110px; height:70px;l
 	border-color: transparent transparent Indigo transparent;
 }
 
-.sortable:hover .tt-text {
-	visibility: visible;
-}
-.sortable .tt-text {
-	visibility: hidden;
-	width: 200px;
-	background-color: #555;
-	color: White;
-	text-align: center;
-	border-radius: 10px;
-	padding: 10px 5px;
-	position: absolute;
-	z-index: 1;
-	top: 200%;
-	left: 50%;
-	margin-left: -105px;
-}
-
-.sortable .tt-text::after {
-	content: "";
-	position: absolute;
-	bottom: 100%;
-	left: 50%;
-	margin-left: -10px;
-	border-width: 10px;
-	border-style: solid;
-	border-color: transparent transparent Indigo transparent;
-}
-
-.sortable:hover .tt-text {
+.tt:hover .tt-text {
 	visibility: visible;
 }
