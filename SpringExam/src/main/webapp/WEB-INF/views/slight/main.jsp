@@ -31,11 +31,11 @@
 		$("#light_type").change(function() {
 			var num = 0;
 			var childNodes = $("#tabmenu").find('li')
-			var title = "가로등";
+			var title = "보안등";
 			var children = $("#all_rtime > p").children('span');
 			
 			if($(this).val() == 2) {
-				var title = "보안등";
+				var title = "가로등";
 			}
 			else if($(this).val() == 3) {
 				var title = "분전함";
@@ -405,7 +405,7 @@
 		<a href="javascript:goToRepairList('lightType')" class="box03_more">상세보기 </a>
 		<div id="all_rtime">
 			<p>
-				<span>가로등</span><br />
+				<span>보안등</span><br />
 				<span><b>총 0건</b></span>
 			</p>
 		</div>
