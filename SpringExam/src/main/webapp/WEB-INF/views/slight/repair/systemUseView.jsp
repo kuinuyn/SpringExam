@@ -62,7 +62,20 @@
 
 			Search();
 		});
-					
+
+		var today = new Date();
+		var eDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());		
+		
+		$("#inout_day").datepicker({
+			showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시 
+			, maxDate : eDate
+			, dateFormat: 'yymmdd'			
+			, buttonImage : "/resources/css/images/icon/calendar.gif"
+		});
+		$('#inout_day').datepicker('setDate', eDate);		
+		$('#ui-datepicker-div').appendTo($('#messagePop2'));
+		$(".ui-datepicker-trigger").attr("style", "margin-left:4px; vertical-align:middle;");			
+		
 	});
 	
 	function Search(currentPageNo) {
@@ -544,7 +557,8 @@
 									</tr>
 									<tr>
 										<th>입출고일</th>
-										<td><input type="number" pattern="[0-9]*" onkeydown="onlyNumber(this)" oninput="maxLengthCheck(this)" style="ime-mode:disabled;" maxlength="8" id="inout_day" name="inout_day" class="tbox02" >
+										<td><input id="inout_day" name="inout_day" value="" class="tbox02" readonly="readonly" />
+										<!--<input type="number" pattern="[0-9]*" onkeydown="onlyNumber(this)" oninput="maxLengthCheck(this)" style="ime-mode:disabled;" maxlength="8" id="inout_day" name="inout_day" class="tbox02" >-->
 										</td>
 									</tr>
 									<tr>	
