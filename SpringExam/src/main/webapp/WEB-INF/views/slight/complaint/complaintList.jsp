@@ -409,9 +409,9 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="sortable" onclick="sortEvent(this)">접수번호</th>
+						<th class="sortable" onclick="sortEvent(this)"><p class="tt">접수번호 <span class="tt-text">클릭 시 접수번호에 따라 정렬순서 변경</span></p></th>
 						<th>신고구분</th>
-						<th class="sortable" onclick="sortEvent(this)">접수일</th>
+						<th class="sortable" onclick="sortEvent(this)"><p class="tt">접수일<span class="tt-text">클릭 시 접수일에 따라 정렬순서 변경</span></p></th>
 						<th>고장상태</th>
 						<th>관리번호</th>
 						<th>주소</th>

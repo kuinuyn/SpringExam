@@ -216,7 +216,7 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="sortable" onclick="sortEvent(this)">관리번호</th>
+						<th class="sortable" onclick="sortEvent(this)"><p class="tt">관리번호<span class="tt-text">클릭 시 관리번호에 따라 정렬순서 변경</span></p></th>
 						<th>주소</th>
 						<th>도로명주소</th>
 						<th>지지방식</th>
