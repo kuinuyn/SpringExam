@@ -1,6 +1,8 @@
 package com.spring.slight.repair.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -50,8 +52,7 @@ public class SystemUseController {
 	@RequestMapping("/systemUseView")
 	public String systemUseView (HttpServletRequest rquest, Model model) {
 		try {
-			model.addAttribute("searchYearList", systemUseService.getSystemUseSearchYear());				
-			model.addAttribute("searchPartList", systemUseService.getSystemUseSearchPart());			
+			model.addAttribute("searchYearList", systemUseService.getSystemUseSearchYear());							
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,6 +105,23 @@ public class SystemUseController {
 
 		return mv;
 	}		
+	
+	@RequestMapping(value="/getRepairPartId")
+	public ModelAndView getRepairPartId(HttpServletRequest request, CommandMap paramMap) {
+		ModelAndView mv = new ModelAndView();
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		
+		try {
+			result = systemUseService.getRepairPartId(paramMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		mv.addObject("resultData", result);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
 
 	@RequestMapping(value="/updateSystemUse", method = RequestMethod.POST)
 	public ModelAndView updateSystemUse(CommandMap paramMap) {

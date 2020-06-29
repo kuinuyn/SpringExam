@@ -87,7 +87,12 @@ public class SystemUseServiceImpl implements SystemUseService{
 	public Map<String, Object> getSystemUseDetail1(CommandMap paramMap) throws Exception {
 		return systemUseDao.getSystemUseDetail1(paramMap);
 	}	
-
+	
+	@Override
+	public List<Map<String, Object>> getRepairPartId(CommandMap paramMap) throws Exception {
+		return systemUseDao.getRepairPartId(paramMap);
+	}
+	
 	@Override
 	public int updateSystemUse(CommandMap paramMap) throws Exception {
 		int cnt = 0;

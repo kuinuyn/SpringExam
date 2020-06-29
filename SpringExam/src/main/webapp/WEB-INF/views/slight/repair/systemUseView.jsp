@@ -3,6 +3,7 @@
 <script type="text/javascript">
 	var commonCd = ${MAXRESULT};
 	var part_cd = "${param.part_cd}";
+	var part_name = "${param.part_name}"; 
 	var year = "${param.year}";
 	var comp_nm = "${param.comp_nm}";
 	var company_id = "${param.company_id}";
@@ -36,23 +37,19 @@
 	
 		$("#searchYear").val(year);		
 		searchCompany($("#searchYear").val(), $("#searchCom"), company_id);
-		alert("11111");
-//		console.log("searchCom:::"+ $("#searchCom").val());
-//		$("#searchCom").val(company_id);		
-//		alert("#searchCom:::"+$("#searchCom option:selected").val(company_id));	
-//		$("select[name=searchCom]").val(company_id);
-//		$("#searchCom option:selected").val(company_id);		
-//		alert("4444:::"+$("#searchCom option:selected").val());
-//		$("#searchCom option:selected").val(company_id);		
-//		alert("5555:::"+$("#searchCom").val());
-//		alert("5555:::"+$("select[name=searchCom]").val(company_id));
+//		alert("11111");
+//		console.log("searchCom:::"+ $("#searchCom").val());		
+//		alert("1111:::"+$("#searchCom").val());
 //		alert("#searchCom:::"+$("#searchCom option:selected").val());
-		$("#searchPart").val(part_cd);	
+
+//		alert("1111:::"+$("#searchPart").val());
+		searchRepairPart($("#searchYear").val(), $("#searchCom").val(), $("#searchPart"), part_cd);
+//		alert("2222:::"+$("#searchPart").val());	
 
 		Search();
 		
 		$("#searchYear").change(function() {
-//			searchCompany($("#searchYear").val(), $("#searchCom"), company_id);			
+
 			Search();
 		});
 		
@@ -62,6 +59,7 @@
 		});
 		
 		$("#searchPart").change(function() {
+
 			Search();
 		});
 					
@@ -141,14 +139,17 @@
 	
 	function getSystemUseDetail1(seq_no) {
 		
-		searchCompany($("#searchYear").val(), $("#company_id"), company_id);		
+		searchCompany($("#searchYear").val(), $("#company_id"), $("#searchCom").val());
+		searchRepairPart($("#searchYear").val(), $("#searchCom").val(), $("#part_cd"), $("#searchPart").val());		
 		
 		if(seq_no == null || seq_no == ""){
 			
 			$("#saveFlag").val("I");
 //			$("#company_id").val(company_id);				
-			$("#part_cd").val(part_cd);
-			$("#inout_day").val(today);			
+//			$("#part_cd").val(part_cd);
+			$("#inout_day").val(today);
+			$("#inout_cnt").val(0);
+			$("#bigo1").val("");
 			$("input[type=radio][name=inout_flag]").prop("checked", false);			
 			modal_popup2('messagePop2');
 			
@@ -338,6 +339,38 @@
 			}
 		});
 	}	
+	
+	function searchRepairPart(st_yy, companyId, ele, sel) {
+//		alert("st_yy:::"+st_yy);
+//		alert("companyId:::"+companyId);
+//		alert("sel:::"+sel);
+
+		$.ajax({
+			type : "POST"			
+			, url : "/repair/getRepairPartId"
+			, data : {"searchYear" : st_yy, "searchCom" : companyId}
+			, dataType : "JSON"
+			, success : function(obj) {
+				var option = "<option value=''>선택</option>";
+				for(i=0; i<obj.resultData.length; i++) {
+					
+					if(obj.resultData[i].part_cd == sel) {
+						option += "<option value='"+obj.resultData[i].part_cd+"' selected>"+obj.resultData[i].data_code_name+"</option>";
+//						alert("selected sel:::"+obj.resultData[i].part_cd);
+						
+					}
+					else {
+						option += "<option value='"+obj.resultData[i].part_cd+"'>"+obj.resultData[i].data_code_name+"</option>";
+					}
+				}
+				
+				$(ele).html(option);
+			}
+			, error : function(xhr, status, error) {
+				
+			}
+		});
+	}	
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -397,13 +430,12 @@
 					</li>
 					<li class="b_left">
 						<select id ="searchCom" name="searchCom" class="sel01">
+							<option value="${param.company_id}">${param.comp_nm }</option>						
 						</select>
 					</li>
 					<li class="b_left">
 						<select id ="searchPart" name="searchPart" class="sel02">
-								<c:forEach items="${searchPartList}" var="part_cd">
-									<option value="${part_cd.part_cd }">${part_cd.data_code_name }</option>
-								</c:forEach>
+							<option value="${param.part_cd}">${param.part_name }</option>
 						</select>
 					</li>
 				</ul>
@@ -499,9 +531,6 @@
 										<td>
 											<span>
 											<select name="part_cd" id="part_cd" class="sel02">
-												<c:forEach items="${searchPartList}" var="part_cd">
-													<option value="${part_cd.part_cd }">${part_cd.data_code_name }</option>
-												</c:forEach>
 											</select>
 											</span>
 										</td>
@@ -525,7 +554,7 @@
 									</tr>
 									<tr>	
 										<th>비고</th>
-										<td><input type="text" id="bigo" name="bigo1" class="tbox04" maxlength="100" >
+										<td><textarea id="bigo1" name="bigo1" cols="55" rows="3" maxlength="100" ></textarea>
 										</td>
 									</tr>
 									

@@ -28,6 +28,25 @@
 		]]>
 	</select>	
 
+	<select id="getRepairPartId" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[			
+			SELECT YEAR, DATA_CODE AS PART_CD, DATA_CODE_NAME 
+			FROM GY_MATERIAL A
+			WHERE 1 = 1
+		]]>
+			<if test="searchYear != null and searchYear != '' ">			
+			  AND YEAR = #{searchYear}
+			</if>	
+			<if test="searchCom != null and searchCom != '' ">				 		   
+   			  AND (SELECT COALESCE(MAX(MEMBER_ID), '') AS MEMBER_ID
+          			  FROM GY_MEMBER
+         			WHERE A.COMPANY_ID = MEMBER_ID) = #{searchCom}
+			</if>						
+		<![CDATA[					
+			ORDER BY SUNBUN ASC
+		]]>
+	</select>
+
 	<select id="getSystemUseCnt" resultType="int" parameterType="hashMap">
 		<![CDATA[
 			SELECT COUNT(*)              
@@ -169,7 +188,7 @@
 			       INOUT_FLAG,
 			       INOUT_CNT,
 			       LAST_UPDATE,
-			       BIGO,
+			       COALESCE(BIGO, '') AS BIGO1,
 			       COMPANY_ID,
 			       COMPANY_ID1,
 			       YEAR,

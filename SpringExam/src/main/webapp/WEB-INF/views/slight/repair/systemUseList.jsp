@@ -56,12 +56,12 @@
 					residualQuantity = ""+list[i].in_cnt - list[i].out_cnt;
 					
 					str += "<tr>";  
-					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].part_cd+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].part_name+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].comp_nm+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].in_cnt+" 개</a></span></td>";
-					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].out_cnt+" 개 </a></span></td>";
-					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+residualQuantity+" 개</a></span></td>";
+					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].part_name+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].part_cd+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].part_name+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].part_name+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].part_name+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].comp_nm+"</a></span></td>";
+					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].part_name+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].in_cnt+" 개</a></span></td>";
+					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].part_name+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+list[i].out_cnt+" 개 </a></span></td>";
+					str += "	<td><span> <a href='javascript:getSystemUseDetail(\""+list[i].part_cd+"\", \""+list[i].part_name+"\", \""+list[i].year+"\", \""+list[i].comp_nm+"\", \""+list[i].company_id+"\")'>"+residualQuantity+" 개</a></span></td>";
 					str += "</tr>";
 				}
 			}
@@ -77,10 +77,11 @@
 		}
 	}
 	
-	function getSystemUseDetail(part_cd, year, comp_nm, company_id) {
+	function getSystemUseDetail(part_cd, part_name, year, comp_nm, company_id) {
 		
 		var frm = document.slightForm;
 	    frm.part_cd.value = part_cd;
+	    frm.part_name.value = part_name;	    
 		frm.year.value = year;
 		frm.comp_nm.value = comp_nm;
 		frm.company_id.value = company_id;	
@@ -163,6 +164,7 @@
 			<input type="hidden" id="function_name" name="function_name" value="Search" />
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
 			<input type="hidden" id="part_cd" name="part_cd" value="" />
+			<input type="hidden" id="part_name" name="part_name" value="" />			
 			<input type="hidden" id="year" name="year" value="" />			
 			<input type="hidden" id="comp_nm" name="comp_nm" value="" />
 			<input type="hidden" id="company_id" name="company_id" value="" />											
