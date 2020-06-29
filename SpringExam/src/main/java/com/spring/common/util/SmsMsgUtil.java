@@ -18,7 +18,7 @@ public class SmsMsgUtil {
 		
 		if("01".equals(progressStatus)) {
 			if(paramMap.get("cancelYn") == null || "".equals(paramMap.get("cancelYn"))) {
-				if("1".equals(paramMap.get("ligth_gubun"))) {
+				if("1".equals(paramMap.get("light_gubun")) ) {
 					suffix = " - 보안등".concat("] 민원신고가 접수되었습니다.");
 				}
 				else if("2".equals(paramMap.get("light_gubun"))) {

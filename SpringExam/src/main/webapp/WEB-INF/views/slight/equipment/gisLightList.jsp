@@ -558,10 +558,7 @@
 							</ul>
 							<ul>
 								<li class="gis_tit">계약전력</li>
-								<li>
-									<select class="sel05" id="kepco_cd" name="kepco_cd">
-									</select>
-								</li>
+								<li><input type="text" name="kepco_cd" id="kepco_cd" class="tbox11" maxlength="10"></li>
 							</ul>
 							<ul>
 								<li class="gis_tit">사용량</li>

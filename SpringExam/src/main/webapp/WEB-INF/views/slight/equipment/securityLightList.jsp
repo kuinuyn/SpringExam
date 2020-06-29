@@ -318,7 +318,7 @@
 									<th>한전고객번호</th>
 									<td><span id="det_kepco_cust_no"></span></td>
 									<th>한전계약전력</th>
-									<td><span id="det_kepco_nm"></span></td>
+									<td><span id="det_kepco_cd"></span></td>
 								</tr>
 								<tr>
 									<th>작업진행현황</th>

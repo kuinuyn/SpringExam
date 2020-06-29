@@ -25,6 +25,7 @@
 		   FROM GY_MATERIAL A 
 		  WHERE 1=1
 		    AND A.YEAR = #{sch_year}
+		    AND A.COMPANY_ID like '%' ||#{sch_company_id} || '%'
 			ORDER BY A.SUNBUN, A.DATA_CODE
 			LIMIT #{limit} OFFSET #{offset}
 			
@@ -54,7 +55,7 @@
 			<if test="data_code == null or data_code == '' ">
 				SELECT COALESCE(MAX(DATA_CODE::NUMERIC), 0)+1
 				FROM GY_MATERIAL
-				WHERE A.YEAR    = #{sch_year}
+				WHERE YEAR    = #{sch_year}
 			</if>
 		</selectKey>
 		
@@ -68,6 +69,7 @@
 			, DANGA
 			, UNIT
 			, REMARKS
+			, last_update
 		)
 		VALUES
 		(
@@ -79,6 +81,7 @@
 			, #{danga}
 			, #{unit}
 			, #{remarks}
+			, now()
 		)
 	</insert>
 	
@@ -91,6 +94,7 @@
 			, DANGA = #{danga}
 			, UNIT = #{unit}
 			, REMARKS = #{remarks}
+			, last_update = now()
 		WHERE 1=1
 		  AND YEAR = #{year}
 		  AND DATA_CODE = #{data_code}

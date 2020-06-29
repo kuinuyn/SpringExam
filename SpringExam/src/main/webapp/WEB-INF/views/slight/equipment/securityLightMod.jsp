@@ -460,8 +460,7 @@
 							</td>
 							<th>한전계약전력</th>
 							<td>
-								<select class="sel01" id="kepco_cd" name="kepco_cd">
-								</select>
+								<input id="kepco_cd" name="kepco_cd" value="" class="tbox03" maxlength="10" />
 							</td>
 						</tr>
 						<tr>

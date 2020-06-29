@@ -3,12 +3,21 @@
 <script type="text/javascript">
 	var commonCd = ${MAXRESULT};
 
-	$(function(){
+	$(function(){	
 		
-		Search();
+		searchCompany($("#sch_year").val(), $("#sch_company_id"), "");
+		
+		Search("1");
 	});
 	
-	function Search(currentPageNo) {
+	function Search(currentPageNo,flag) {
+		
+		if(flag == "1")
+		{
+			$("#sch_company_id").val("");
+			searchCompany($("#sch_year").val(), $("#sch_company_id"), "");
+		}
+		
 		
 		if(currentPageNo === undefined){
 			currentPageNo = "1";
@@ -348,11 +357,14 @@ function popupClose() {
 				<ul>
 					<li class="title">관리년도</li>
 					<li>
-					<select id="sch_year" name="sch_year" class="sel01" onchange='javascript:Search("1")'  >
+					<select id="sch_year" name="sch_year" class="sel01" onchange='javascript:Search("1","1")'  >
 						<c:forEach items="${searchYearList}" var="year">
 							<option value="${year }">${year }년</option>
 						</c:forEach>
 					</select>
+					<select id="sch_company_id" name="sch_company_id" class="sel01" onchange='javascript:Search("1","2")'   >
+													<option value="">업체명</option>
+												</select>
 					</li>
 					
 					<li><a href="javascript:Search()"  class="btn_search01">검 색</a></li>
