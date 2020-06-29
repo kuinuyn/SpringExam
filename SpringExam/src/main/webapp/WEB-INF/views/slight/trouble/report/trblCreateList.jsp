@@ -481,7 +481,7 @@
 			<div id="btn2">
 				<p>
 					<span ><a href="javascript:Save()" class="btn_blue">등록</a></span>
-					<span><a href="#"  class="btn_gray">취소</a></span>
+					<span><a href="/"  class="btn_gray">취소</a></span>
 				</p>
 			</div>
 		</form>

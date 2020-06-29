@@ -45,6 +45,12 @@ public class EquipmentDao {
 		return resultMap;
 	}
 	
+	public List<Map<String, Object>> getEquipmentExcelList(CommandMap paramMap) throws Exception {
+		List<Map<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipmentExcelList", paramMap.getMap());
+		
+		return resultMap;
+	}
+	
 	public List<LinkedHashMap<String, Object>> getEquipHJStaitstice(CommandMap paramMap) throws Exception {
 		List<LinkedHashMap<String, Object>> resultMap = sqlSession.selectList(NAMESPACE+".getEquipHJStaitstice", paramMap.getMap());
 		

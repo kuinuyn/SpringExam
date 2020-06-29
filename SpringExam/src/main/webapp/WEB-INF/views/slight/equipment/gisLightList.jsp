@@ -367,6 +367,97 @@
 		ifra.map_move(xPos, yPos, searchLightNo);
 		ifra.onAjaxData(xPos, yPos, searchLightNo);
 	}
+	
+	function getEquipmentDetail() {
+
+		if($("#light_no").val() == "" || $("#light_no").val() == null || $("#light_type").val() == "" || $("#light_type").val() == null) {
+			alert("도로조명을 선택하세요.");
+			return;
+		}
+		
+		
+		$.ajax({
+			type : "POST"			
+			, url : "/equipment/equipmentDet"
+			, data : {"light_no" : $("#light_no").val() , "light_type" : $("#light_type").val()  }
+			, dataType : "JSON"
+			, success : function(obj) {
+				getSearchDetailCallback(obj);
+			}
+			, error : function(xhr, status, error) {
+				
+			}
+		});
+	}
+	
+	function getSearchDetailCallback(obj) {
+		var data = obj.resultData;
+		if(data != null) {
+			var key, element, repairRst = "";
+			var repairList = {};
+			for(key in data) {
+				element = "det_"+key;
+				if($("#"+element).length > 0) {
+					$("#"+element).text(data[key]);
+				}
+				if($("#"+key).length > 0) {
+					$("#"+key).val(data[key]);
+				}
+				
+				$("#hj_dong_cd").val($("#searchArea").val())
+			}
+			
+			var frm = document.frmDet;
+			frm.action =  "/common/map/mapContentDaum2?searchLightNo="+data['light_no']+"&center_x="+data['map_x_pos_gl']+"&center_y="+data['map_y_pos_gl'];
+			frm.target = 'mapDet';
+			frm.submit();
+
+
+			if(data['downLoadFiles'] != null && data['downLoadFiles'] != "") {
+				var downLoadFiles = data['downLoadFiles'];
+				var filePah = "";
+				
+				for(i = 0; i<downLoadFiles.length; i++) {
+					filePah = "/display?name="+downLoadFiles[i].file_name_key;
+					$("#detail_slight").children().eq(i).children("img").attr("src", filePah)
+				}
+			}
+			else {
+				
+				for(i = 0; i<$("#detail_slight").children().size(); i++) {
+					$("#detail_slight").children().eq(i).children("img").attr("src", "/resources/css/images/sub/slight_noimg.gif");
+				}
+			}
+			
+			if(data['detRepirList'] != null && data['detRepirList'] != "") {
+				repairList = data['detRepirList'];
+				repairRst = "<tr>";
+				for(i=0; i<repairList.length; i++) {
+					repairRst += "<td><span>"+repairList[i].repair_no+"</span></td>";
+					repairRst += "<td><span>"+repairList[i].repair_date+"</span></td>";
+					repairRst += "<td><span>"+repairList[i].trouble_type_nm+"</span></td>";
+					repairRst += "<td><span>"+repairList[i].repair_desc+"</span></td>";
+					repairRst += "<td><span>"+repairList[i].progress_name+"</span></td>";
+				}
+				repairRst += "</tr>";
+				
+			}
+			else {
+				repairRst = "<tr>";
+				repairRst += "<td colspan='5'><span>보수이력이 없습니다.</span></td>";
+				repairRst += "</tr>";
+			}
+			
+			$("#repair_list").html(repairRst);
+			
+			modalPopupCallback( function() {
+				modal_popup2('messagePop2');
+			});
+			
+		}
+		
+	}
+	
 </script>
 <div id="container">
 	<!-- local_nav -->
@@ -526,12 +617,162 @@
 							<ul>
 								<li><a href="javascript:onNewPos('I')" class="gisbtn01">신규등록</a></li>
 								<li><a href="javascript:onNewPos('')" class="gisbtn02">위치정보 등록 및 수정</a></li>
-								<li><a href="#" class="gisbtn03">보안등 이력관리</a></li>
+								<li><a href="javascript:getEquipmentDetail()" class="gisbtn03">보안등 이력관리</a></li>
 							</ul>
 						</div>
+						
+					
 					</div>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- 상세 Popup-->
+<div class="modal-popup2">
+	<div class="bg"></div>
+	<div id="messagePop2" class="pop-layer">
+		<div class="pop-container">
+			<div class="pop-conts">
+				<div class="btn-r">
+					<a href="#" class="cbtn"><i class="fa fa-times " aria-hidden="true"></i><span class="hide">Close</span></a>
+				</div>
+				<div class="pop_detail2 ">
+					<h3>도로조명 상세내역</h3>
+					<div id="board_view">
+						<!-- 보안등상세내역-->
+						<table summary="도로조명 상세" cellpadding="0" cellspacing="0">
+							<colgroup>
+								<col width="14%">
+								<col width="36%">
+								<col width="14%">
+								<col width="36%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>관리번호</th>
+									<td><span id="det_light_no"></span></td>
+									<th>구관리번호</th>
+									<td><span id="det_old_light_no"></span></td>
+								</tr>
+								<tr>
+									<th>행정동</th>
+									<td colspan="3"><span id="det_hj_dong_nm"></span></td>
+								</tr>
+								<tr>
+									<th>회사</th>
+									<td><span id="det_mgmt_no"></span></td>
+									<th>점멸기</th>
+									<td><span id="det_auto_jum_type1_nm"></span></td>
+								</tr>
+								<tr>
+									<th>도엽번호</th>
+									<td><span id="det_doyep_no"></span></td>
+									<th>공사번호</th>
+									<td><span id="det_bgs_no"></span></td>
+								</tr>
+								<tr>
+									<th>변대주</th>
+									<td><span id="det_bdj"></span></td>
+									<th>인입주</th>
+									<td><span id="det_pole_no"></span></td>
+								</tr>
+								<tr>
+									<th>등상태</th>
+									<td><span id="det_light_gubun_nm"></span></td>
+									<th>쌍등여부</th>
+									<td><span id="det_twin_light_nm"></span></td>
+								</tr>
+								<tr>
+									<th>등기구모형1</th>
+									<td><span id="det_lamp1_nm"></span></td>
+									<th>등기구모형2</th>
+									<td><span id="det_lamp1_nm2"></span></td>
+								</tr>
+								<tr>
+									<th>광원종류1</th>
+									<td><span id="det_lamp2_nm"></span></td>
+									<th>광원종류2</th>
+									<td><span id="det_lamp2_nm2"></span></td>
+								</tr>
+								<tr>
+									<th>광원용량1</th>
+									<td><span id="det_lamp3_nm"></span></td>
+									<th>광원용량2</th>
+									<td><span id="det_lamp3_nm2"></span></td>
+								</tr>
+								<tr>
+									<th>스위치종류</th>
+									<td><span id="det_onoff_nm"></span></td>
+									<th>지지방식</th>
+									<td><span id="det_stand_nm"></span></td>
+								</tr>
+								<tr>
+									<th>한전고객번호</th>
+									<td><span id="det_kepco_cust_no"></span></td>
+									<th>한전계약전력</th>
+									<td><span id="det_kepco_nm"></span></td>
+								</tr>
+								<tr>
+									<th>작업진행현황</th>
+									<td><span id="det_work_nm"></span></td>
+									<th>설치일자</th>
+									<td><span id="det_set_ymd"></span></td>
+								</tr>
+								<tr>
+									<th>사용량</th>
+									<td colspan="3"><span id="det_use_light"></span></td>
+								</tr>
+								<tr>
+									<th>구주소</th>
+									<td colspan="3"><span id="det_address"></span></td>
+								</tr>
+								<tr>
+									<th>신주소</th>
+									<td colspan="3"><span id="det_new_address"></span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!--지도,보안등사진 -->
+					<div id="detail_mimg">
+						<div id="detail_map">
+							<iframe id="mapDet" name="mapDet" scrolling="no" style="width: 100%; height: 100%;" class="p_map"></iframe>
+							<form name="frmDet" id="frmDet" method="post">
+							</form>
+						</div>
+						<div id="detail_slight">
+							<p><img src="/resources/css/images/sub/slight_noimg.gif"></p>
+							<p><img src="/resources/css/images/sub/slight_noimg.gif"></p>
+						</div>
+						<!-- 신고리스트 -->
+						<div id="board_list3">
+							<table  cellpadding="0" cellspacing="0">
+								<colgroup>
+									<col width="15%">
+									<col width="15%">
+									<col width="30%">
+									<col width="20%">
+									<col width="20%">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>접수번호</th>
+										<th>보수일자</th>
+										<th>고장상태</th>
+										<th>보수내역</th>
+										<th>진행상태</th>
+									</tr>
+								</thead>
+								<tbody id="repair_list">
+								</tbody>
+							</table>						
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

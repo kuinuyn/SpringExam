@@ -213,6 +213,19 @@
 		ORDER BY A.REPAIR_NO DESC
 	</select>
 	
+		<select id="getEquipmentExcelList" parameterType="hashMap" resultType="hashMap">
+		SELECT A.REPAIR_NO as "접수번호"
+			, TO_CHAR(TO_DATE(B.REPAIR_DATE, 'YYYYMMDD'), 'YYYY.MM.DD') AS "보수일자"
+			, F_GY_DATA_CODE_NM('03', A.TROUBLE_TYPE) AS "고장상태"
+			, B.REPAIR_DESC as "보수내역"
+			, F_GY_DATA_CODE_NM('03', A.PROGRESS_STATUS) AS "진행상태"
+		FROM GY_LIGHT_REPAIR  A, GY_LIGHT_REPAIR_PART B
+		WHERE A.REPAIR_NO=B.REPAIR_NO 
+			AND A.LIGHT_NO = #{light_no}
+		ORDER BY A.REPAIR_NO DESC
+	</select>	
+			
+	
 	<select id="getChkLightNo" parameterType="hashMap" resultType="Int">
 		SELECT COUNT(*) AS CNT
 		FROM GY_LIGHT

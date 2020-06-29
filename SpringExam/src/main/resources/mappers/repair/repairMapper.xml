@@ -64,16 +64,16 @@
 					<if test="searchType != null and searchType != '' ">
 						<choose>
 							<when test="searchType == 1">
-								AND NOTICE_NAME LIKE '%'||#{keyword}||'%'
+								AND A.NOTICE_NAME LIKE '%'||#{keyword}||'%'
 							</when>
 							<when test="searchType == 2">
-								AND LOCATION LIKE '%'||#{keyword}||'%'
+								AND A.LOCATION LIKE '%'||#{keyword}||'%'
 							</when>
 							<when test="searchType == 3">
-								AND NEW_ADDRESS LIKE '%'||#{keyword}||'%'
+								AND A.NEW_ADDRESS LIKE '%'||#{keyword}||'%'
 							</when>
 							<when test="searchType == 4">
-								AND LIGHT_NO LIKE '%'||#{keyword}||'%'
+								AND A.LIGHT_NO LIKE '%'||#{keyword}||'%'
 							</when>
 						</choose>
 					</if>
