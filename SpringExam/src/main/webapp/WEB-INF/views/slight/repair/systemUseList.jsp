@@ -7,9 +7,13 @@
 		searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 		Search();
 		
+<<<<<<< HEAD
 		$("#searchYear").change(function() {	
 			$("#searchCom").val("");
 			
+=======
+		$("#searchYear").change(function() {		
+>>>>>>> refs/remotes/origin/200629_1_P
 			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 			Search();
 		});
