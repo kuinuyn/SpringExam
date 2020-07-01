@@ -133,35 +133,30 @@
 			  AND COMP_NM = #{searchCom}
 			</if>
 	</select>
-
+	
 	<select id="getSystemUseView" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[	
-			SELECT *, 
+			SELECT A.*, 
 					(SELECT DATA_CODE_NAME 
 					   FROM GY_MATERIAL 
-					 WHERE PART_CD = DATA_CODE AND YEAR = YEAR
-			]]>						 
-			<if test="searchCom != null and searchCom != '' ">					  
-					 AND COMPANY_ID = #{searchCom}
-			</if>         			
-		<![CDATA[  					 
+					 WHERE DATA_CODE = A.PART_CD AND YEAR = A.YEAR AND COMPANY_ID = A.COMPANY_ID						 
 					) AS PART_NAME, 
-					(SELECT MEMBER_NAME FROM GY_MEMBER WHERE MEMBER_ID = COMPANY_ID) AS COMPANY_NAME,
-         			COALESCE(BIGO, '') AS BIGO1					
-			FROM GY_LIGHT_PART 
+					(SELECT MEMBER_NAME FROM GY_MEMBER WHERE MEMBER_ID = A.COMPANY_ID) AS COMPANY_NAME,
+         			COALESCE(A.BIGO, '') AS BIGO1					
+			FROM GY_LIGHT_PART A
 			WHERE 1 = 1
 			]]>			
 			<if test="searchPart != null and searchPart != '' ">			
-			  AND PART_CD = #{searchPart}
+			  AND A.PART_CD = #{searchPart}
 			</if>         			
 			<if test="searchYear != null and searchYear != '' ">			
-			  AND YEAR = #{searchYear}
+			  AND A.YEAR = #{searchYear}
 			</if>			   
 			<if test="searchCom != null and searchCom != '' ">				
-			  AND COMP_NM = #{searchCom}
+			  AND A.COMP_NM = #{searchCom}
 			</if>
 		<![CDATA[ 			   
-			ORDER BY INOUT_DAY DESC, SEQ_NO DESC
+			ORDER BY A.INOUT_DAY DESC, A.SEQ_NO DESC
 			LIMIT #{limit} OFFSET #{offset}			
 		]]>
 	</select>

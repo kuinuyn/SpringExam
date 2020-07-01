@@ -49,19 +49,42 @@
 		Search();
 		
 		$("#searchYear").change(function() {
-
+			$("#searchCom").val("");
+			$("#searchPart").val("");			
+			searchCompany($("#searchYear").val(), $("#searchCom"), "");
+			searchRepairPart($("#searchYear").val(), $("#searchCom").val(), $("#searchPart"), "");
+			
 			Search();
 		});
 		
 		$("#searchCom").change(function() {
+			$("#searchPart").val("");			
+			searchRepairPart($("#searchYear").val(), $("#searchCom").val(), $("#searchPart"), "");
 			
 			Search();			
 		});
 		
 		$("#searchPart").change(function() {
-
+			
 			Search();
 		});
+		
+		$("#year").change(function() {
+
+			$("#company_id").val("");
+			$("#part_cd").val("");
+			searchCompany($("#year").val(), $("#company_id"), "");
+			searchRepairPart($("#year").val(), $("#company_id").val(), $("#part_cd"), "");
+			
+		});
+		
+		
+		$("#company_id").change(function() {
+			
+			$("#part_cd").val("");
+			searchRepairPart($("#year").val(), $("#company_id").val(), $("#part_cd"), "");
+			
+		});		
 
 		var today = new Date();
 		var eDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());		

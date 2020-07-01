@@ -8,7 +8,7 @@
 		Search();
 		
 		$("#searchYear").change(function() {		
-//			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
+			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 			Search();
 		});
 		
