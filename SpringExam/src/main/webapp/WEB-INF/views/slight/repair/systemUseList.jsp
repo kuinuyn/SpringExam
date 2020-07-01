@@ -7,8 +7,10 @@
 		searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 		Search();
 		
-		$("#searchYear").change(function() {		
-//			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
+		$("#searchYear").change(function() {	
+			$("#searchCom").val("");
+			
+			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 			Search();
 		});
 		
