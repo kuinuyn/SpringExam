@@ -7,13 +7,9 @@
 		searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 		Search();
 		
-<<<<<<< HEAD
-		$("#searchYear").change(function() {	
-			$("#searchCom").val("");
-			
-=======
 		$("#searchYear").change(function() {		
->>>>>>> refs/remotes/origin/200629_1_P
+     		$("#searchCom").val("");
+     		
 			searchCompany($("#searchYear").val(), $("#searchCom"), "");			
 			Search();
 		});
@@ -137,26 +133,16 @@
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
 						<li><a href="/company/companyRepair" >보수내역관리</a></li>
-						<li><a href="#">이용안내</a></li>
-					</ul>
-				</li>
-				<li><a href="#">보안등관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
-					<ul>
-						<li><a href="/equipment/securityLightList">보안등관리</a></li>
-						<li><a href="/equipment/streetLightList">가로등관리</a></li>
-						<li><a href="/equipment/distributionBoxList">분전함관리</a></li>
-						<li><a href="#">GIS관리</a></li>
-						<li><a href="/equipment/equipStaitstice" >통계관리</a></li>
-						<li><a href="/system/systemMemberList">사용자관리</a></li>
+						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
 				<li><a href="#">보수이력관리</a>
 					<ul>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="#" >신설현황</a></li>
-						<li><a href="#">이설현황</a></li>
-						<li><a href="#" >철거현황</a></li>
-						<li><a href="#">자재관리</a></li>
+						<li><a href="/repair/systemRepairList2" >신설현황</a></li>
+						<li><a href="/repair/systemRepairList3">이설현황</a></li>
+						<li><a href="/repair/systemRepairList4" >철거현황</a></li>
+						<li><a href="/repair/systemMaterialList">자재관리</a></li>
 						<li><a href="/repair/systemUseList" >자재입/출고관리</a></li>
 					</ul>
 				</li>				

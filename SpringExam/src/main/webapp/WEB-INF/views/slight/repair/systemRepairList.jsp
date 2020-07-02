@@ -920,7 +920,7 @@
 						<li><a href="/repair/systemRepairList3">이설현황</a></li>
 						<li><a href="/repair/systemRepairList4" >철거현황</a></li>
 						<li><a href="/repair/systemMaterialList">자재관리</a></li>
-						<li><a href="#" >자재입/출고관리</a></li>
+						<li><a href="/repair/systemUseList" >자재입/출고관리</a></li>
 					</ul>
 				</li>
 			</ul>

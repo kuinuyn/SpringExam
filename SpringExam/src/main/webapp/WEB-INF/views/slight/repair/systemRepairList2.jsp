@@ -182,11 +182,11 @@
 					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].light_gubun+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:goGisMap(\""+list[i].light_no+"\")'>"+list[i].light_no+"</a></span></td>";
 					//str += "	<td><span> <a href='javascript:modal_popup3(\"messagePop3\")'>"+list[i].light_no+"</a></span></td>";
-					str += "	<td><span> "+list[i].notice_name+" </span></td>";
-					str += "	<td><span> "+formatContactNumber(list[i].contact)+" </span></td>";
-					str += "	<td><span> "+list[i].notice_date+" </span></td>";
-					str += "	<td><span> "+list[i].repair_date+" </span></td>";
-					str += "	<td><span> "+list[i].repair_date_2+" </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].notice_name+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+formatContactNumber(list[i].contact)+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].notice_date+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_date+"</a> </span></td>";
+					str += "	<td><span> <a href='javascript:getRepairDetail(\""+list[i].repair_no+"\", \"Detail\")'>"+list[i].repair_date_2+"</a> </span></td>";
 					str += "	<td style='text-align: center;'><span> "+list[i].progress_name+" </span></td>";	
 					btnFn = "getRepairDetail(\""+list[i].repair_no+"\", \"Process\" )";
 					if(list[i].progress_status == "01") {
@@ -196,7 +196,7 @@
 					else if(list[i].progress_status == "02" || list[i].progress_status == "03") {
 						btnClass = "btn_orange02";
 						btnText = "작업지시취소";
-						btnFn = "updateRepairCancel(\""+list[i].repair_no+"\")";
+						btnFn = "updateRepairCancel(\""+list[i].repair_no+"\", \""+list[i].company_id+"\")";
 					}
 					else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
 						btnClass = "btn_blue04";
@@ -245,6 +245,7 @@
 			slightDetailForm.repair_no.value = data['repair_no'];
 			slightDetailForm.lightNo.value = data['light_no'];
 			slightDetailForm.repair_date.value = data['repair_date'];
+			slightDetailForm.dong.value = data['dong'];
 			
 			$("#remark_etc").val("");
 			$("#searchYear").trigger("change");
@@ -675,7 +676,7 @@
 		}
 	}
 
-	function updateRepairCancel(repairNo){
+	function updateRepairCancel(repairNo, companyId){
 
 		var yn = confirm("작업지시 취소를 하시겠습니까?");
 		if(yn) {
@@ -683,7 +684,7 @@
 			$.ajax({
 				type : "POST"			
 				, url : "/repair/updateRepairCancel"
-				, data : {"repairNo":repairNo}
+				, data : {"repairNo":repairNo, "companyId":companyId}
 				, dataType : "JSON"
 				, success : function(obj) {
 					updateRepairCancelCallback(obj);
@@ -711,11 +712,16 @@
 	}
 	
 	function searchCompany(st_yy, ele) {
+		var jsonParam = {"searchYear" : st_yy};
+		
+		if($("#dong").val() != null && $("#dong").val() != "") {
+			jsonParam = {"searchYear" : st_yy, "dong": $("#dong").val()};
+		}
 		
 		$.ajax({
 			type : "POST"			
 			, url : "/equipment/getCompanyId"
-			, data : {"searchYear" : st_yy}
+			, data : jsonParam
 			, dataType : "JSON"
 			, success : function(obj) {
 				var option = "<option value=''>시공업체</option>";
@@ -907,7 +913,7 @@
 						<li><a href="/repair/systemRepairList3">이설현황</a></li>
 						<li><a href="/repair/systemRepairList4" >철거현황</a></li>
 						<li><a href="/repair/systemMaterialList">자재관리</a></li>
-						<li><a href="#" >자재입/출고관리</a></li>
+						<li><a href="/repair/systemUseList" >자재입/출고관리</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -1078,6 +1084,7 @@
 								<input type="hidden" name="repair_no" id="repair_no" value="">
 								<input type="hidden" name="lightNo" name="lightNo" value="">
 								<input type="hidden" name="repair_date" id="repair_date" value="">
+								<input type="hidden" name="dong" id="dong" value="">
 								<!--결과조회 상세 Popup-->
 								<input type="hidden" id="delete_file" name="delete_file" value=""/><!-- 삭제할 파일 -->
 								<input type="hidden" id="photo1" name="photo1" >
