@@ -130,19 +130,20 @@
 		});
 		
 		$("#st_yy").change(function() {
-			var option = "<option value=''>자재</option>";
-			for(i=0; i<commonCd.length; i++) {
-				if(commonCd[i].code_type == "24") {
-					if($(this).val() == commonCd[i].year) {
-						option += "<option value='"+commonCd[i].data_code+"'>"+commonCd[i].data_code_name+"</option>";
-					}
-				}
-			}
 			
-			$("#material_cd").html(option);
+			$("#company_id").val("");
+			$("#material_cd").val("");
 			
-			searchCompany($(this).val(), $("#company_id"));
+			searchCompany($("#st_yy").val(), $("#company_id"));
+			searchRepairPart($("#st_yy").val(), $("#company_id").val(), $("#material_cd"));
 		});
+		
+		$("#company_id").change(function() {
+			
+			$("#material_cd").val("");
+			searchRepairPart($("#st_yy").val(), $("#company_id").val(), $("#material_cd"));
+			
+		});		
 		
 		
 		Search();
@@ -168,6 +169,28 @@
 			}
 		});
 	}
+	
+	function searchRepairPart(st_yy, companyId, ele) {
+
+		$.ajax({
+			type : "POST"			
+			, url : "/repair/getRepairPartId"
+			, data : {"searchYear" : st_yy, "searchCom" : companyId}
+			, dataType : "JSON"
+			, success : function(obj) {
+				var option = "<option value=''>선택</option>";
+				for(i=0; i<obj.resultData.length; i++) {				
+				
+						option += "<option value='"+obj.resultData[i].part_cd+"'>"+obj.resultData[i].data_code_name+"</option>";
+				}
+				
+				$(ele).html(option);
+			}
+			, error : function(xhr, status, error) {
+				
+			}
+		});
+	}	
 	
 	function Search() {
 		
