@@ -518,7 +518,9 @@
 						AND TO_CHAR(A.NOTICE_DATE, 'YYYY-MM-DD') BETWEEN #{sDate3} AND #{eDate3}
 					</when>
 					<when test='gubun != null and gubun == "company".toString() '>
-						AND B.COMPANY_ID = #{company_id2}
+						<if test="company_id2 != null and company_id2 != '' "> 					
+							AND B.COMPANY_ID = #{company_id2}
+						</if>
 					</when>
 				</choose>
 		<![CDATA[		
