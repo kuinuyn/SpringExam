@@ -122,11 +122,12 @@
 				<li>
 					<a href="#"></a>
 					<span class="black03">신고건수</span>
-					<span class="sky01 pdl5">2752건</span>
+					<span class="black03 pdl15">어제 </span>
+					<span class="sky01 pdl5">${lastSummaryMap.yesterdayCnt }건</span>
 					<span class="black03 pdl15">지난주</span>
-					<span class="sky01 pdl5">25건</span>
-					<span class="black03 pdl15">지난달</span>
-					<span class="sky01 pdl5">157건</span>
+					<span class="sky01 pdl5">${lastSummaryMap.lastWeekCnt }건</span>
+					<span class="black03 pdl15">지난월</span>
+					<span class="sky01 pdl5">${lastSummaryMap.lastMonthCnt }건</span>
 				</li>
 				
 			</ul>

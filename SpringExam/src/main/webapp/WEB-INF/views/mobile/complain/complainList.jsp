@@ -91,7 +91,7 @@
 							str += "	<a href='#' onclick='pwPopup(\""+list[i].repair_no+"\");return false;'>";
 						</sec:authorize>
 						<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-							str += "	<a href='javascript:getComplaintModify()'>";
+							str += "	<a href='javascript:getComplaintModify(\""+list[i].repair_no+"\")'>";
 						</sec:authorize>
 						str += "		<p>";
 						str += "			<span>접수번호</span> ";
@@ -156,7 +156,7 @@
 							str += "	<a href='#' onclick='pwPopup(\""+list[i].repair_no+"\");return false;'>";
 						</sec:authorize>
 						<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-							str += "	<a href='javascript:getComplaintModify()'>";
+							str += "	<a href='javascript:getComplaintModify(\""+list[i].repair_no+"\")'>";
 						</sec:authorize>
 						str += "		<p>";
 						str += "			<span>접수번호</span> ";
@@ -201,7 +201,7 @@
 			}
 		}
 		
-		function getComplaintModify() {
+		function getComplaintModify(repairNo) {
 			<sec:authorize access="hasAnyRole('ROLE_ANONYMOUS','ROLE_USER')">
 				if($("#password").val() == null || $("#password").val() == "") {
 					alert("비밀번호를 입력하세요.");
@@ -213,6 +213,9 @@
 				}
 			</sec:authorize>
 			<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+				if(repairNo != undefined) {
+					$("#repairNo").val(repairNo);
+				}
 				$("#detailForm").attr({action:'/mobile/complain/complainModify'}).submit();
 			</sec:authorize>
 		}
