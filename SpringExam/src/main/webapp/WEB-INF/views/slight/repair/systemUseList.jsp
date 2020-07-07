@@ -126,7 +126,7 @@
 		<div id="local_nav">
 			<ul class="smenu">
 				<li><a href="#" ><img src="/resources/css/images/sub/icon_home.png" alt="HOME" /></a></li>
-				<li><a href="#" >기본정보관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
+				<li><a href="#" >보수이력관리 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
 						<li><a href="/trouble/trblReportList">고장신고</a></li>
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
@@ -136,7 +136,7 @@
 						<li><a href="/info/infoServicesList">이용안내</a></li>
 					</ul>
 				</li>
-				<li><a href="#">보수이력관리</a>
+				<li><a href="#">자재입/출고관리</a>
 					<ul>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
 						<li><a href="/repair/systemRepairList2" >신설현황</a></li>

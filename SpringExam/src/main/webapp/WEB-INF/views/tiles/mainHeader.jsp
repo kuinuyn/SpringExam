@@ -285,7 +285,7 @@ function loginPopup() {
 				<ul class="smenu07 " >
 					<li><a href="/info/infoServicesList">서비스 소개</a></li>
 					<li><a href="/info/infoReportList">이용안내</a></li>
-					<li><a href="#" >공지사항</a></li>
+					<li><a href="/info/infoNoticeList" >공지사항</a></li>
 				</ul>
 			</sec:authorize>
 				
@@ -300,7 +300,7 @@ function loginPopup() {
 				<ul class="smenu05" >
 					<li><a href="/info/infoServicesList">서비스 소개</a></li>
 					<li><a href="/info/infoReportList">이용안내</a></li>
-					<li><a href="#" >공지사항</a></li>
+					<li><a href="/info/infoNoticeList" >공지사항</a></li>
 				</ul>
 				
 			</sec:authorize>
@@ -310,7 +310,7 @@ function loginPopup() {
 				<ul class="smenu04 " >
 					<li><a href="/info/infoServicesList">서비스 소개</a></li>
 					<li><a href="/info/infoReportList">이용안내</a></li>
-					<li><a href="#" >공지사항</a></li>
+					<li><a href="/info/infoNoticeList" >공지사항</a></li>
 				</ul>
 			</sec:authorize>
 		</div>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.slight.info.infoMapper">
+
+	<select id="getInfoNoticeListCnt" resultType="int" parameterType="hashMap">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM GY_MATERIAL A 
+			WHERE 1=2
+			AND A.YEAR = #{sch_year}
+		]]>
+	</select>
+	
+	<select id="getInfoNoticeList" resultType="hashMap" parameterType="hashMap">
+		<![CDATA[
+		  SELECT A.YEAR
+		       , A.DATA_CODE
+		       , A.DATA_CODE_NAME
+		       , COALESCE(A.COMPANY_ID,'') AS COMPANY_ID
+		       , COALESCE(A.STANDARD ,'') AS STANDARD
+		       , COALESCE(A.DANGA ,'') AS DANGA
+		       , A.UNIT
+		       , COALESCE(A.REMARKS	,'') AS REMARKS
+		   FROM GY_MATERIAL A 
+		  WHERE 1=2
+		    AND A.YEAR = #{sch_year}
+		    AND A.COMPANY_ID like '%' ||#{sch_company_id} || '%'
+			ORDER BY A.SUNBUN, A.DATA_CODE
+			LIMIT #{limit} OFFSET #{offset}
+			
+		]]>
+	</select>
+	
+	<select id="getInfoNoticeDetail" resultType="hashMap"  parameterType="hashMap">
+		<![CDATA[
+	  	SELECT A.YEAR
+		       , A.DATA_CODE
+		       , A.DATA_CODE_NAME
+		       , COALESCE(A.COMPANY_ID,'') AS COMPANY_ID
+		       , COALESCE(A.STANDARD ,'') AS STANDARD
+		       , COALESCE(A.DANGA ,'') AS DANGA
+		       , A.UNIT
+		       , COALESCE(A.REMARKS	,'') AS REMARKS
+           FROM GY_MATERIAL A 
+          WHERE 1=1
+            AND A.YEAR    = #{sch_year}
+		    AND A.DATA_CODE = #{dataCode}
+		    AND A.COMPANY_ID = #{company_id}
+			]]>
+	</select>
+	
+	<insert id="insertInfoNotice" parameterType="hashMap">
+		<selectKey resultType="int" keyProperty="data_code" order="BEFORE">
+			<if test="data_code == null or data_code == '' ">
+				SELECT COALESCE(MAX(DATA_CODE::NUMERIC), 0)+1
+				FROM GY_MATERIAL
+				WHERE YEAR    = #{sch_year}
+			</if>
+		</selectKey>
+		
+		INSERT INTO GY_MATERIAL
+		(
+			YEAR
+			, DATA_CODE
+			, DATA_CODE_NAME
+			, COMPANY_ID
+			, STANDARD
+			, DANGA
+			, UNIT
+			, REMARKS
+			, last_update
+		)
+		VALUES
+		(
+			#{sch_year}
+			, #{data_code}
+			, #{data_code_name}
+			, #{company_id}
+			, #{standard}
+			, #{danga}
+			, #{unit}
+			, #{remarks}
+			, now()
+		)
+	</insert>
+	
+	<update id="updateInfoNotice" parameterType="hashMap">
+		UPDATE GY_MATERIAL
+		SET
+			DATA_CODE_NAME = #{data_code_name}
+			, COMPANY_ID = #{company_id}
+			, STANDARD = #{standard}
+			, DANGA = #{danga}
+			, UNIT = #{unit}
+			, REMARKS = #{remarks}
+			, last_update = now()
+		WHERE 1=1
+		  AND YEAR = #{year}
+		  AND DATA_CODE = #{data_code}
+		  AND COMPANY_ID = #{company_id}
+	</update>
+	
+	<update id="deleteInfoNotice" parameterType="hashMap">
+		DELETE FROM GY_MATERIAL
+		WHERE YEAR = #{year}
+		  AND DATA_CODE = #{data_code} 
+		  AND COMPANY_ID = #{company_id}
+	</update>
+	
+	
+</mapper>

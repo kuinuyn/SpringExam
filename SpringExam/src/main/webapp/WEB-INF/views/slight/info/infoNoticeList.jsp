@@ -5,18 +5,10 @@
 
 	$(function(){	
 		
-		searchCompany($("#sch_year").val(), $("#sch_company_id"), "");
-		
 		Search("1");
 	});
 	
-	function Search(currentPageNo,flag) {
-		
-		if(flag == "1")
-		{
-			$("#sch_company_id").val("");
-			searchCompany($("#sch_year").val(), $("#sch_company_id"), "");
-		}
+	function Search(currentPageNo) {
 		
 		
 		if(currentPageNo === undefined){
@@ -27,7 +19,7 @@
 		
 		$.ajax({
 			type : "POST"			
-			, url : "/repair/getSystemMaterialList"
+			, url : "/info/getInfoNoticeList"
 			, data : $("#slightForm").serialize()
 			, dataType : "JSON"
 			, success : function(obj) {
@@ -61,16 +53,12 @@
 					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].data_code+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].data_code_name+"</a></span></td>";
 					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].company_id+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].standard+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].danga+"</a></span></td>";
-					str += "	<td><span> <a href='javascript:getMaterialDetail(\""+list[i].data_code+"\", \""+list[i].company_id+"\")'>"+list[i].remarks+" </a></span></td>";
-					str += "	<td style='text-align: center;'> "+btnStr+" </td>";
 					str += "</a></tr>";
 				}
 			}
 			else {
 				str += "<tr>";
-				str += "	<td colspan='8' style='text-align: center;'>등록된 글이 존재하지 않습니다.</td>";
+				str += "	<td colspan='3' style='text-align: center;'>등록된 글이 존재하지 않습니다.</td>";
 				str += "</tr>";
 			}
 			
@@ -84,7 +72,7 @@
 		$("#dataCode").val(dataCode);
 		$.ajax({
 			type : "POST"			
-			, url : "/repair/getSystemMaterialDetail"
+			, url : "/info/getInfoNoticeDetail"
 			, data : {"dataCode":dataCode, "sch_year":$("#sch_year").val(), "company_id":company_id}
 			, dataType : "JSON"
 			, success : function(obj) {
@@ -220,7 +208,7 @@ function doUpdate() {
 		if(yn){
 			$("#slightForm").ajaxForm({
 					type : "POST"			 
-					, url : "/repair/updateSystemMaterial"
+					, url : "/info/updateInfoNotice"
 					, data : json
 					, dataType : "JSON"
 				, success : function(obj) {
@@ -322,24 +310,21 @@ function popupClose() {
 		<div id="local_nav">
 			<ul class="smenu">
 				<li><a href="#" ><img src="/resources/css/images/sub/icon_home.png" alt="HOME" /></a></li>
-				<li><a href="#" >보수이력관리 <img src="/resources/css/images/sub/icon_down.png"/></a>
+				<li><a href="#" >이용안내 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
 						<li><a href="/trouble/trblReportList">고장신고</a></li>
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
 						<li><a href="/equipment/securityLightList" >기본정보관리</a></li>
 						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
 						<li><a href="/company/companyRepair" >보수내역관리</a></li>
-						<li><a href="/info/infoServicesList">이용안내</a></li>
+						<li><a href="#">이용안내</a></li>
 					</ul>
 				</li>
-				<li><a href="#">자재관리</a>
+				<li><a href="#">공지사항<img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
-						<li><a href="/repair/systemRepairList">보수이력관리</a></li>
-						<li><a href="/repair/systemRepairList2" >신설현황</a></li>
-						<li><a href="/repair/systemRepairList3">이설현황</a></li>
-						<li><a href="/repair/systemRepairList4" >철거현황</a></li>
-						<li><a href="/repair/systemMaterialList">자재관리</a></li>
-						<li><a href="/repair/systemUseList" >자재입/출고관리</a></li>
+						<li><a href="/info/infoServicesList">서비스 소개</a></li>
+						<li><a href="/info/infoReportList">이용안내</a></li>
+						<li><a href="/info/infoNoticeList" >공지사항</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -347,7 +332,7 @@ function popupClose() {
 	</div>
 	
 	<div id="sub">
-		<div id="sub_title"><h3>자재관리</h3></div>
+		<div id="sub_title"><h3>공지사항</h3></div>
 		<!-- 검색박스 -->
 		<form id="slightForm" name="slightForm" method="post" action="">
 		<input type="hidden" id="dataCode" name="dataCode" value="">
@@ -355,17 +340,13 @@ function popupClose() {
 			<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
 			<div id="search_box">
 				<ul>
-					<li class="title">관리년도</li>
+					<li class="title">공지년도</li>
 					<li>
-					<select id="sch_year" name="sch_year" class="sel01" onchange='javascript:Search("1","1")'  >
+					<select id="sch_year" name="sch_year" class="sel01" onchange='javascript:Search("1")'  >
 						<c:forEach items="${searchYearList}" var="year">
 							<option value="${year }">${year }년</option>
 						</c:forEach>
 					</select>
-					<select id="sch_company_id" name="sch_company_id" class="sel01" onchange='javascript:Search("1","2")'   >
-													<option value="">업체명</option>
-												</select>
-					</li>
 					
 					<li><a href="javascript:Search()"  class="btn_search01">검 색</a></li>
 				</ul>
@@ -374,28 +355,22 @@ function popupClose() {
 			<div id="toptxt">
 			<ul>
 				<li><span class="black03">총개수: 0개</span></li>				
-				<li class="b_right"><span ><a href="javascript:doNew()" class="btn_gray03">등록</a></span></li>							
+				<!--li class="b_right"><span ><a href="javascript:doNew()" class="btn_gray03">등록</a></span></li-->							
 			</ul>
 		</div>
 		<div id="board_list">
 			<table summary="자재목록" cellpadding="0" cellspacing="0">
-				<caption>자재번호,자재명,업체명,자재규격,자재단가,비고</caption>
+				<caption>번호,제목,작성일</caption>
 				<colgroup>
-					<col width="14%">
+					<col width="10%">
+					<col width="70%">
 					<col width="20%">
-					<col width="20%">
-					<col width="16%">
-					<col width="14%">
-					<col width="16%">
 				</colgroup>
 				<thead>
 					<tr>
-						<th>자재번호</th>
-						<th>자재명</th>
-						<th>업체명</th>
-						<th>자재규격</th>
-						<th>자재단가</th>
-						<th>비고</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성일</th>
 					</tr>
 				</thead>
 				<tbody id="tbody">

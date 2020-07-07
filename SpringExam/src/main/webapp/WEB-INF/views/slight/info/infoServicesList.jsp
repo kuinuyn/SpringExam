@@ -6,7 +6,7 @@
 		<div id="local_nav">
 			<ul class="smenu">
 				<li><a href="#" ><img src="/resources/css/images/sub/icon_home.png" alt="HOME" /></a></li>
-				<li><a href="#" >고장신고 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
+				<li><a href="#" >이용안내 <img src="/resources/css/images/sub/icon_down.png" class="pdl5"/></a>
 					<ul>
 						<li><a href="/trouble/trblReportList">고장신고</a></li>
 						<li><a href="/complaint/complaintList" >민원처리결과조회</a></li>
@@ -20,6 +20,7 @@
 					<ul>
 						<li><a href="/info/infoServicesList">서비스 소개</a></li>
 						<li><a href="/info/infoReportList">이용안내</a></li>
+						<li><a href="/info/infoNoticeList" >공지사항</a></li>
 					</ul>
 				</li>
 			</ul>
