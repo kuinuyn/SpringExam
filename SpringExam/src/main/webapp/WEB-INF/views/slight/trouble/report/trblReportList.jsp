@@ -199,6 +199,7 @@
 		if(obj != null) {
 			if(obj.resultCnt > -1) {
 				alert("신고를 성공하였습니다.");
+				clearInput();
 				location.reload();
 			}
 			else {

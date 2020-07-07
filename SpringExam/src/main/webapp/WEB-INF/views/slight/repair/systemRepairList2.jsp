@@ -1003,12 +1003,12 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="sortable" onclick="sortEvent(this)"><p class="tt">접수번호 <span class="tt-text">클릭 시 접수번호에 따라 정렬순서 변경</span></p></th>
+						<th class="sortable" onclick="sortEvent(this)"><p class="tt"><span>접수번호</span> <span class="tt-text">클릭 시 접수번호에 따라 정렬순서 변경</span></p></th>
 						<th>민원종류</th>
 						<th>관리번호</th>
 						<th>신고인</th>
 						<th>전화번호</th>
-						<th class="sortable" onclick="sortEvent(this)"><p class="tt">접수일<span class="tt-text">클릭 시 접수일에 따라 정렬순서 변경</span></p></th>
+						<th class="sortable" onclick="sortEvent(this)"><p class="tt"><span>접수일</span><span class="tt-text">클릭 시 접수일에 따라 정렬순서 변경</span></p></th>
 						<th>지시일</th>
 						<th>보수일</th>
 						<th>처리상황</th>
