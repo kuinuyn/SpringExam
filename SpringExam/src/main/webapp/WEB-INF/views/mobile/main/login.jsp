@@ -56,13 +56,13 @@
 	<section id="content">
 		<h2 class="hide">로그인</h2>
 		<div id="login">
-			<p><a href="${contextPath }/index" class="login_logo">로그인로고</a></p>
+			<p><a href="${contextPath }/mobile/index" class="login_logo">로그인로고</a></p>
 			<div id="login_tbox">
 				<form name='loginForm' action='/loginProcess' method='POST'>
 					<p><input type="text" id="user_id" name="user_id" class="loginbox" placeholder="아이디"></p>
 					<p><input type="password" id="pw" name="pw" class="loginbox" placeholder="비밀번호"></p>	
 					<p><a href="javascript:loginProcess()" class="btn_login">로그인</a></p>	
-					<p><a href="${contextPath }/index" class="btn_home">홈으로</a></p>	
+					<p><a href="${contextPath }/mobile/index" class="btn_home">홈으로</a></p>	
 				</form>
 			</div>
 				

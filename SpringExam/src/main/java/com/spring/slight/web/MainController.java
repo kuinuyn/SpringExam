@@ -44,14 +44,14 @@ public class MainController {
 		}
 		else {
 			if(domain.split("\\.")[0].indexOf("m") < 0) {
-				domain = request.getScheme()+"://m."+request.getServerName()+":"+request.getServerPort();
+				domain = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
 			}
 			
 			if(loginChk != null && !"".equals(loginChk)) {
 				resultPage = "redirect:"+domain+"/mobile/login?fail=true";
 			}
 			else {
-				resultPage = "redirect:"+domain+"/index";
+				resultPage = "redirect:"+domain+"/mobile/index";
 			}
 		}
 		

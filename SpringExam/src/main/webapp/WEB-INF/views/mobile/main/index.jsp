@@ -19,7 +19,7 @@
 		<!-- header -->
 		<header class="navbar navbar-fixed-top" id="navbar_m">
 		    <div class="navbar-content">
-		    	<h1 >도로조명정보시스템<a href="/index" class="logo"></a></h1>
+		    	<h1 >도로조명정보시스템<a href="/mobile/index" class="logo"></a></h1>
 		        <div id="toggle-sidebar_m"><a href="#" class="btn_navi"></a></div>
 		    </div>
 		</header>
@@ -29,7 +29,7 @@
 		<nav class="sidebar sidebar-right" id="sidebar">
 			<h2 class="hide"> 메뉴</h2>
 		    <ul>
-		        <li class="close-sb n1"><a href="${contextPath }/index"><i class="fa fa-home"></i>HOME</a></li>
+		        <li class="close-sb n1"><a href="${contextPath }/mobile/index"><i class="fa fa-home"></i>HOME</a></li>
 		        <li class="close-sb n1"><a href="${contextPath }/mobile/trouble/troubleReport"><i class="fa fa-bullhorn"></i>고장신고</a></li>
 				<li class="close-sb n1"><a href="${contextPath }/mobile/complain/complainList"><i class="fa fa-check-circle"></i>진행결과</a></li>
 				<li class="close-sb n1"><a href="${contextPath }/mobile/notice/noticeList"><i class="fa fa-bars"></i>공지사항</a></li>

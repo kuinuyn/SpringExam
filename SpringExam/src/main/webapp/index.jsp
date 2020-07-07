@@ -8,7 +8,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			/* if("${pageContext.request.requestURL}".indexOf("m.") > -1) {
-				location.href="http://m.dev.slight.co.kr/index";
+				location.href="http://m.dev.slight.co.kr/mobile/index";
 			}
 			else {
 				location.href="/main";

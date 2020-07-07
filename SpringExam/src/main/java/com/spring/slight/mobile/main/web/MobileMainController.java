@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MobileMainController {
-	@RequestMapping("/index")
+	@RequestMapping("/mobile/index")
 	public String mobileMain() {
 		return "mobile/main/index";
 	}
