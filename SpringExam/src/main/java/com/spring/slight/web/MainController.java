@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,17 +27,37 @@ public class MainController {
 	private MainService mainService;
 	
 	@RequestMapping(value="/main")
-	public String getMainPage(ModelMap model, HttpServletRequest request) {
+	public String getMainPage(ModelMap model, HttpServletRequest request, Device device) {
 		Map<String, Object> lastSummaryMap = new HashMap<String, Object>();
+		String resultPage = "slight/main";
+		String loginChk = request.getParameter("fail");
+		String domain = request.getScheme()+"://"+request.getServerName();
 		
-		try {
-			lastSummaryMap = mainService.getLastSummary();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(device.isNormal()) {
+			try {
+				lastSummaryMap = mainService.getLastSummary();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+			model.addAttribute("lastSummaryMap", lastSummaryMap);
+		}
+		else {
+			if(domain.split("\\.")[0].indexOf("m") < 0) {
+				domain = request.getScheme()+"://m."+request.getServerName()+":"+request.getServerPort();
+			}
+			
+			if(loginChk != null && !"".equals(loginChk)) {
+				resultPage = "redirect:"+domain+"/mobile/login?fail=true";
+			}
+			else {
+				resultPage = "redirect:"+domain+"/index";
+			}
 		}
 		
-		model.addAttribute("lastSummaryMap", lastSummaryMap);
-		return "slight/main";
+		logger.debug(resultPage);
+		
+		return resultPage;
 	}
 	
 	@RequestMapping("/login")

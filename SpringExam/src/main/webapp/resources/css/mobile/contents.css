@@ -130,12 +130,12 @@ color:#999;background-color: #fff;font-weight:bold;float:left; border-radius:10p
 .ico_ar{ position:absolute; top:18px; right:15px; width:20px; height:20px; background:url(../img/icon_down.png) no-repeat center;background-size:auto 17px !important;}
 
 .list2 li { position:relative; text-align:left; margin:12px 20px;}
-.list2 li a { display:block; padding:12px; font-size:14px; color:#555; background-color:#fff;border:solid 1px #ddd;border-radius:10px;}
+.list2 li a { display:block; padding:12px; font-size:20px; color:#555; background-color:#fff;border:solid 1px #ddd;border-radius:10px;}
 .list2 li a span.arrow-right { position: absolute; top: 20px; right: 15px; font-size:30px; color:#ccc;}
 .list2 li a p{line-height:25px;}
 
 #list_search{position: relative;margin-top:0px;;padding-bottom:70px;background-color:#444;}
-#list_searchbox{position:absolute; top:35px; left:50%;transform: translate(-50%, -50%);width:235px;height:42px;
+#list_searchbox{position:absolute; top:35px; left:50%;transform: translate(-50%, -50%);width:275px;height:42px;
 background-color:#Fff;border-radius:40px;}
 #list_searchbox li{float:left;padding-top:5px;}
 #list_searchbox li .stxtbox{border:none;padding:5px 0;width:145px;text-indent:10px;font-size:15px;line-height:20px;}
@@ -183,17 +183,17 @@ box-shadow: 5px 5px 10px #bbb;margin-bottom:80px;overflow:hidden;}
 #guide p.imgbox2 span.guide_img03{float:left;background:url("../img/guide03.gif") no-repeat ; ;background-size: 300px 900px;width:300px;height:900px;}
 
 /*map*/
-#map{position: relative;height:100%;overflow:hidden;}
-#map img.mapbg{ width:100%;height: 100%;max-width:100%;max-height:100%;object-fit: cover;margin:0;padding:0}
-#searchbox{position:absolute; top:5%; left:50%;transform: translate(-50%, -50%);border:solid 2px #22bdff;width:285px;height:42px;background-color:#Fff;border-radius:40px;}
+#mobileMap{position: fixed;height:100%;width:100%;overflow:hidden;}
+#mobileMap iframe.mapbg{ width:100%;height: 100%;max-width:100%;max-height:100%;object-fit: cover;margin:0;padding:0}
+#searchbox{position:absolute; top:5%; left:50%;transform: translate(-50%, -50%);border:solid 2px #22bdff;width:300px;height:42px;background-color:#Fff;border-radius:40px;}
 #searchbox li{float:left;padding-top:5px;}
 #searchbox li .stxtbox{border:none;padding:5px 0;width:145px;text-indent:10px;font-size:15px;line-height:20px;}
 #searchbox li a.sbtn{float:right;width:30px; height:30px;background: url(../img/btn_search.png) no-repeat 0% 50%; background-size: 22px 22px;margin-left:5px;}
 input::placeholder {color: #aaa;}
-select.select_s{width:80px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:15px;color:#000}
+select.select_s{width:100px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:15px;color:#000}
 
 #area_informbox{position:absolute; top:28%; left:40%;width:170px;height:180px;background:url("../img/pop_map.png") no-repeat ;;z-index:1000}
-#area_inform_pop{position: relative;  width:170px;height:160px;}
+#area_inform_pop{position: relative;  width:200px;height:160px;}
 #area_inform_close{position:absolute; top:2px; right:8px;}
 #area_inform_close a{float:left;}
 #area_inform_close a.mpop_close{background:url("../img/pop_m_close.gif") no-repeat ;
@@ -203,7 +203,7 @@ width:17px; height:17px;background-size: 76% auto;text-indent:-9999px}
 font-size:15px;font-weight:bold;color:#000;margin:12px 0 0 10px;}
 #area_inform_pop p.photo{border:solid 1px #ddd;width:130px;height:75px;text-align:center;margin:0 auto;overflow:hidden;margin-top:8px;}
 #area_inform_pop p.photo img{max-width: 100%;height: auto;vertical-align: middle;}
-#area_inform_btn{position:absolute; bottom:25px; left:50px;width:72px; height:26px;text-align:center;}
+#area_inform_btn{position:absolute; bottom:25px; left:65px;width:72px; height:26px;text-align:center;}
 #area_inform_btn a{float:left;font-size:13px;line-height:25px;color:#fff;font-weight:bold;width:72px; height:26px;border-radius:3px;background-color:#17b9fe;}
 #area_inform_btn a:hover{background-color:#0d69ca;}
 
@@ -262,6 +262,7 @@ button.btn-large{width:100%;}
 .btn-area { margin:20px 0px; }
 .btn-area a{margin-bottom:10px;}
 .btn-area p{ margin:0 auto;overflow:hidden;text-align:center;}
+.btn-search { text-align:center; padding: 10px 15px; font-size:13px;border-radius:8px;}
 
 .btn-gray { color:#999; }
 
@@ -285,6 +286,7 @@ button.btn-large{width:100%;}
 .red01{font-size:17px; color:#fe6041;font-weight:bold;text-decoration:underline;}
 .sky01{font-size:16px; color:#0eb7ff;font-weight:bold;}
 .sky02{font-size:14px; color:#0eb7ff;font-weight:bold;}
+.sky03{font-size:22px; color:#0eb7ff;font-weight:bold;}
 .gray01{font-size:16px; color:#888;line-height:24px;}
 
 /*padding*/

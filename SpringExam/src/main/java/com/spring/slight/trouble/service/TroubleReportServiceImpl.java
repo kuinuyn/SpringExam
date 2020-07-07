@@ -33,8 +33,10 @@ public class TroubleReportServiceImpl implements TroubleReportService{
 		String repair_no = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
 		String inform_method = (String) paramMap.get("inform_method");
 		if("01".equals(inform_method)) {
-			paramMap.put("mobile", paramMap.get("phone").toString());
-			paramMap.put("phone", "");
+			if("".equals(paramMap.get("phone")) || paramMap.get("phone") == null) {
+				paramMap.put("mobile", paramMap.get("phone").toString());
+				paramMap.put("phone", "");
+			}
 		}
 		else if("03".equals(inform_method)) {
 			paramMap.put("phone", paramMap.get("phone").toString());

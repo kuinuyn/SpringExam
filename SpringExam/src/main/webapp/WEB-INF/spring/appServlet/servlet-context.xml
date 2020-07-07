@@ -13,6 +13,7 @@
 	<annotation-driven>
 		<argument-resolvers>
 			<beans:bean class="com.spring.common.CustomMapArgumentResolver" />
+			<beans:bean class="org.springframework.mobile.device.DeviceWebArgumentResolver"/>
 		</argument-resolvers>
 	</annotation-driven>
 	
@@ -66,10 +67,16 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/**"/>
+			<mapping path="/common/map/**"/>
 			<exclude-mapping path="/resources/**" />
 			<exclude-mapping path="/common/**" />
 			<exclude-mapping path="/upload/**" />
 			<beans:bean id="loggerInterceptor" class="com.spring.common.logger.LoggerInterceptor"></beans:bean>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/main"/>
+			<beans:bean id="device" class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor"></beans:bean>
 		</interceptor>
 	</interceptors>
 	

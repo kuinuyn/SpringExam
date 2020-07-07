@@ -19,4 +19,9 @@ public class MapDao {
 		List<Map<String, Object>> resultData = sqlSession.selectList(NAMESPACE+".getMapDataList", paramMap);
 		return resultData;
 	}
+	
+	public List<Map<String, Object>> resultMobileData(Map<String, Object> paramMap) throws Exception {
+		List<Map<String, Object>> resultData = sqlSession.selectList(NAMESPACE+".getMapMobileDataList", paramMap);
+		return resultData;
+	}
 }

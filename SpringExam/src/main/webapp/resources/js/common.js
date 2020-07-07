@@ -525,7 +525,7 @@ function isDate(str) {
 		
 		removeTHClass(table);
 		setTHClass(elem, sortOrder, function() {
-			Search(1, $(elem).text(), sortOrder);
+			Search(1, $(elem).find(".tt :first-child").text(), sortOrder);
 		});
 	}
 	

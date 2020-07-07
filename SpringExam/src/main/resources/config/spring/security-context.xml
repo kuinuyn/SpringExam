@@ -17,7 +17,7 @@
 	<http pattern="/img/**" security="none" />
 	<http pattern="/js/**" security="none" />
 	
-	<http auto-config="false" use-expressions="true" disable-url-rewriting="true"  authentication-manager-ref="authManager">
+	<http name="pc" auto-config="false" use-expressions="true" disable-url-rewriting="true"  authentication-manager-ref="authManager">
 		<csrf disabled="true"/>
 		<intercept-url pattern="/system/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/equipment/**" access="hasRole('ROLE_ADMIN')" />

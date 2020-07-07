@@ -7,12 +7,13 @@
 	<%@ include file="/WEB-INF/include/include-header.jspf"%>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			if("${pageContext.request.requestURI}".indexOf("mobile") > -1) {
-				location.href="index";
+			/* if("${pageContext.request.requestURL}".indexOf("m.") > -1) {
+				location.href="http://m.dev.slight.co.kr/index";
 			}
 			else {
 				location.href="/main";
-			}
+			} */
+			location.href="/main";
 		});
 	</script>
 </head>

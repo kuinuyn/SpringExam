@@ -57,7 +57,7 @@
 			               light_gubun,
 			               use_light,
 			               kepco_cd
-			          from gy_light
+			          from gy_light a
 			<if test="dgubun != null and dgubun == 1 ">
 				where light_gubun in ('1','2','3')
 				<if test="lightGn != null and lightGn != '' ">
@@ -89,6 +89,103 @@
 				</if>
 				<if test="keytype == 2 ">
 					and light_no like '%'||#{keyword}||'%'
+				</if>
+				<if test="keytype == 3 ">
+					and map_x_pos_gl BETWEEN #{minX} and #{maxX}
+					and map_y_pos_gl BETWEEN #{minY} and #{maxY}
+				</if>
+			</if>
+			<if test="dgubun != null and dgubun == 2 ">
+				where light_no like '%'||#{keyword}||'%'
+			</if>
+			<if test="dgubun != null and dgubun == 3 ">
+				where kepco_cust_no like '%'||#{keyword}||'%'
+			</if>
+			and light_gubun != '9'
+		) z order by z.light_no asc
+	</select>
+	
+	<select id="getMapMobileDataList" parameterType="hashMap" resultType="hashMap">
+		select z.light_type,
+			(select coalesce(d.repair_desc, '')
+			 from gy_light_repair c ,
+					gy_light_repair_part d
+			 where c.light_no = z.light_no
+			 	and c.light_no = d.light_no
+			  ORDER BY d.last_update DESC LIMIT 1) as repair_desc ,
+			(select coalesce(to_char(last_update, 'YYYY-MM-DD'), '')
+			   from gy_light_repair c ,
+			        gy_light_repair_part d
+			  where c.light_no = z.light_no
+			    and c.light_no = d.light_no
+			  ORDER BY d.last_update DESC LIMIT 1) as last_update ,
+			z.light_no,
+			z.pole_no,
+			coalesce(z.hj_dong_cd, '') as hj_dong_cd,
+			coalesce(z.bj_dong_cd, '') as bj_dong_cd,
+			coalesce(z.new_address, '') as new_address,
+			coalesce(z.address, '') as address,
+			coalesce(z.map_x_pos_gl, '0') as map_x_pos,
+			coalesce(z.map_y_pos_gl, '0') as map_y_pos,
+			coalesce(z.kepco_cust_no, '') as kepco_cust_no,
+			coalesce(z.stand_cd, '') as stand_cd,
+			F_GY_DATA_CODE_NM('08', z.stand_cd) as stand_nm,
+			coalesce(z.lamp2_cd, '') as lamp2_cd,
+			coalesce(z.lamp3_cd, '') as lamp3_cd,
+			coalesce(z.auto_jum_type1_cd, '') as auto_jum_type1_cd,
+			coalesce(z.lamp1_cd, '') as lamp1_cd,
+			coalesce(bdj, '') as bdj,
+			coalesce(up_lighter, '') as up_lighter, 
+			coalesce(z.light_gubun, '') as light_gubun,
+			coalesce(kepco_cd, '') as kepco_cd, 
+			coalesce(z.use_light, '') as use_light,
+			file_no as file_no,
+			coalesce(file_name_key, '') as file_name_key,
+			coalesce(seq, '') as seq
+			  from (select light_type,
+			               light_no,
+			               pole_no,
+			               hj_dong_cd,
+			               bj_dong_cd,
+			               address,
+			               map_x_pos_gl,
+			               map_y_pos_gl,
+			               new_address,
+			               kepco_cust_no,
+			               stand_cd,
+			               lamp2_cd,
+			               lamp3_cd,
+			               auto_jum_type1_cd,
+			               lamp1_cd,
+			               bdj,
+			               up_lighter,
+			               light_gubun,
+			               use_light,
+			               kepco_cd,
+			               b.file_no,
+			               b.file_name_key,
+			               b.seq
+			          from gy_light a
+          	   			left outer join gy_file_info b
+          	   			on a.light_no = b.seq
+			<if test="dgubun != null and dgubun == 1 ">
+				where light_gubun in ('1','2','3')
+				<if test="lightGn != null and lightGn != '' ">
+					AND LIGHT_TYPE = #{lightGn}	
+				</if>
+				<if test="CheckLogin == null or CheckLogin == 'gumi' ">
+					AND elec_no != 'gumi'	
+				</if>
+				<if test="keytype == 1 ">
+					<if test="area2 != null and area2 != '00' ">
+						AND hj_dong_cd = #{area2}
+					</if>
+					<if test="keyword != null and keyword != '' ">
+						and (new_address like '%'||#{keyword}||'%' or address like '%'||#{keyword}||'%')
+					</if>
+				</if>
+				<if test="keytype == 2 ">
+					and light_no = #{keyword}
 				</if>
 				<if test="keytype == 3 ">
 					and map_x_pos_gl BETWEEN #{minX} and #{maxX}

@@ -1,0 +1,27 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<jsp:useBean id="today" class="java.util.Date" />
+<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
+
+<!-- font-awesome -->
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/mobile/reset.css"><c:param name="dt" value="${nowDate}"/></c:url>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/mobile/contents.css"><c:param name="dt" value="${nowDate}"/></c:url>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/mobile/flexslider.css"><c:param name="dt" value="${nowDate}"/></c:url>" />
+
+<!-- jQuery --> 
+<script type="text/javascript" src="${contextPath }/resources/js/jquery/jquery-1.12.1.js"></script>
+<script type="text/javascript" src="${contextPath }/resources/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${contextPath }/resources/js/jquery/jquery.form.js"></script>
+<script type="text/javascript" src='${contextPath }/resources/js/mobile/jquery.simple-sidebar.min.js'></script>
+<script type="text/javascript" src="${contextPath }/resources/js/common.js"></script>
+<script type="text/javascript" src="${contextPath }/resources/js/common.js"></script>
+<script type="text/javascript" src="${contextPath }/resources/js/bluebird.js"></script>
+
+<!-- js -->
+<script src="<c:url value="/resources/js/mobile/slight.js"><c:param name="dt" value="${nowDate}"/></c:url>"></script>
+<script src="<c:url value="/resources/js/mobile/swiper.min.js"><c:param name="dt" value="${nowDate}"/></c:url>"></script>

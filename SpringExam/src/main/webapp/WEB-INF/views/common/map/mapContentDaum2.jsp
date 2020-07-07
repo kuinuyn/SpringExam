@@ -21,7 +21,7 @@
 	#roadviewControl.active {background: url(https://uljin.slight.co.kr/html/images/map/roadview_r.png) no-repeat; }
 
 	#close {position: absolute;padding: 4px;top: 5px;right: 100px;cursor: pointer;background: #fff;border-radius: 4px;border: 1px solid #c8c8c8;box-shadow: 0px 1px #888;}
-	#close .img {display: block;background: url(//i1.daumcdn.net/localimg/localimages/07/mapapidoc/rv_close.png) no-repeat;width: 14px;height: 14px;}
+	#close .img {position:relative; display: block;background: url(//i1.daumcdn.net/localimg/localimages/07/mapapidoc/rv_close.png) no-repeat;width: 14px;height: 14px; z-index: 1}
 
 	/* 인쇄버튼 추가를 위한 CSS 추가 */
 	/* .radius_border{border:1px solid #919191;border-radius:5px;}
