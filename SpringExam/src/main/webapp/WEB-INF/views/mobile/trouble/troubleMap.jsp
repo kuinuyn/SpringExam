@@ -92,11 +92,12 @@
 			
 		}
 		
-		function goToTrbList(lightNo, light_type, address, hj_dong_cd) {
+		function goToTrbList(lightNo, light_type, address, hj_dong_cd, file_name) {
 			$("#light_no").val(lightNo);
 			$("#lightType").val(light_type);
 			$("#address").val(address);
 			$("#hj_dong_cd").val(hj_dong_cd);
+			$("#file_name").val(file_name);
 			$("#troubleForm").attr({action:'/mobile/trouble/troubleReport'}).submit();
 		}
 	</script>
@@ -108,6 +109,7 @@
 		<input type="hidden" id="lightType" name="lightType" value="">
 		<input type="hidden" id="address" name="address" value="">
 		<input type="hidden" id="hj_dong_cd" name="hj_dong_cd" value="">
+		<input type="hidden" id="file_name" name="file_name" value="">
 	</form>
 	<%@ include file="../sidebar.jsp" %>
 	

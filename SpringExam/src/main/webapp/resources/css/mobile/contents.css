@@ -130,20 +130,22 @@ color:#999;background-color: #fff;font-weight:bold;float:left; border-radius:10p
 .ico_ar{ position:absolute; top:18px; right:15px; width:20px; height:20px; background:url(../img/icon_down.png) no-repeat center;background-size:auto 17px !important;}
 
 .list2 li { position:relative; text-align:left; margin:12px 20px;}
-.list2 li a { display:block; padding:12px; font-size:20px; color:#555; background-color:#fff;border:solid 1px #ddd;border-radius:10px;}
+.list2 li a { display:block; padding:12px; font-size:14px; color:#555; background-color:#fff;border:solid 1px #ddd;border-radius:10px;}
 .list2 li a span.arrow-right { position: absolute; top: 20px; right: 15px; font-size:30px; color:#ccc;}
 .list2 li a p{line-height:25px;}
 
 #list_search{position: relative;margin-top:0px;;padding-bottom:70px;background-color:#444;}
-#list_searchbox{position:absolute; top:35px; left:50%;transform: translate(-50%, -50%);width:275px;height:42px;
+#list_searchbox{position:absolute; top:35px; left:50%;transform: translate(-50%, -50%);width:310px;height:42px;
 background-color:#Fff;border-radius:40px;}
 #list_searchbox li{float:left;padding-top:5px;}
 #list_searchbox li .stxtbox{border:none;padding:5px 0;width:145px;text-indent:10px;font-size:15px;line-height:20px;}
 #list_searchbox li a.sbtn{float:right;width:42px; height:42px;background: url(../img/btn_search2.png) no-repeat right; background-size: 38px 38px;
 margin:-5px -10px 0 0;}
 input::placeholder {color: #aaa;}
-select.select_y{width:70px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:12px;color:#000}
+select.select_y{width:88px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:12px;color:#000}
 select.select_m{width:60px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:5px;color:#000}
+input.box_txt{border:none;;width:96px; line-height:28px;}
+
 
 
 
@@ -190,7 +192,7 @@ box-shadow: 5px 5px 10px #bbb;margin-bottom:80px;overflow:hidden;}
 #searchbox li .stxtbox{border:none;padding:5px 0;width:145px;text-indent:10px;font-size:15px;line-height:20px;}
 #searchbox li a.sbtn{float:right;width:30px; height:30px;background: url(../img/btn_search.png) no-repeat 0% 50%; background-size: 22px 22px;margin-left:5px;}
 input::placeholder {color: #aaa;}
-select.select_s{width:100px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:15px;color:#000}
+select.select_s{width:80px; padding:6px 5px 6px; border:none; font-size:15px;text-align:left;margin-left:15px;color:#000}
 
 #area_informbox{position:absolute; top:28%; left:40%;width:170px;height:180px;background:url("../img/pop_map.png") no-repeat ;;z-index:1000}
 #area_inform_pop{position: relative;  width:200px;height:160px;}

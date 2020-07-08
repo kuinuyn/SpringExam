@@ -15,6 +15,7 @@
 		var lightType = "${param.lightType}" != "" && "${param.lightType}" != null ? "${param.lightType}" : "${param.light_type}";
 		var address = "${param.address}";
 		var hj_dong_cd = "${param.hj_dong_cd}";
+		var file_name = "${param.file_name}";
 		
 		$(function(){
 			drawCodeData(commonCd, "01", "select", "").then(function(resolvedData) {
@@ -40,6 +41,9 @@
 					//$("#address").attr("readonly", true);
 					//$("#address").css('background-color', '#ddd');
 					$("#dong").val(hj_dong_cd);
+					if(file_name  != null && file_name != "") {
+						$(".light_img").attr("src", "/display?name="+file_name);
+					}
 				}
 			});
 		});

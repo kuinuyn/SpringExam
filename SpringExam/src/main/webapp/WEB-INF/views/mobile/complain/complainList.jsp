@@ -8,7 +8,7 @@
 	<%@ include file="/WEB-INF/include/include-mobile-header.jspf"%>
 	
 	<script type="text/javascript">
-		$(document).ready(function (){
+		$(function (){
 			var resultCd = "${resultCd}";
 			var resultMsg = "${resultMsg}";
 			
@@ -20,11 +20,18 @@
 			
 			Search();
 			
-			$("#password").keypress(function (e) {
-				if (e.which == 13){
-					getComplaintModify();  // 실행할 이벤트
-				}
-			});
+		});
+		
+		$(document).on("keypress", "#password", function (e) {
+			if (e.which == 13){
+				getComplaintModify();  // 실행할 이벤트
+			}
+		});
+		
+		$(document).on("keypress", "#keyword", function (e) {
+			if (e.which == 13){
+				Search();  // 실행할 이벤트
+			}
 		});
 		
 		Date.prototype.yyyymmdd = function() {
@@ -43,7 +50,7 @@
 			$.ajax({
 				type : "POST"			
 				, url : "/complaint/getComplaintList"
-				, data : {"current_page_no":1, "sDate":sDate.yyyymmdd(), "eDate":eDate.yyyymmdd()}
+				, data : {"current_page_no":$("#current_page_no").val(), "sDate":sDate.yyyymmdd(), "eDate":eDate.yyyymmdd(), "searchType":$("#searchType").val(), "keyword":$("#keyword").val()}
 				, dataType : "JSON"
 				, success : function(obj) {
 					getSearchCallback(obj);
@@ -63,7 +70,7 @@
 			$.ajax({
 				type : "POST"			
 				, url : "/complaint/getComplaintList"
-				, data : {"current_page_no":$("#current_page_no").val(), "sDate":sDate.yyyymmdd(), "eDate":eDate.yyyymmdd()}
+				, data : {"current_page_no":$("#current_page_no").val(), "sDate":sDate.yyyymmdd(), "eDate":eDate.yyyymmdd(), "searchType":$("#searchType").val(), "keyword":$("#keyword").val()}
 				, dataType : "JSON"
 				, success : function(obj) {
 					getMoreSearchCallback(obj);
@@ -95,13 +102,13 @@
 						</sec:authorize>
 						str += "		<p>";
 						str += "			<span>접수번호</span> ";
-						str += "			<span class='black05'>"+list[i].repair_no+"</span> ";
+						str += "			<span class='black04'>"+list[i].repair_no+"</span> ";
 						str += "			<span class='pdl10'>관리번호</span> ";
-						str += "			<span class='black05'>"+list[i].light_no+"</span>";
+						str += "			<span class='black04'>"+list[i].light_no+"</span>";
 						str += "		</p>";
 						str += "		<p>";
 						str += "			<span>접수일</span>";
-						str += "		<span class='black05'> "+list[i].notice_date+"</span> ";
+						str += "		<span class='black04'> "+list[i].notice_date+"</span> ";
 						str += "		<span class='pdl10'>처리상황</span> ";
 						if(list[i].progress_status == "01") {
 							btnStr = "신고접수";
@@ -112,7 +119,7 @@
 						else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
 							btnStr = "보수완료";
 						}
-						str += "		<span  class='sky03'>"+btnStr+"</span>";
+						str += "		<span  class='sky02'>"+btnStr+"</span>";
 						str += "	</p>";
 						str += "	<span class='arrow-right'><i class='fa fa-angle-right' aria-hidden='true'></i></span>";
 						str += "</a>";
@@ -160,13 +167,13 @@
 						</sec:authorize>
 						str += "		<p>";
 						str += "			<span>접수번호</span> ";
-						str += "			<span class='black05'>"+list[i].repair_no+"</span> ";
+						str += "			<span class='black04'>"+list[i].repair_no+"</span> ";
 						str += "			<span class='pdl10'>관리번호</span> ";
-						str += "			<span class='black05'>"+list[i].light_no+"</span>";
+						str += "			<span class='black04'>"+list[i].light_no+"</span>";
 						str += "		</p>";
 						str += "		<p>";
 						str += "			<span>접수일</span>";
-						str += "		<span class='black05'> "+list[i].notice_date+"</span> ";
+						str += "		<span class='black04'> "+list[i].notice_date+"</span> ";
 						str += "		<span class='pdl10'>처리상황</span> ";
 						if(list[i].progress_status == "01") {
 							btnStr = "신고접수";
@@ -177,7 +184,7 @@
 						else if(list[i].progress_status == "04" || list[i].progress_status == "05") {
 							btnStr = "보수완료";
 						}
-						str += "		<span  class='sky03'>"+btnStr+"</span>";
+						str += "		<span  class='sky02'>"+btnStr+"</span>";
 						str += "	</p>";
 						str += "	<span class='arrow-right'><i class='fa fa-angle-right' aria-hidden='true'></i></span>";
 						str += "</a>";
@@ -209,14 +216,20 @@
 					return;
 				}
 				else {
-					$("#detailForm").attr({action:'/mobile/complain/complainModify'}).submit();
+					//$("#detailForm").attr({action:'/mobile/complain/complainModify'}).submit();
+					var frm = document.detailForm;
+					frm.action =  "/mobile/complain/complainModify";
+					frm.submit();
 				}
 			</sec:authorize>
 			<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 				if(repairNo != undefined) {
 					$("#repairNo").val(repairNo);
 				}
-				$("#detailForm").attr({action:'/mobile/complain/complainModify'}).submit();
+				//$("#detailForm").attr({action:'/mobile/complain/complainModify'}).submit();
+				var frm = document.detailForm;
+				frm.action =  "/mobile/complain/complainModify";
+				frm.submit();
 			</sec:authorize>
 		}
 		
@@ -234,18 +247,19 @@
 <section id="content">
 	<form id="slightForm" name="slightForm" method="post" action="">
 		<input type="hidden" id="current_page_no" name="current_page_no" value="1" />
+		<input type="hidden" id="searchType" name="searchType" value="1" />
 		<div id="list_search">
 			<div id="list_searchbox">
 				<ul>
 					<li>
-						<select class="select_s" id="searchYear">
+						<select class="select_y" id="searchYear">
 							<c:forEach items="${searchYearList}" var="year">
 								<option value="${year }">${year }년</option>
 							</c:forEach>
 						</select>
 					</li>
 					<li>
-						<select class="select_s" id="searchMonth">
+						<select class="select_m" id="searchMonth">
 							<option value="12" >12</option>
 							<option value="11" >11</option>
 							<option value="10" >10</option>
@@ -260,7 +274,7 @@
 							<option value="1" >01</option>
 						</select>
 					</li>
-					
+					<li><input type="text" name="keyword" id="keyword" class="box_txt" placeholder="신고자로 검색"></li>
 					<li><a href="javascript:Search()" class="sbtn"></a></li>
 				</ul>
 			</div>

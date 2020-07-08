@@ -31,7 +31,7 @@
 	.custom_typecontrol .selected_btn {color:#fff;background:#425470;}
 	.custom_typecontrol .selected_btn:hover {color:#fff;}
 </style>
-<body onload="onInit()">
+<body onload="onInit()" style="margin:0">
 	<div id="container" class="view_map" >
 		<div id="mapWrapper" style="width:100%;height:100%;position:relative;">
 			<div id="map" style="width:100%;height:100%;"></div> <!-- 지도를 표시할 div 입니다 -->
@@ -299,7 +299,7 @@
 							var iwContent = "<div class='customoverlay'><a href='javascript:cl("+k+");'><span class='title'>"+light_no+"</span></a></div>";
 							//var iwContent = "<div class ='label'><a href='javascript:cl("+k+");'><span class='left'></span><span class='center'>"+light_no+"</span><span class='right'></span></a></div>";
 							var light_img = light_img_seq == "" || light_img_seq == null ? "/resources/css/img/noimg.png" : "/display?name="+arrList[k][20];
-							var iwContent2 = "<div id='area_inform_pop'><div id='area_inform_close'><a href='javascript:onHideWindow("+k+")' class='mpop_close'>닫기</a></div><p class='area_title'>"+light_no+"</p><p class='photo'><img src='"+light_img+"'></p><div id='area_inform_btn'><a href='javascript:goToTrbList(\""+light_no+"\",\""+light_type+"\",\""+arrList[k][2]+"\",\""+hj_dong_cd+"\")'>고장신고</a></div></div>";
+							var iwContent2 = "<div id='area_inform_pop'><div id='area_inform_close'><a href='javascript:onHideWindow("+k+")' class='mpop_close'>닫기</a></div><p class='area_title'>"+light_no+"</p><p class='photo'><img src='"+light_img+"'></p><div id='area_inform_btn'><a href='javascript:goToTrbList(\""+light_no+"\",\""+light_type+"\",\""+arrList[k][2]+"\",\""+hj_dong_cd+"\",\""+arrList[k][20]+"\")'>고장신고</a></div></div>";
 							//var iwContent2 = "<div class=\"sc2\"><h1><img src=\"/common/images/map/nuj_simg.gif\" width=\"18\" height=\"18\"></h1><h2>"+light_no+"</h2><div><table class=\"tic\"> <colgroup><col width=\"80\" /> <col width=\"170\" /> </colgroup><tbody><tr> <td id=\"nb\">종류</td> <td>  | "+light_type_nm+"</td></tr><tr><td id=\"nb\">주소</td> <td>  | "+arrList[k][2]+"</td></tr><tr><td id=\"nb\">새주소</td><td>  | "+arrList[k][12]+"</td></tr><tr><td id=\"nb\">인입주번호</td><td> | "+arrList[k][5]+"</td></tr> </tbody> </table></div><br><p style=\"margin: 1px\"></p><div class=\"ftf\"><p class=\"ft4\"><A class=\"lk2\" href=\"javascript:goToTrbList(\'"+light_no+"\',\'"+light_type+"\',\'"+arrList[k][2]+"\',\'"+hj_dong_cd+"\')\" ></A><A class=\"lk1\" href=\"javascript:onHideWindow("+k+")\"></A></p> </div></div>"
 							
 							//좌표에 해당하는 데이터 Set
@@ -522,8 +522,8 @@
 			setMapType('skyview');
 		}
 		
-		function goToTrbList(light_no, light_type, address, hj_dong_cd) {
-			parent.goToTrbList(light_no, light_type, address, hj_dong_cd);
+		function goToTrbList(light_no, light_type, address, hj_dong_cd, file_name) {
+			parent.goToTrbList(light_no, light_type, address, hj_dong_cd, file_name);
 		}
 	</script>
 </body>
