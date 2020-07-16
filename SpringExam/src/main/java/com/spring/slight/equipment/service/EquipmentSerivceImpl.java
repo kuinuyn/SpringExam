@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -208,7 +210,7 @@ public class EquipmentSerivceImpl implements EquipmentService{
 	}
 
 	@Override
-	public int updateEquipment(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
+	public int updateEquipment(CommandMap paramMap, List<MultipartFile> paramFiles, HttpSession session) throws Exception {
 		int resultCnt = equipmentDao.updateEquipment(paramMap);
 		
 		String deleteFile = (String) paramMap.get("delete_file");
@@ -235,7 +237,7 @@ public class EquipmentSerivceImpl implements EquipmentService{
 			}
 		}
 		
-		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("light_no"), "light");
+		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, session, (String) paramMap.get("light_no"), "light");
 		
 		for(FilesVO file : files) {
 			fileDao.insertFiles(file);

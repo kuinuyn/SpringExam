@@ -33,6 +33,10 @@
 		<put-attribute name="body" value="/WEB-INF/views/common/map/{1}.jsp" />
 	</definition>
 	
+	<definition name="common/daumEditor/*" template="/WEB-INF/views/tiles/baseMapPopupLayout.jsp">
+		<put-attribute name="body" value="/WEB-INF/views/common/daumEditor/{1}.jsp" />
+	</definition>
+	
 	<definition name="common/*/*" extends="webBase">
 		<put-attribute name="body" value="/WEB-INF/views/common/{1}/{2}.jsp" />
 	</definition>

@@ -120,7 +120,6 @@
 			<h3 class="hide"></h3>
 			<ul class="menubtm">
 				<li>
-					<a href="#"></a>
 					<span class="black03">신고건수</span>
 					<span class="black03 pdl15">어제 </span>
 					<span class="sky01 pdl5">${lastSummaryMap.yesterdayCnt }건</span>
@@ -135,7 +134,7 @@
 			<h3 class="hide">사용안내</h3>
 			<ul class="guide">
 				<li>
-					<a href="guide.html">
+					<a href="${contextPath }/mobile/notice/guide">
 						<div id="guide01">
 							<p><span class="white02">모바일 사용이 처음이신가요?</span></p>
 							<p><span class="white03">도로조명 사용가이드 TIP</span></p>
@@ -151,7 +150,9 @@
 			<h4>공지</h4>
 			<div class="notice">
 				<ul class="rolling">
-					<li><a href="#">새로워진 도로조명정보시스템을 소개합니다.</a></li>
+					<c:forEach items="${resultList}" var="list" varStatus="status">
+						<li>${list.subject }</li>
+					</c:forEach>
 				</ul>
 			</div> 
 		</footer>

@@ -28,7 +28,7 @@ public class ComplaintController {
 	private ComplaintService complaintService;
 	
 	@RequestMapping(value="/complaintList")
-	public String complaintList(HttpServletRequest request) {
+	public String complaintList(HttpServletRequest request, Model model) {
 		return "slight/complaint/complaintList";
 	}
 	
@@ -123,7 +123,6 @@ public class ComplaintController {
 	
 	/** 게시판 - 수정 */
 	@RequestMapping( value = "/updateComplaint")
-	@ResponseBody
 	public ModelAndView updateComplaint(HttpServletRequest request, HttpServletResponse response, CommandMap paramMap) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;

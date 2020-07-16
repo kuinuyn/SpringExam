@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
@@ -142,11 +143,11 @@ public class RepairController {
 	}	
 		
 	@RequestMapping(value="/updateRepairDatail", method = RequestMethod.POST)
-	public ModelAndView updateRepairDatail(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files, HttpServletRequest request) {
+	public ModelAndView updateRepairDatail(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files, HttpServletRequest request, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
 		try {
-			resultCnt = repairService.updateRepairDetail(paramMap, files);
+			resultCnt = repairService.updateRepairDetail(paramMap, files, session);
 			mv.addObject("resultCnt", resultCnt);
 		}
 		catch (Exception e) {

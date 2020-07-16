@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +34,22 @@ public class InfoServiceImpl implements InfoService{
 		
 		List<Map<String, Object>> list = infoNoticeList.getInfoNoticeList(paramMap);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		Collections.sort(list, new Comparator<Map<String, Object>>() {
+
+			@Override
+			public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+				Integer i = Integer.parseInt(o1.get("no").toString());
+				Integer j = Integer.parseInt(o2.get("no").toString());
+				return j.compareTo(i);
+			}
+			
+		});
+		
 		resultMap.put("list", list);
 		resultMap.put("totalCount", totalCount);
 		resultMap.put("pagination", paramMap.get("pagination"));
+		resultMap.put("current_page_no", paramMap.get("current_page_no"));
 		
 		result.setData(resultMap);
 		result.setState("SUCCESS");
@@ -57,17 +69,21 @@ public class InfoServiceImpl implements InfoService{
 	@Override
 	public int updateInfoNotice(CommandMap paramMap) throws Exception {
 		int cnt = 0;
-		String saveFlag = (String) paramMap.get("flag");
+		String no = (String) paramMap.get("no");
 			
-			if("I".equals(saveFlag)) {
-				cnt = infoNoticeList.insertInfoNotice(paramMap);
-			} else if("U".equals(saveFlag)){
+			if(!"".equals(no.trim()) && no.trim() != null) {
 				cnt = infoNoticeList.updateInfoNotice(paramMap);
-			} else if ("D".equals(saveFlag)){
-				cnt = infoNoticeList.deleteInfoNotice(paramMap);
-			}
+			} else {
+				cnt = infoNoticeList.insertInfoNotice(paramMap);
+			} 
 			
 		return cnt;
+	}
+
+
+	@Override
+	public int deleteInfoNotice(CommandMap paramMap) throws Exception {
+		return infoNoticeList.deleteInfoNotice(paramMap);
 	}
 	
 }

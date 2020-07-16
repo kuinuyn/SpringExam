@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.common.CommandMap;
@@ -15,6 +17,6 @@ public interface CompanyService {
 	public int updateCompanyInfo(CommandMap paramMap) throws Exception;
 	public ResultUtil getCompanyRepairList(CommandMap paramMap) throws Exception;	
 	public HashMap<String, Object> getCompanyRepairDetail(CommandMap paramMap) throws Exception;
-	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> files) throws Exception;
+	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> files, HttpSession session) throws Exception;
 	public List<Map<String, Object>> getCompanyRepairExcelList(CommandMap paramMap) throws Exception;
 }

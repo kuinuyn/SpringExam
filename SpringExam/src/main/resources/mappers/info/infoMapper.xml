@@ -6,27 +6,16 @@
 	<select id="getInfoNoticeListCnt" resultType="int" parameterType="hashMap">
 		<![CDATA[
 			SELECT COUNT(*)
-			FROM GY_MATERIAL A 
-			WHERE 1=2
-			AND A.YEAR = #{sch_year}
+			FROM GY_REFERENCE A 
+			WHERE 1=1
 		]]>
 	</select>
 	
 	<select id="getInfoNoticeList" resultType="hashMap" parameterType="hashMap">
 		<![CDATA[
-		  SELECT A.YEAR
-		       , A.DATA_CODE
-		       , A.DATA_CODE_NAME
-		       , COALESCE(A.COMPANY_ID,'') AS COMPANY_ID
-		       , COALESCE(A.STANDARD ,'') AS STANDARD
-		       , COALESCE(A.DANGA ,'') AS DANGA
-		       , A.UNIT
-		       , COALESCE(A.REMARKS	,'') AS REMARKS
-		   FROM GY_MATERIAL A 
-		  WHERE 1=2
-		    AND A.YEAR = #{sch_year}
-		    AND A.COMPANY_ID like '%' ||#{sch_company_id} || '%'
-			ORDER BY A.SUNBUN, A.DATA_CODE
+		  SELECT A.*
+		   FROM GY_REFERENCE A 
+		  WHERE 1=1
 			LIMIT #{limit} OFFSET #{offset}
 			
 		]]>
@@ -34,79 +23,46 @@
 	
 	<select id="getInfoNoticeDetail" resultType="hashMap"  parameterType="hashMap">
 		<![CDATA[
-	  	SELECT A.YEAR
-		       , A.DATA_CODE
-		       , A.DATA_CODE_NAME
-		       , COALESCE(A.COMPANY_ID,'') AS COMPANY_ID
-		       , COALESCE(A.STANDARD ,'') AS STANDARD
-		       , COALESCE(A.DANGA ,'') AS DANGA
-		       , A.UNIT
-		       , COALESCE(A.REMARKS	,'') AS REMARKS
-           FROM GY_MATERIAL A 
+	  	SELECT A.*
+           FROM GY_REFERENCE A 
           WHERE 1=1
-            AND A.YEAR    = #{sch_year}
-		    AND A.DATA_CODE = #{dataCode}
-		    AND A.COMPANY_ID = #{company_id}
+          AND NO = #{no}
 			]]>
 	</select>
 	
 	<insert id="insertInfoNotice" parameterType="hashMap">
-		<selectKey resultType="int" keyProperty="data_code" order="BEFORE">
-			<if test="data_code == null or data_code == '' ">
-				SELECT COALESCE(MAX(DATA_CODE::NUMERIC), 0)+1
-				FROM GY_MATERIAL
-				WHERE YEAR    = #{sch_year}
-			</if>
-		</selectKey>
-		
-		INSERT INTO GY_MATERIAL
-		(
-			YEAR
-			, DATA_CODE
-			, DATA_CODE_NAME
-			, COMPANY_ID
-			, STANDARD
-			, DANGA
-			, UNIT
-			, REMARKS
-			, last_update
-		)
-		VALUES
-		(
-			#{sch_year}
-			, #{data_code}
-			, #{data_code_name}
-			, #{company_id}
-			, #{standard}
-			, #{danga}
-			, #{unit}
-			, #{remarks}
-			, now()
-		)
+			INSERT INTO GY_REFERENCE
+			(
+				SUBJECT
+				, CONTENT
+				, UPD_ID
+				, LAST_UPDATE
+			)
+			VALUES
+			(
+				#{subject}
+				, #{content}
+				, #{upd_id}
+				, now()
+			)
 	</insert>
 	
 	<update id="updateInfoNotice" parameterType="hashMap">
-		UPDATE GY_MATERIAL
+		UPDATE GY_REFERENCE
 		SET
-			DATA_CODE_NAME = #{data_code_name}
-			, COMPANY_ID = #{company_id}
-			, STANDARD = #{standard}
-			, DANGA = #{danga}
-			, UNIT = #{unit}
-			, REMARKS = #{remarks}
-			, last_update = now()
+			CONTENT = #{content}
+			, SUBJECT = #{subject}
+			, UPD_ID = #{upd_id}
+			, LAST_UPDATE = now()
 		WHERE 1=1
-		  AND YEAR = #{year}
-		  AND DATA_CODE = #{data_code}
-		  AND COMPANY_ID = #{company_id}
+		  AND NO = #{no}
 	</update>
 	
 	<update id="deleteInfoNotice" parameterType="hashMap">
-		DELETE FROM GY_MATERIAL
-		WHERE YEAR = #{year}
-		  AND DATA_CODE = #{data_code} 
-		  AND COMPANY_ID = #{company_id}
+		<![CDATA[
+			DELETE FROM GY_REFERENCE
+			WHERE NO = #{no}
+		]]>
 	</update>
-	
 	
 </mapper>

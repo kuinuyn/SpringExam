@@ -280,14 +280,14 @@
 			</div>
 		</div>
 	</form>
-    <div id="slist">
-        <ul class="list2">
-        </ul>
+	<div id="slist">
+		<ul class="list2">
+		</ul>
 		
-    </div>
-     <div class="group">
-			<div class="btn-area"><a href="javascript:moreSearch()" class="btn btn-large btn-white2"><i class="fa fa-plus"></i> 더보기</a></div>
-		</div>
+	</div>
+	<div class="group">
+		<div class="btn-area"><a href="javascript:moreSearch()" class="btn btn-large btn-white2"><i class="fa fa-plus"></i> 더보기</a></div>
+	</div>
 	</section>
 	<!-- // List -->
 	<!-- //content -->

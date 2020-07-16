@@ -6,13 +6,15 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.common.vo.FilesVO;
 
 public class FileUploadUtil {
 	/** 게시판 - 첨부파일 정보 조회 */
-	public static List<FilesVO> setFileUploadUtil(List<MultipartFile> files, String seq, String folderNm) throws Exception {
+	public static List<FilesVO> setFileUploadUtil(List<MultipartFile> files, HttpSession session, String seq, String folderNm) throws Exception {
 		List<FilesVO> boardFileList = new ArrayList<FilesVO>();
 		
 		FilesVO fileVo = new FilesVO();
@@ -20,13 +22,14 @@ public class FileUploadUtil {
 		PropertiesUtils propertiesUtils = new PropertiesUtils();
 		propertiesUtils.loadProp("/properties/app_config.properties");
 		Properties properties = propertiesUtils.getProperties();
+		String defaultPath = session.getServletContext().getRealPath("/");
 		
 		String fileName = null;
 		String fileExt = null;
 		String fileNameKey = null;
 		String fileSize = null;
 		// 파일이 저장될 Path 설정
-		String filePath = properties.getProperty("file.upload.path")+folderNm;
+		String filePath = defaultPath+properties.getProperty("file.upload.path")+File.separator+folderNm;
 		
 		if(files != null && files.size() > 0) {
 			File file = new File(filePath);

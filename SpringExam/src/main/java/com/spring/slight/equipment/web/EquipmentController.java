@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Controller;
@@ -159,11 +160,11 @@ public class EquipmentController {
 	}
 	
 	@RequestMapping(value="/updateEquipment", method = RequestMethod.POST)
-	public ModelAndView updateEquipment(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files) {
+	public ModelAndView updateEquipment(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
 		try {
-			resultCnt = equipmentSerivce.updateEquipment(paramMap, files);
+			resultCnt = equipmentSerivce.updateEquipment(paramMap, files, session);
 			mv.addObject("resultCnt", resultCnt);
 		} catch (Exception e) {
 			mv.addObject("resultCnt", -1);

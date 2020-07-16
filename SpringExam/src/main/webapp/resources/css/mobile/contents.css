@@ -166,8 +166,8 @@ padding:20px 0;color:#333;font-size:16px;text-indent:18px;}
 .accordion-item .heading:hover {color: #000;font-weight:Bold;}
 .accordion-item .heading:hover .icon:before, .accordion-item .heading:hover .icon:after {background: #000;}
 .accordion-item .heading span.warning{padding:3px 5px; font-size:11px; border-radius:10px; }
-.accordion-item .conten {display: none;width:100%;border-bottom:1px solid #e2e2e2;}
-.accordion-item .conten p.aco_tbox {margin:0;padding:20px;background: #f7f7f7;text-indent:0px;color:#666;font-size:15px;line-height:24px;}
+.accordion-item .content {display: none;width:100%;border-bottom:1px solid #e2e2e2;}
+.accordion-item .content p.aco_tbox {margin:0;padding:20px;background: #f7f7f7;text-indent:0px;color:#666;font-size:15px;line-height:24px;}
 
 /*guide*/
 #guide{position: relative;margin: 0 auto;padding-top:50px;overflow:hidden;width:100%;}

@@ -24,4 +24,10 @@ public class PopupController {
 		return "common/popup/popupMapSearchTemplate";
 	}
 	
+	// 이미지 첨부 팝업 
+	@RequestMapping(value = "/daum/imagePopup")
+	public String imagePopup() {
+		return "common/daumEditor/image";
+	}
+
 }

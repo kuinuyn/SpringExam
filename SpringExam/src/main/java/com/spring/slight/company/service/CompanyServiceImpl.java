@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -150,7 +152,7 @@ public class CompanyServiceImpl implements CompanyService{
 
 	@SuppressWarnings("unused")
 	@Override
-	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> paramFiles) throws Exception {
+	public int updateCompanyRepair(CommandMap paramMap, List<MultipartFile> paramFiles, HttpSession session) throws Exception {
 		
 		String progressStatus = (String) companyDao.getRepairStatus(paramMap).get("progress_status");
 		
@@ -185,7 +187,7 @@ public class CompanyServiceImpl implements CompanyService{
 			}
 		}
 		
-		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, (String) paramMap.get("repair_no"), "repair");
+		List<FilesVO> files = FileUploadUtil.setFileUploadUtil(paramFiles, session, (String) paramMap.get("repair_no"), "repair");
 		String photo1 = (String) paramMap.get("photo1");
 		String photo2 = (String) paramMap.get("photo2");
 		String photo3 = (String) paramMap.get("photo3");

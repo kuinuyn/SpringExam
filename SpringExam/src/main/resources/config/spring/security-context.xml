@@ -22,6 +22,7 @@
 		<intercept-url pattern="/system/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/equipment/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/repair/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/info/infoNoticeSave" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/company/**" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
 		<intercept-url pattern="/login/loginSuccess" access="hasAnyRole('ROLE_ADMIN','ROLE_USER')"/>
 		

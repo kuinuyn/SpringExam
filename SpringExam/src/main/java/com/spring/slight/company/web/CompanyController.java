@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -106,14 +107,14 @@ public class CompanyController {
 	
 	
 	@RequestMapping(value="/updateCompanyRepair", method = RequestMethod.POST)
-	public ModelAndView updateCompanyRepair(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files, HttpServletRequest request) {
+	public ModelAndView updateCompanyRepair(CommandMap paramMap, @RequestPart(value="files", required = false) List<MultipartFile> files, HttpServletRequest request, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		int resultCnt = 0;
 		try {
 			
 			CustomVO vo = (CustomVO) SecurityContextHolder.getContext().getAuthentication().getDetails();
 			paramMap.put("company_id", vo.getUserId());
-			resultCnt = companyService.updateCompanyRepair(paramMap, files);
+			resultCnt = companyService.updateCompanyRepair(paramMap, files, session);
 			mv.addObject("resultCnt", resultCnt);
 		} catch (Exception e) {
 			mv.addObject("resultCnt", -1);
