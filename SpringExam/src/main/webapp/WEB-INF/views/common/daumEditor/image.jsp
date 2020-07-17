@@ -84,7 +84,7 @@
 						return false;
 					}
 					else if(fileInfo.result == -2) { // 서버단에서 체크 후 수행됨
-						alert('파일이 1MB를 초과하였습니다.'); 
+						alert('파일이 2MB를 초과하였습니다.'); 
 						return false;
 					}
 					else {
@@ -149,7 +149,7 @@
 	</div>	
 	<div class="body">
 		<dl class=alert>
-			<dt>nbsp;1MB이하 (JPG,GIF,PNG,BMP)</dt>
+			<dt>nbsp;2MB이하 (JPG,GIF,PNG,BMP)</dt>
 			<dd>
 				<form id=daumOpenEditorForm encType=multipart/form-data method=post
 					action="">

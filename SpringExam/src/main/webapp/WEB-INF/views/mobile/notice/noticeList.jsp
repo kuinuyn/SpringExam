@@ -28,7 +28,6 @@
 		}
 	
 		function moreSearch() {
-			alert("sdfk");
 			$("#current_page_no").val(parseInt($("#current_page_no").val())+1);
 			
 			$.ajax({
@@ -73,11 +72,8 @@
 					str += '<div class="accordion-item">';
 					str += '	<div class="title">등록된 글이 존재하지 않습니다.</div>';
 				}
-				//$("#notice_js").remove();
-				//str += '<script id="notice_js" type="text/javascript" src="${contextPath }/resources/js/mobile/jquery_notice.js?ver="'+data.current_page_no+'/>';
 				
 				$("#content").append(str);
-				//$.getScript( '${contextPath }/resources/js/mobile/jquery_notice.js?ver='+data.current_page_no );
 			}
 			
 			var pageNo = parseInt($("#current_page_no").val());

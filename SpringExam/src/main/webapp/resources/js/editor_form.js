@@ -50,6 +50,13 @@ $.ajax({
 				attachbox : {
 					show : true,
 					confirmForDeleteAll : true
+				},
+				attacher : {
+					image : {
+						objattr: {
+							width: 200
+						}
+					}
 				}
 			},
 			size : {

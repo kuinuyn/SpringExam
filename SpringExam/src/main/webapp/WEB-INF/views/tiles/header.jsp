@@ -207,7 +207,7 @@ function chkSession() {
 			</div> 
 			<sec:authorize access="isAnonymous()">
 				<c:set var="pathURI" value="${requestScope['javax.servlet.forward.servlet_path']}" />
-				<c:if test="${pathURI eq '/complaint/complaintList' or pathURI eq '/trouble/trblReportList'}">
+				<c:if test="${pathURI eq '/complaint/complaintList' or pathURI eq '/trouble/trblReportList' or pathURI eq '/trouble/trblCreateList' or pathURI eq '/info/infoServicesList' or pathURI eq '/info/infoReportList' or pathURI eq '/info/infoNoticeList'}">
 					<div id="login2">
 						<span><a href="#" class="btn_login" onclick="modal_popup('messagePop');return false;">로그인</a></span>
 					</div>

@@ -16,6 +16,7 @@
 		  SELECT A.*
 		   FROM GY_REFERENCE A 
 		  WHERE 1=1
+		  ORDER BY A.NO DESC, A.LAST_UPDATE
 			LIMIT #{limit} OFFSET #{offset}
 			
 		]]>
@@ -26,7 +27,7 @@
 	  	SELECT A.*
            FROM GY_REFERENCE A 
           WHERE 1=1
-          AND NO = #{no}
+          AND NO = ${no}
 			]]>
 	</select>
 	
@@ -55,13 +56,13 @@
 			, UPD_ID = #{upd_id}
 			, LAST_UPDATE = now()
 		WHERE 1=1
-		  AND NO = #{no}
+		  AND NO = ${no}
 	</update>
 	
 	<update id="deleteInfoNotice" parameterType="hashMap">
 		<![CDATA[
 			DELETE FROM GY_REFERENCE
-			WHERE NO = #{no}
+			WHERE NO = ${no}
 		]]>
 	</update>
 	
