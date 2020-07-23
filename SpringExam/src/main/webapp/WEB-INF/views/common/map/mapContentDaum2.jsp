@@ -212,6 +212,7 @@
 		if(parentFrame != null) {
 			parent.document.slightForm.light_type.value = positions[a].light_type;
 			parent.document.slightForm.light_no.value = positions[a].light_no;
+			parent.document.slightForm.stand_cd.value = positions[a].stand_cd;
 			parent.document.slightForm.hj_dong_cd.value = positions[a].hj_dong_cd;
 			parent.document.slightForm.lamp2_cd.value = positions[a].lamp2_cd;
 			parent.document.slightForm.lamp3_cd.value = positions[a].lamp3_cd;
@@ -599,6 +600,7 @@
 						var light_no = arrList[k][1];
 						var light_type = arrList[k][14];
 						var latlng = new daum.maps.LatLng(arrList[k][3], arrList[k][4]);
+						var lightSatndCd = arrList[k][6];
 						var hj_dong_cd = arrList[k][16];
 						var address = arrList[k][2];
 						var new_address = arrList[k][12];
@@ -617,6 +619,7 @@
 							light_no: light_no, 
 							latlng: latlng,
 							light_type: light_type,
+							stand_cd: lightSatndCd,
 							address: address,
 							new_address: new_address,
 							lamp2_cd: lamp2_cd,
