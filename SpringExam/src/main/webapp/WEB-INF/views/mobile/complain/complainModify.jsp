@@ -174,8 +174,8 @@
 				<ul class="box">
 					<li><span class="title">신고종류</span><span class="text">${resultMap.light_gubun }</span></li>
 					<li><span class="title">관리번호</span><span class="text">${resultMap.light_no }</span></li>
-					<li><span class="title">주소</span><span><input type="text" id="address" name="address" class="tbox" maxlength="100"></span></li>
-					<li><span class="title">신고인명</span><span><input type="text" id="notice_name" name="notice_name" class="tbox" maxlength ="20"></span></li>
+					<li><span class="title">주소</span><span><input type="text" id="address" name="address" class="tbox"  value="${resultMap.location }" maxlength="100"></span></li>
+					<li><span class="title">신고인명</span><span><input type="text" id="notice_name" name="notice_name" class="tbox"  value="${resultMap.notice_name }" maxlength ="20"></span></li>
 					<li>
 						<span class="title">연락처</span>
 						<span><input type="text" id="phone" name="phone" class="tbox" value="${resultMap.phone }" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="13"></span>
@@ -184,14 +184,14 @@
 						<span class="title">휴대번호</span>
 						<span><input type="text" id="mobile" name="mobile" class="tbox" value="${resultMap.mobile }" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="13"></span>
 					</li>
-					<li><span class="title">이메일</span><span><input type="text" id="email" name="email" class="tbox" size="35" maxlength="40"></span></li>
+					<li><span class="title">이메일</span><span><input type="text" id="email" name="email" class="tbox"  value="${resultMap.email }" size="35" maxlength="40"></span></li>
 					<li><span class="title">비밀번호</span><span><input type="password" id="password" name="password" class="tbox" size="8" maxlength="8"></span></li>
 					<li><span class="title">고장상태</span><span>
 							<select class="sel02" name="trouble_cd" size="1" id="trouble_cd">
 							</select>
 						</span>
 					</li>
-					<li><span class="title">상태설명</span><span><textarea name="" rows="" cols=""  class="tbox"  maxlength="500" ></TEXTAREA></span></li>
+					<li><span class="title">상태설명</span><span><textarea id="trouble_detail" name="trouble_detail" rows="" cols=""  class="tbox"  maxlength="500" >${resultMap.trouble_detail }</TEXTAREA></span></li>
 					<li>
 						<span class="title">회신결과</span>
 						<span><input type="radio" name="inform_method" value="01">sms</span>
