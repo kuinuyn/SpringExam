@@ -526,6 +526,13 @@
 								</li>
 							</ul>
 							<ul>
+								<li class="gis_tit">지지방식</li>
+								<li>
+									<select class="sel05" id="stand_cd" name="stand_cd">
+									</select>
+								</li>
+							</ul>
+							<ul>
 								<li class="gis_tit">광원종류</li>
 								<li>
 									<select class="sel05" id="lamp2_cd" name="lamp2_cd">

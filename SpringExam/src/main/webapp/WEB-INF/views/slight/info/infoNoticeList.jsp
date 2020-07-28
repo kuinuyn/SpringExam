@@ -44,7 +44,7 @@
 			
 			var str = "";
 			var btnStr = "";
-			//자재번호,자재명,업체명,자재규격,자재단가,내구현황,비고
+			//관리번호, 제목
 			if(listLen > 0) {
 				for(i=0; i<listLen; i++) {
 					str += "<tr>";
@@ -183,7 +183,7 @@
 			</ul>
 		</div>
 		<div id="board_list">
-			<table summary="자재목록" cellpadding="0" cellspacing="0">
+			<table summary="공지사항" cellpadding="0" cellspacing="0">
 				<caption>번호,제목</caption>
 				<colgroup>
 					<col width="20%">
@@ -214,10 +214,10 @@
 					<a href="#" class="cbtn"><i class="fa fa-times " aria-hidden="true"></i><span class="hide">Close</span></a>
 				</div>
 				<div class="pop_detail2 ">
-					<h3>자재관리</h3>
+					<h3>공지사항</h3>
 					<div id="board_view">
 						<!-- 텍스트컬러- 고장신고-blue 고장상태-red -->
-						<table summary="자재현황" cellpadding="0" cellspacing="0">
+						<table summary="공지사항" cellpadding="0" cellspacing="0">
 							<colgroup>
 								<col width="14%">
 								<col width="86%">

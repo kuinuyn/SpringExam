@@ -5,12 +5,25 @@
 <script type="text/javascript" src="${contextPath }/resources/daumeditor/js/editor_loader.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="${contextPath }/resources/js/editor_form.js"></script>
 <script type="text/javascript">
+
+var flag = "";
+
 	$(function() {
-		loadContent()
+		loadContent();
+		
+		var no = $("#no").val();
+		
+		if(no== "" || no==null)
+			{
+				flag = "등록";
+			}else
+			{
+				flag = "수정";
+			}
 	});
 
 	function Save() {
-		var yn = confirm("공지사항을 수정 하시겠습니까?");
+		var yn = confirm("공지사항을 "+ flag + " 하시겠습니까?");
 		if(yn){
 			$.ajax({
 				type : "POST"			
@@ -30,11 +43,11 @@
 	function updateNoticeCallback(obj) {
 		if(obj != null) {
 			if(obj.resultCnt > -1) {
-				alert("수정을 성공하였습니다.");
+				alert(flag+"을 성공하였습니다.");
 				goToList();
 			}
 			else {
-				alert("수정을 실패하였습니다.");	
+				alert(flag+"을 실패하였습니다.");	
 				return;
 			}
 		}
@@ -152,7 +165,7 @@
 		</form>
 		<div id="btn2">
 			<p>
-				<span><a href="javascript:validation(Save);" class="btn_blue">수정</a></span>
+				<span><a href="javascript:validation(Save);" class="btn_blue">저장</a></span>
 				<span><a href="javascript:Delete()"  class="btn_gray">삭제</a></span>
 				<span><a href="javascript:goToList()"  class="btn_gray">목록으로</a></span>
 			</p>
