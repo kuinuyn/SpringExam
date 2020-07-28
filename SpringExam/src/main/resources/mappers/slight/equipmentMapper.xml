@@ -650,20 +650,12 @@
 	
 	<insert id="insertGisEquipment" parameterType="hashMap">
 		INSERT INTO GY_LIGHT (
-<<<<<<< HEAD
 			LIGHT_NO, LIGHT_TYPE, HJ_DONG_CD, LAMP2_CD
-=======
-			LIGHT_NO, LIGHT_TYPE, STAND_CD,  HJ_DONG_CD, LIGHT_GUBUN, LAMP2_CD
->>>>>>> refs/remotes/origin/20200721_kh
 			, LAMP3_CD, POLE_NO, KEPCO_CUST_NO, KEPCO_CD, USE_LIGHT
 			, MAP_X_POS_GL, MAP_Y_POS_GL, ADDRESS, NEW_ADDRESS
 		)
 		VALUES (
-<<<<<<< HEAD
 			#{light_no}, #{light_type}, #{hj_dong_cd}, #{lamp2_cd}
-=======
-			#{light_no}, #{light_type}, #{stand_cd}, #{hj_dong_cd}, '1', #{lamp2_cd}
->>>>>>> refs/remotes/origin/20200721_kh
 			, #{lamp3_cd}, #{pole_no}, #{kepco_cust_no}, #{kepco_cd}, #{use_light}
 			, #{mapPosX}, #{mapPosY}, #{address}, #{new_address}
 		)
