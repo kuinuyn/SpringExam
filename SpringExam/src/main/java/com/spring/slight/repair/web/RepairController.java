@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +31,6 @@ import com.spring.slight.repair.service.RepairService;
 @Controller
 @RequestMapping(value="/repair")
 public class RepairController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(RepairController.class);
 	
 	@Resource(name="RepairService")
 	private RepairService repairService;

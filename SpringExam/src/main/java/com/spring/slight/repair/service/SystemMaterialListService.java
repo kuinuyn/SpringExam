@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.spring.common.CommandMap;
 import com.spring.common.util.ResultUtil;
 

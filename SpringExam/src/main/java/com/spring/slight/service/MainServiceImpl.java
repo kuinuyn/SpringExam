@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.spring.common.CommandMap;
 import com.spring.slight.complaint.dao.ComplaintDao;
 import com.spring.slight.dao.MainDao;
-import com.spring.slight.equipment.dao.EquipmentDao;
 import com.spring.slight.repair.dao.RepairDao;
 
 @Service("MainService")
