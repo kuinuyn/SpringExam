@@ -141,9 +141,9 @@ function searchArea(code) {
 				var filePah = "";
 				
 				for(i = 0; i<downLoadFiles.length; i++) {
-					filePah = "/display?name="+downLoadFiles[i].file_name_key;
+					filePah = "/display?name="+encodeURI(downLoadFiles[i].file_name_key);
 					$("#detail_slight").children().eq(i).children("img").attr("src", filePah)
-				}
+				}				
 			}
 			else {
 				

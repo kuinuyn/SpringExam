@@ -167,7 +167,7 @@
 			               b.seq
 			          from gy_light a
           	   			left outer join gy_file_info b
-          	   			on a.light_no = b.seq
+          	   			on a.light_no = b.seq and del_yn='N' and b.file_no = (select min(file_no) from gy_file_info where seq = b.seq)
 			<if test="dgubun != null and dgubun == 1 ">
 				where light_gubun in ('1','2','3')
 				<if test="lightGn != null and lightGn != '' ">

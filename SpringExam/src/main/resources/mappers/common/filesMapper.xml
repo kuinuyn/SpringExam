@@ -22,6 +22,7 @@
 				AND FILE_NAME_KEY = #{file_name_key}
 			</if>
 			AND DEL_YN = 'N'
+		 ORDER BY FILE_NO	
 	</select>
 	
 	<select id="getFileNo" parameterType="com.spring.common.vo.FilesVO" resultType="int">
