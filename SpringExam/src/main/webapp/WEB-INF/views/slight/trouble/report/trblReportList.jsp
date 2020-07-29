@@ -252,7 +252,7 @@
 			, success : function(obj) {
 				/* getInsertTrobleCallback(obj); */
 				if(obj.resultData != null) {
-					var filePah = "/display?name="+obj.resultData[0].file_name_key;
+					var filePah = "/display?name="+encodeURI(obj.resultData[0].file_name_key);
 					$(".lightimg").children("img").attr("src", filePah);
 				}
 			}
